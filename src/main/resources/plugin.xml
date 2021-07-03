@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension point="com.change_vision.astah.ui.actionSets">
+      <actionSet
+            label="%action_set_label"
+            visible="false"
+            id="biz.chamos.povastah.actionSet">
+   <!--      <menu
+               id="povastah"
+               label="%menu_group"
+               path="tool/povastah">
+         </menu> -->
+         <action
+			   label="%menu_label"
+			   visible="false"
+               icon="icons/sample.gif"
+               class="biz.chamos.povastah.TranslateAction"
+               tooltip="%menu_tooltip"
+               menubarPath="tool/export_image/"
+               id="povastah">
+         </action>
+     </actionSet>
+   </extension>
+</plugin>
