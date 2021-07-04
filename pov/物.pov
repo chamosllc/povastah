@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 物
- * created at 2021/07/03
+ * created at 2021/07/04
  * presented by povastah
  **/
 
@@ -9,37 +9,41 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "uml.inc"
+#include "astahuml.inc"
 
-#declare EYE = <444.33, 327.33, -771.67>;
-#declare FOCUS = <444.33, 327.33, 0.00>;
-camera { location EYE direction 1*z look_at FOCUS }
-light_source { <0, 128, -512> color White }
-plane { z, 32.0 texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 } }
 union {
-object { InitialPseudostate rotate -x*90 scale 16  translate <107.33, 643.67, 0.00> }
-object { IState rotate -x*90 scale 16  translate <256.67, 649.00, -16.00> }
+object { InitialPseudostate rotate -x*90 scale 16  translate <107.33, -128.00, 0.00> }
+object { State rotate -x*90 scale 16  translate <256.67, -122.67, 0.00> }
  text { ttf "msgothic.ttc", "一時", 1, 0 scale 12 texture { T_Stone8 }
- translate <246.67, 621.00, -32.00> }
-object { IState rotate -x*90 scale 16  translate <416.67, 649.00, -16.00> }
+ translate <246.67, -146.67, -32.00> }
+object { State rotate -x*90 scale 16  translate <416.67, -122.67, 0.00> }
  text { ttf "msgothic.ttc", "永続", 1, 0 scale 12 texture { T_Stone8 }
- translate <406.67, 621.00, -32.00> }
-object { FinalState rotate -x*90 scale 16  translate <576.67, 643.67, 0.00> }
-union {
-  cylinder { <107.33, 643.67, 0.00>, <117.33, 633.67, 0.00>, 3.0 }
-  cylinder { <117.33, 633.67, 0.00>, <256.67, 649.00, 0.00>, 3.0 }
+ translate <406.67, -146.67, -32.00> }
+object { FinalState rotate -x*90 scale 16  translate <576.67, -128.00, 0.00> }
+// Transition:/ instanciate
+sphere_sweep { linear_spline, 2, 
+<107.33, -128.00, 4.00>, 3.0
+<256.67, -122.67, 4.00>, 3.0
   texture { T_Yellow_Glass }
 }
-union {
-  cylinder { <256.67, 649.00, 0.00>, <284.85, 633.68, 0.00>, 3.0 }
-  cylinder { <284.85, 633.68, 0.00>, <416.67, 649.00, 0.00>, 3.0 }
+// Transition:CREATE
+sphere_sweep { linear_spline, 2, 
+<256.67, -122.67, 4.00>, 3.0
+<416.67, -122.67, 4.00>, 3.0
   texture { T_Yellow_Glass }
 }
-torus { 48, 3.0 rotate x*90  translate <416.67, 697.00, 0.00>  texture { T_Yellow_Glass }
+// Transition:UPDATE
+torus { 36, 3.0 rotate x*90  translate <416.67, -86.67, 4.00>  texture { T_Yellow_Glass }
 }
-union {
-  cylinder { <416.67, 649.00, 0.00>, <444.85, 633.68, 0.00>, 3.0 }
-  cylinder { <444.85, 633.68, 0.00>, <576.67, 643.67, 0.00>, 3.0 }
+// Transition:DELETE
+sphere_sweep { linear_spline, 2, 
+<416.67, -122.67, 4.00>, 3.0
+<576.67, -128.00, 4.00>, 3.0
   texture { T_Yellow_Glass }
 }
 }
+#declare EYE = <298.33, -76.65, -374.99>;
+#declare FOCUS = <298.33, -76.65, 0.00>;
+camera { location EYE direction 1*z look_at FOCUS }
+light_source { EYE color White }
+plane { z, 32.0 texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 } }
