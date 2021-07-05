@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 エンティティ画面
- * created at 2021/07/04
+ * created at 2021/07/06
  * presented by povastah
  **/
 
@@ -11,68 +11,73 @@
 
 #include "astahuml.inc"
 
-union {
-object { InitialPseudostate rotate -x*90 scale 16  translate <78.67, -121.33, 0.00> }
-object { State rotate -x*90 scale 16  translate <167.33, 8.00, 0.00> }
- text { ttf "msgothic.ttc", "entity.html", 1, 0 scale 12 texture { T_Stone8 }
- translate <112.33, -16.00, -32.00> }
-object { State rotate -x*90 scale 16  translate <406.00, 8.00, 0.00> }
- text { ttf "msgothic.ttc", "entityEntry.html", 1, 0 scale 12 texture { T_Stone8 }
- translate <326.00, -16.00, -32.00> }
-object { State rotate -x*90 scale 16  translate <327.33, -122.67, 0.00> }
- text { ttf "msgothic.ttc", "entityList.html", 1, 0 scale 12 texture { T_Stone8 }
- translate <252.33, -146.67, -32.00> }
-object { ChoicePseudostate rotate -x*90 scale 16  translate <160.00, -122.67, 0.00> }
+#declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
+#declare LabelTecture = texture { T_Grnt15 }
+#declare LinkTecture = texture { Yellow_Glass }
+
+#declare Diagram = union {
+object { InitialPseudostate rotate -x*90 scale 24  translate <88.67, -131.33, 0.00> }
+object { State rotate -x*90 scale 24  translate <218.76, -13.82, 0.00> }
+ text { ttf "msgothic.ttc", "entity.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ translate <185.76, -49.82, 30.00> }
+object { State rotate -x*90 scale 24  translate <478.64, -13.82, 0.00> }
+ text { ttf "msgothic.ttc", "entityEntry.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ translate <430.64, -49.82, 30.00> }
+object { State rotate -x*90 scale 24  translate <392.90, -144.49, 0.00> }
+ text { ttf "msgothic.ttc", "entityList.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ translate <347.90, -180.49, 30.00> }
+object { ChoicePseudostate rotate -x*90 scale 24  translate <167.50, -130.17, 0.00> }
 // Transition:
 sphere_sweep { linear_spline, 2, 
-<78.67, -121.33, 4.00>, 3.0
-<160.00, -122.67, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<88.67, -131.33, 4.00>, 3.0
+<167.50, -130.17, 4.00>, 3.0
+  texture { LinkTecture }
 }
 // Transition:entry
 sphere_sweep { linear_spline, 2, 
-<160.00, -122.67, 4.00>, 3.0
-<167.33, 8.00, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<167.50, -130.17, 4.00>, 3.0
+<218.76, -13.82, 4.00>, 3.0
+  texture { LinkTecture }
 }
 // Transition:submit / save
 sphere_sweep { linear_spline, 2, 
-<167.33, 8.00, 4.00>, 3.0
-<406.00, 8.00, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<218.76, -13.82, 4.00>, 3.0
+<478.64, -13.82, 4.00>, 3.0
+  texture { LinkTecture }
 }
 // Transition:reset
-torus { 36, 3.0 rotate x*90  translate <167.33, 44.00, 4.00>  texture { T_Yellow_Glass }
+torus { 32.0, 3.0 translate <218.76, -13.82, -28.00>  texture { LinkTecture }
 }
 // Transition:back
 sphere_sweep { linear_spline, 3, 
-<167.33, 8.00, 4.00>, 3.0
+<218.76, -13.82, 4.00>, 3.0
 <159.33, -56.33, 4.00>, 3.0
-<160.00, -122.67, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<167.50, -130.17, 4.00>, 3.0
+  texture { LinkTecture }
 }
 // Transition:list
 sphere_sweep { linear_spline, 3, 
-<160.00, -122.67, 4.00>, 3.0
+<167.50, -130.17, 4.00>, 3.0
 <258.67, -185.00, 4.00>, 3.0
-<327.33, -122.67, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<392.90, -144.49, 4.00>, 3.0
+  texture { LinkTecture }
 }
 // Transition:back
 sphere_sweep { linear_spline, 2, 
-<327.33, -122.67, 4.00>, 3.0
-<160.00, -122.67, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<392.90, -144.49, 4.00>, 3.0
+<167.50, -130.17, 4.00>, 3.0
+  texture { LinkTecture }
 }
 // Transition:submit
 sphere_sweep { linear_spline, 2, 
-<406.00, 8.00, 4.00>, 3.0
-<160.00, -122.67, 4.00>, 3.0
-  texture { T_Yellow_Glass }
+<478.64, -13.82, 4.00>, 3.0
+<167.50, -130.17, 4.00>, 3.0
+  texture { LinkTecture }
 }
 }
-#declare EYE = <275.64, -79.15, -354.79>;
-#declare FOCUS = <275.64, -79.15, 0.00>;
+object { Diagram }
+#declare EYE = <339.64, -62.73, -402.37>;
+#declare FOCUS = <339.64, -62.73, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { EYE color White }
-plane { z, 32.0 texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 } }
+light_source { <-1000.00, -1000.00, -3000.00> color White }
+plane { z, 32.0 texture { PlaneTexture }}
