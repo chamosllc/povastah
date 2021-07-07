@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 JpaRepository階層
- * created at 2021/07/06
+ * created at 2021/07/07
  * presented by povastah
  **/
 
@@ -15,7 +15,7 @@
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
 
-#declare Diagram = union {
+#declare ClassDiagram0 = union {
 object { Boundary rotate -x*90 scale 24  translate <168.00, -371.47, 0.00> }
  text { ttf "msgothic.ttc", "JpaRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <129.00, -407.47, 30.00> }
@@ -65,7 +65,7 @@ sphere_sweep { linear_spline, 2,
   texture { LinkTecture }
 }
 }
-object { Diagram }
+object { ClassDiagram0  }
 #declare EYE = <296.83, -293.21, -590.04>;
 #declare FOCUS = <296.83, -293.21, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

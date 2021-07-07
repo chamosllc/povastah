@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 1_実現モデル
- * created at 2021/07/06
+ * created at 2021/07/07
  * presented by povastah
  **/
 
@@ -15,7 +15,7 @@
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
 
-#declare Diagram = union {
+#declare ClassDiagram0 = union {
 object { Class rotate -x*90 scale 24  translate <140.09, -155.80, 0.00> }
  text { ttf "msgothic.ttc", "Serializable", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <104.09, -191.80, 30.00> }
@@ -29,7 +29,7 @@ sphere_sweep { linear_spline, 2,
   texture { LinkTecture }
 }
 }
-object { Diagram }
+object { ClassDiagram0  }
 #declare EYE = <165.54, -167.67, -333.21>;
 #declare FOCUS = <165.54, -167.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

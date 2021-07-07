@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 1_0_活動視点_取り扱う
- * created at 2021/07/06
+ * created at 2021/07/07
  * presented by povastah
  **/
 
@@ -15,7 +15,7 @@
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
 
-#declare Diagram = union {
+#declare ActivityDiagram0 = union {
 object { InitialNode rotate -x*90 scale 24  translate <188.54, -61.33, 0.00> }
 object { Action rotate -x*90 scale 24  translate <188.54, -147.32, 0.00> }
  text { ttf "msgothic.ttc", "物を見る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
@@ -63,7 +63,7 @@ sphere_sweep { linear_spline, 2,
 torus { 32.0, 3.0 translate <188.54, -147.32, -28.00>  texture { LinkTecture }
 }
 }
-object { Diagram }
+object { ActivityDiagram0  }
 #declare EYE = <314.54, -187.00, -501.54>;
 #declare FOCUS = <314.54, -187.00, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 2_概念モデル
- * created at 2021/07/06
+ * created at 2021/07/07
  * presented by povastah
  **/
 
@@ -15,12 +15,12 @@
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
 
-#declare Diagram = union {
+#declare ClassDiagram0 = union {
 object { Class rotate -x*90 scale 24  translate <-167.89, -20.79, 0.00> }
  text { ttf "msgothic.ttc", "物", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <-173.89, -56.79, 30.00> }
 }
-object { Diagram }
+object { ClassDiagram0  }
 #declare EYE = <-46.67, 6.14, 52.81>;
 #declare FOCUS = <-46.67, 6.14, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

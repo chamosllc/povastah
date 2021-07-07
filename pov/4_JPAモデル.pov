@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 4_JPAモデル
- * created at 2021/07/06
+ * created at 2021/07/07
  * presented by povastah
  **/
 
@@ -15,7 +15,7 @@
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
 
-#declare Diagram = union {
+#declare ClassDiagram0 = union {
 object { Boundary rotate -x*90 scale 24  translate <232.82, -248.65, 0.00> }
  text { ttf "msgothic.ttc", "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <184.82, -284.65, 30.00> }
@@ -38,7 +38,7 @@ sphere_sweep { linear_spline, 2,
   texture { LinkTecture }
 }
 }
-object { Diagram }
+object { ClassDiagram0  }
 #declare EYE = <255.89, -156.59, -412.48>;
 #declare FOCUS = <255.89, -156.59, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

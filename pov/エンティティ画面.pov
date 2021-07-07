@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 エンティティ画面
- * created at 2021/07/06
+ * created at 2021/07/07
  * presented by povastah
  **/
 
@@ -15,7 +15,7 @@
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
 
-#declare Diagram = union {
+#declare StateMachineDiagram0 = union {
 object { InitialPseudostate rotate -x*90 scale 24  translate <88.67, -131.33, 0.00> }
 object { State rotate -x*90 scale 24  translate <218.76, -13.82, 0.00> }
  text { ttf "msgothic.ttc", "entity.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
@@ -75,7 +75,7 @@ sphere_sweep { linear_spline, 2,
   texture { LinkTecture }
 }
 }
-object { Diagram }
+object { StateMachineDiagram0  }
 #declare EYE = <339.64, -62.73, -402.37>;
 #declare FOCUS = <339.64, -62.73, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

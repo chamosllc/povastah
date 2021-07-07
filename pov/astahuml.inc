@@ -6,6 +6,8 @@
 #include "agent.inc"
 #include "stones.inc"
 
+#include "child.inc"
+
 /*
 		Phenomenon
 */
@@ -52,7 +54,7 @@
         }
         scale 2
 }
- 
+
 /*
  * State Transition Diagram
  */
@@ -62,7 +64,13 @@
 #declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
-                     
+
+/*
+ * Use Case Diagram
+ */
+#declare UseCase = object { SubmachineState }
+#declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 } 
+                      
 /*
  * Activity Diagram
  */ 
