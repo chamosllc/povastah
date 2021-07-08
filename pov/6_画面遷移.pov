@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 6_画面遷移
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -14,14 +14,15 @@
 #declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare StateMachineDiagram0 = union {
 object { InitialPseudostate rotate -x*90 scale 24  translate <169.11, -133.81, 0.00> }
 object { State rotate -x*90 scale 24  translate <298.87, -133.81, 0.00> }
- text { ttf "msgothic.ttc", "管理者操作", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "管理者操作", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <268.87, -169.81, 30.00> }
 object { SubmachineState rotate -x*90 scale 24  translate <538.14, -133.81, 0.00> }
- text { ttf "msgothic.ttc", "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <520.14, -169.81, 30.00> }
 // object { StateMachineDiagram1 scale 0.15  translate <450.33, -96.67, 28.77> }
 // Transition:[entity]

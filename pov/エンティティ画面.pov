@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 エンティティ画面
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -14,17 +14,18 @@
 #declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare StateMachineDiagram0 = union {
 object { InitialPseudostate rotate -x*90 scale 24  translate <88.67, -131.33, 0.00> }
 object { State rotate -x*90 scale 24  translate <218.76, -13.82, 0.00> }
- text { ttf "msgothic.ttc", "entity.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "entity.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <185.76, -49.82, 30.00> }
 object { State rotate -x*90 scale 24  translate <478.64, -13.82, 0.00> }
- text { ttf "msgothic.ttc", "entityEntry.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "entityEntry.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <430.64, -49.82, 30.00> }
 object { State rotate -x*90 scale 24  translate <392.90, -144.49, 0.00> }
- text { ttf "msgothic.ttc", "entityList.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "entityList.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <347.90, -180.49, 30.00> }
 object { ChoicePseudostate rotate -x*90 scale 24  translate <167.50, -130.17, 0.00> }
 // Transition:

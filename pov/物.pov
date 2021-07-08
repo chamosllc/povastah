@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 物
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -14,14 +14,15 @@
 #declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare StateMachineDiagram0 = union {
 object { InitialPseudostate rotate -x*90 scale 24  translate <117.33, -138.00, 0.00> }
 object { State rotate -x*90 scale 24  translate <284.85, -137.99, 0.00> }
- text { ttf "msgothic.ttc", "一時", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "一時", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <272.85, -173.99, 30.00> }
 object { State rotate -x*90 scale 24  translate <444.85, -137.99, 0.00> }
- text { ttf "msgothic.ttc", "永続", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "永続", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <432.85, -173.99, 30.00> }
 object { FinalState rotate -x*90 scale 24  translate <586.67, -138.00, 0.00> }
 // Transition:/ instanciate

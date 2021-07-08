@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 1_0_活動視点_取り扱う
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -11,20 +11,21 @@
 
 #include "astahuml.inc"
 
-#declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
+#declare PlaneTexture = texture { pigment { checker color White color GreenYellow } rotate -x*90 rotate z*45 scale 96 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare ActivityDiagram0 = union {
 object { InitialNode rotate -x*90 scale 24  translate <188.54, -61.33, 0.00> }
 object { Action rotate -x*90 scale 24  translate <188.54, -147.32, 0.00> }
- text { ttf "msgothic.ttc", "物を見る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を見る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <164.54, -183.32, 30.00> }
 object { Action rotate -x*90 scale 24  translate <426.54, -147.32, 0.00> }
- text { ttf "msgothic.ttc", "物を変える", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を変える", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <396.54, -183.32, 30.00> }
 object { Action rotate -x*90 scale 24  translate <188.54, -246.65, 0.00> }
- text { ttf "msgothic.ttc", "物を消す", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を消す", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <164.54, -282.65, 30.00> }
 object { ActivityFinal rotate -x*90 scale 24  translate <188.54, -324.67, 0.00> }
 // ControlFlow/ObjectFlow:[READ]

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 1_1_活動視点オブジェクト操作
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -11,27 +11,28 @@
 
 #include "astahuml.inc"
 
-#declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
+#declare PlaneTexture = texture { pigment { checker color White color GreenYellow } rotate -x*90 rotate z*45 scale 96 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare ActivityDiagram0 = union {
 object { InitialNode rotate -x*90 scale 24  translate <194.67, 16.67, 0.00> }
 object { Action rotate -x*90 scale 24  translate <194.54, -61.99, 0.00> }
- text { ttf "msgothic.ttc", "物を作る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を作る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <170.54, -97.99, 30.00> }
 object { Action rotate -x*90 scale 24  translate <386.12, -92.65, 0.00> }
- text { ttf "msgothic.ttc", "物を見る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を見る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <362.12, -128.65, 30.00> }
 object { Action rotate -x*90 scale 24  translate <539.87, -92.65, 0.00> }
- text { ttf "msgothic.ttc", "物を変える", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を変える", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <509.87, -128.65, 30.00> }
 object { Action rotate -x*90 scale 24  translate <695.45, -92.65, 0.00> }
- text { ttf "msgothic.ttc", "物を消す", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "物を消す", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <671.45, -128.65, 30.00> }
 object { ActivityFinal rotate -x*90 scale 24  translate <695.33, -194.67, 0.00> }
 object { ObjectNode rotate -x*90 scale 24  translate <459.67, -214.32, 0.00> }
- text { ttf "msgothic.ttc", " : 物", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, " : 物", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <444.67, -250.32, 30.00> }
 // ControlFlow/ObjectFlow:
 sphere_sweep { linear_spline, 2, 

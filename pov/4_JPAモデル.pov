@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 4_JPAモデル
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -14,16 +14,17 @@
 #declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare ClassDiagram0 = union {
 object { Boundary rotate -x*90 scale 24  translate <232.82, -248.65, 0.00> }
- text { ttf "msgothic.ttc", "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <184.82, -284.65, 30.00> }
 object { Boundary rotate -x*90 scale 24  translate <232.82, -167.76, 0.00> }
- text { ttf "msgothic.ttc", "JpaRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "JpaRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <193.82, -203.76, 30.00> }
 object { Entity rotate -x*90 scale 24  translate <358.29, -248.65, 0.00> }
- text { ttf "msgothic.ttc", "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <340.29, -284.65, 30.00> }
 // Generalization:
 sphere_sweep { linear_spline, 2, 

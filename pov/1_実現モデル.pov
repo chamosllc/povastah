@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 1_実現モデル
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -14,13 +14,14 @@
 #declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare ClassDiagram0 = union {
 object { Class rotate -x*90 scale 24  translate <140.09, -155.80, 0.00> }
- text { ttf "msgothic.ttc", "Serializable", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "Serializable", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <104.09, -191.80, 30.00> }
 object { Entity rotate -x*90 scale 24  translate <139.55, -250.11, 0.00> }
- text { ttf "msgothic.ttc", "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <121.55, -286.11, 30.00> }
 // Realization:
 sphere_sweep { linear_spline, 2, 

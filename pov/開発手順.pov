@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 開発手順
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -11,43 +11,44 @@
 
 #include "astahuml.inc"
 
-#declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
+#declare PlaneTexture = texture { pigment { checker color White color GreenYellow } rotate -x*90 rotate z*45 scale 96 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare ActivityDiagram0 = union {
 object { InitialNode rotate -x*90 scale 24  translate <38.00, -107.33, 0.00> }
 object { Action rotate -x*90 scale 24  translate <181.29, -107.31, 0.00> }
- text { ttf "msgothic.ttc", "課題", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "課題", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <169.29, -143.31, 30.00> }
- text { ttf "msgothic.ttc", "0.ユースケース図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "0.ユースケース図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <169.29, -159.31, 30.00> }
 object { Action rotate -x*90 scale 24  translate <396.93, -107.31, 0.00> }
- text { ttf "msgothic.ttc", "概念モデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "概念モデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <366.93, -143.31, 30.00> }
- text { ttf "msgothic.ttc", "1.概念クラス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "1.概念クラス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <366.93, -159.31, 30.00> }
 object { Action rotate -x*90 scale 24  translate <586.78, -107.13, 0.00> }
- text { ttf "msgothic.ttc", "実現モデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "実現モデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <556.78, -143.13, 30.00> }
- text { ttf "msgothic.ttc", "2.クラス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "2.クラス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <556.78, -159.13, 30.00> }
- text { ttf "msgothic.ttc", "3.ER図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "3.ER図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <556.78, -175.13, 30.00> }
 object { Action rotate -x*90 scale 24  translate <242.63, -224.31, 0.00> }
- text { ttf "msgothic.ttc", "JPAモデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "JPAモデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <215.63, -260.31, 30.00> }
- text { ttf "msgothic.ttc", "4.ロバストネス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "4.ロバストネス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <215.63, -276.31, 30.00> }
 object { Action rotate -x*90 scale 24  translate <464.54, -224.31, 0.00> }
- text { ttf "msgothic.ttc", "MVCモデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "MVCモデル", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <437.54, -260.31, 30.00> }
- text { ttf "msgothic.ttc", "5.ロバストネス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "5.ロバストネス図", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <437.54, -276.31, 30.00> }
 object { Action rotate -x*90 scale 24  translate <688.33, -224.31, 0.00> }
- text { ttf "msgothic.ttc", "実装", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "実装", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <676.33, -260.31, 30.00> }
- text { ttf "msgothic.ttc", "6.画面遷移／コード", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "6.画面遷移／コード", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <676.33, -276.31, 30.00> }
 object { ActivityFinal rotate -x*90 scale 24  translate <839.47, -224.31, 0.00> }
 // ControlFlow/ObjectFlow:

@@ -86,15 +86,20 @@ public class Diagram {
 		sceneWriter.write(String.format(HEADER_COMMENT, projectName, diagram.getName(), sdf.format(cl.getTime())));
 		sceneWriter.write("#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 				+ "#global_settings { charset utf8 }" + CR + CR);	
-		sceneWriter.flush();
 		sceneWriter.write("#include \"astahuml.inc\"" + CR + CR);
+		declareTexture();
 		sceneWriter.flush();
+	}
+	
+	/**
+	 * ダイアグラムのステージ、ラベル、リンク、フォントの設定
+	 * @throws IOException
+	 */
+	protected void declareTexture() throws IOException {
 		sceneWriter.write("#declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }" + CR);
-		sceneWriter.flush();
 		sceneWriter.write("#declare LabelTecture = texture { T_Grnt15 }" + CR);
-		sceneWriter.flush();
-		sceneWriter.write("#declare LinkTecture = texture { Yellow_Glass }" + CR + CR);
-		sceneWriter.flush();
+		sceneWriter.write("#declare LinkTecture = texture { Yellow_Glass }" + CR);
+		sceneWriter.write("#declare LabelFont = \"msgothic.ttc\"" + CR + CR);
 	}
 	
 	/**
@@ -200,7 +205,7 @@ public class Diagram {
 					merginX = label.getBytes().length*3;
 				}
 				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write(" text { ttf \"msgothic.ttc\", \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
+				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
 					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
 				labelY+= scale;
 			}

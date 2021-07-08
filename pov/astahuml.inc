@@ -59,8 +59,8 @@
  * State Transition Diagram
  */
 
-#declare State = cylinder {<0, -0.1, 0>, <0, 0.1, 0>, 1.0 texture{Gold_Texture}}
-#declare SubmachineState = cylinder {<0, -0.1, 0>, <0, 0.1, 0>, 2.0 texture{New_Brass}}
+#declare State = cylinder {-0.1*y, 0.1*y, 1.0 texture{Gold_Texture}}
+#declare SubmachineState = cylinder {-0.1*y, 0.1*y, 2.0 texture{New_Brass}}
 #declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
@@ -146,4 +146,5 @@ union{
     object { Class }
 }
 
+#declare ObjectNode = object { Entity }
 

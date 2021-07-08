@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 5_MVCモデル
- * created at 2021/07/08
+ * created at 2021/07/09
  * presented by povastah
  **/
 
@@ -14,19 +14,20 @@
 #declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkTecture = texture { Yellow_Glass }
+#declare LabelFont = "msgothic.ttc"
 
 #declare ClassDiagram0 = union {
 object { Boundary rotate -x*90 scale 24  translate <179.92, -268.22, 0.00> }
- text { ttf "msgothic.ttc", "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <131.92, -304.22, 30.00> }
 object { Boundary rotate -x*90 scale 24  translate <179.92, -164.72, 0.00> }
- text { ttf "msgothic.ttc", "entityView", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "entityView", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <149.92, -200.72, 30.00> }
 object { Control rotate -x*90 scale 24  translate <30.67, -223.80, 0.00> }
- text { ttf "msgothic.ttc", "EntityController", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "EntityController", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <-17.33, -259.80, 30.00> }
 object { Entity rotate -x*90 scale 24  translate <323.02, -268.14, 0.00> }
- text { ttf "msgothic.ttc", "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
+ text { ttf LabelFont, "Entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <305.02, -304.14, 30.00> }
 // Association:
 sphere_sweep { linear_spline, 2, 
