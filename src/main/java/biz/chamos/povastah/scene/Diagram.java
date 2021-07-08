@@ -1,4 +1,4 @@
-package biz.chamos.povastah;
+package biz.chamos.povastah.scene;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -16,7 +16,14 @@ import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
-public class POVDiagram {
+/**
+ * Diagram Object in POVRay Scene
+ * 
+ * @author mashiro@chamos.biz
+ * @since 2021/07/01
+ *
+ */
+public class Diagram {
 	static protected String CR = System.lineSeparator(); // 改行
 	static protected String HEADER_COMMENT = "/**" + CR
 			+ " * astah* Diagram 3D Visualization\n * %s %s" + CR
@@ -31,7 +38,7 @@ public class POVDiagram {
 	protected List<ILinkPresentation> links; // ダイアグラム中のリンク要素
 	protected Rectangle2D stage; // nodesの含まれる矩形
 	
-	public POVDiagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter) throws IOException {
+	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter) throws IOException {
 		this.projectName = projectName;
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
@@ -41,7 +48,7 @@ public class POVDiagram {
 	/**
 	 * astahダイアグラムの3DCG表現を出力する
 	 */
-	public void save(){
+	public void produce(){
 		try {
 			extractElement();
 			writeHeader();
@@ -69,7 +76,7 @@ public class POVDiagram {
 	}
 	
 	/**
-	 * スクリプトのヘッダ部を定義する
+	 * スクリプトのヘッダ部を出力する
 	 * @throws IOException
 	 * @throws ProjectNotFoundException 
 	 */
@@ -91,7 +98,7 @@ public class POVDiagram {
 	}
 	
 	/**
-	 * ダイアグラムを出力する
+	 * ダイアグラムオブジェクトを出力する
 	 * @throws IOException
 	 */
 	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
@@ -110,7 +117,7 @@ public class POVDiagram {
 	}
 
 	/**
-	 * カメラ、光源、ダイアグラムのステージを定義する
+	 * カメラ、光源、平面等のベースシーン環境を出力する
 	 * @throws IOException
 	 */
 	protected void writeStage() throws IOException {
@@ -126,17 +133,23 @@ public class POVDiagram {
 	}
 
 	/**
-	 * ノード要素をマッピングする
+	 * Node要素をマッピングする
 	 * @throws IOException
 	 */
 	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
 		for (INodePresentation node : nodes) {
-			if(node.getType() != "Frame" && node.getType() != "Note" ) {
+			if(node.getType() != "Frame" && node.getType() != "Note" ) { // Frame,NoteはSceneから除外
 				writeNode(hierarchy, node);
 			}
 		}
 	}
 
+	/**
+	 * ノードオブジェクトを出力する
+	 * @param hierarchy
+	 * @param node
+	 * @throws IOException
+	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		String SCALE = " scale 24 ";
 
@@ -149,6 +162,11 @@ public class POVDiagram {
 		writeSubDiagram(hierarchy + 1, node);
 	}
 
+	/**
+	 * ノードオブジェクトの中心座標を決める
+	 * @param node
+	 * @return Point2D 中心座標
+	 */
 	protected Point2D nodePosition(INodePresentation node) {
 		return new Point2D.Double(node.getRectangle().getCenterX(), node.getRectangle().getCenterY());
 	}
@@ -165,7 +183,7 @@ public class POVDiagram {
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {	}
 
 	/**
-	 * ノードのラベルを加工する
+	 * Nodeのラベルオブジェクトを出力する
 	 * @param node
 	 * @throws IOException
 	 */
@@ -190,7 +208,7 @@ public class POVDiagram {
 	}
 
 	/**
-	 * ノード要素の特定の型に対するPOVRayオブジェクトをマッピングする
+	 * Node要素の特定の型に対するPOVRayオブジェクト型をマッピングする
 	 * 
 	 * @param node
 	 * @return
@@ -200,39 +218,49 @@ public class POVDiagram {
 	}
 
 	/**
-	 * リンク要素をマッピングする
-	 * astahダイアグラムのリンクのノードへの端点は使わない
-	 * 
+	 * Link要素をマッピングする
+	 * astahダイアグラムのLinkのNodeへの端点は使わない 
 	 * @throws IOException
 	 */
 	protected void writeLinks() throws IOException {
 		double lineRadius = 3.0;
-		double z = 4;
+		double offsetZ = 4;
 		for (ILinkPresentation link : links) {
-			INodePresentation source = link.getSource();
-			INodePresentation target = link.getTarget();
-			if(source.getType() != "Note" && target.getType() != "Note") {
-				Point2D sourcep = nodePosition(source);
-				Point2D targetp = nodePosition(target);
-				sceneWriter.write("// " + link.getType() + ":" + link.getLabel() + CR);
-				if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
-					double torusRadius = 32.0;
-					sourcep.setLocation(sourcep.getX(), sourcep.getY());
-					sceneWriter.write("torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + z));
-				}else {
-					Point2D[] points = link.getPoints();
-					sceneWriter.write("sphere_sweep { linear_spline, " + points.length + ", " + CR); // 始点、終点の2点とpointsから最初と最後の2点を抜いた数の合計
-					sceneWriter.write(coordinate(sourcep, z) + ", " + lineRadius + CR); // 始点
-					for(int i=1; i < points.length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-						sceneWriter.write(coordinate(points[i], z) + ", " + lineRadius + CR);
-					}
-					sceneWriter.write(coordinate(targetp, z) + ", " + lineRadius + CR); // 終点
-				}
-				sceneWriter.write("  texture { LinkTecture }" + CR);
-				sceneWriter.write("}" + CR);				
+			if(!(link.getSource().getType() == "Note" || link.getTarget().getType() == "Note")) { // NoteはSceneから除外
+				writeLink(link, lineRadius, offsetZ);
 			}
 		}
 
+	}
+
+	/**
+	 * リンクオブジェクトを出力する 
+	 * @param link
+	 * @param lineRadius
+	 * @param offsetZ
+	 * @throws IOException
+	 */
+	protected void writeLink(ILinkPresentation link, double lineRadius, double offsetZ) throws IOException {
+		INodePresentation source = link.getSource();
+		INodePresentation target = link.getTarget();
+		Point2D sourcep = nodePosition(source);
+		Point2D targetp = nodePosition(target);
+		sceneWriter.write("// " + link.getType() + ":" + link.getLabel() + CR);
+		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
+			double torusRadius = 32.0;
+			sourcep.setLocation(sourcep.getX(), sourcep.getY());
+			sceneWriter.write("torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + offsetZ));
+		}else {
+			Point2D[] points = link.getPoints();
+			sceneWriter.write("sphere_sweep { linear_spline, " + points.length + ", " + CR); // 始点、終点の2点とpointsから最初と最後の2点を抜いた数の合計
+			sceneWriter.write(coordinate(sourcep, offsetZ) + ", " + lineRadius + CR); // 始点
+			for(int i=1; i < points.length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+				sceneWriter.write(coordinate(points[i], offsetZ) + ", " + lineRadius + CR);
+			}
+			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
+		}
+		sceneWriter.write("  texture { LinkTecture }" + CR);
+		sceneWriter.write("}" + CR);				
 	}
 
 	/**

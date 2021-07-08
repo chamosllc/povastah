@@ -29,7 +29,7 @@ public class TranslateAction implements IPluginActionDelegate {
 
 	        File directory = selectScriptOutputDirectory(window, projectAccessor.getProjectPath());
 	        if(directory != null) {
-		        new Scene(projectAccessor, directory).povrayDiagrams();
+		        new SceneProducer(projectAccessor, directory).produceAll();
 	        }
 	    } catch (ProjectNotFoundException e) {
 	    	/*

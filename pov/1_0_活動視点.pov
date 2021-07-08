@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * SpringBoot基本 1_0_活動視点
- * created at 2021/07/07
+ * created at 2021/07/08
  * presented by povastah
  **/
 
@@ -48,5 +48,5 @@ object { ActivityDiagram0  }
 #declare EYE = <197.54, -199.50, -397.04>;
 #declare FOCUS = <197.54, -199.50, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.00, -1000.00, -3000.00> color White } 
+light_source { <-1000.00, -1000.00, -3000.00> color White }
 plane { z, 32.0 texture { PlaneTexture }}

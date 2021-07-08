@@ -1,4 +1,4 @@
-package biz.chamos.povastah;
+package biz.chamos.povastah.scene;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -9,7 +9,7 @@ import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IElement;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 
-public class ClassDiagram extends POVDiagram {
+public class ClassDiagram extends Diagram {
 
 	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
 		super(projectName, diagram, writer);
