@@ -40,8 +40,7 @@ public class UseCaseDiagram extends ClassDiagram {
 					+ " } scale 64 " + translate(point));
 			sceneWriter.write("}" + CR);
 			stage.add(node.getRectangle());
-			sceneWriter.flush();
-			
+			sceneWriter.flush();		
 		}else {
 			super.writeNode(hierarchy, node);
 		}

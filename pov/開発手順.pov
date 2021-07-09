@@ -51,6 +51,7 @@ object { Action rotate -x*90 scale 24  translate <688.33, -224.31, 0.00> }
  text { ttf LabelFont, "6.画面遷移／コード", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <676.33, -276.31, 30.00> }
 object { ActivityFinal rotate -x*90 scale 24  translate <839.47, -224.31, 0.00> }
+// Links
 // ControlFlow/ObjectFlow:
 sphere_sweep { linear_spline, 2, 
 <38.00, -107.33, 4.00>, 3.0

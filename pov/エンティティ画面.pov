@@ -28,6 +28,7 @@ object { State rotate -x*90 scale 24  translate <392.90, -144.49, 0.00> }
  text { ttf LabelFont, "entityList.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <347.90, -180.49, 30.00> }
 object { ChoicePseudostate rotate -x*90 scale 24  translate <167.50, -130.17, 0.00> }
+// Links
 // Transition:
 sphere_sweep { linear_spline, 2, 
 <88.67, -131.33, 4.00>, 3.0

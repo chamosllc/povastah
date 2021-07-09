@@ -25,6 +25,7 @@ object { State rotate -x*90 scale 24  translate <444.85, -137.99, 0.00> }
  text { ttf LabelFont, "永続", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture }
  translate <432.85, -173.99, 30.00> }
 object { FinalState rotate -x*90 scale 24  translate <586.67, -138.00, 0.00> }
+// Links
 // Transition:/ instanciate
 sphere_sweep { linear_spline, 2, 
 <117.33, -138.00, 4.00>, 3.0

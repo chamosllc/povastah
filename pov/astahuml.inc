@@ -416,7 +416,7 @@ union{
  * Use Case Diagram
  */
 #declare UseCase = object { SubmachineState }
-#declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 } 
+#declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
                       
 /*
  * Activity Diagram
@@ -465,6 +465,8 @@ union{
 	object { Class }
 	cylinder {<0, -1.15, 0>, <0, -1, 0>, 1 texture {T_Chrome_4B}}
 }
+
+#declare Interface = object { Class texture { T_Old_Glass } scale 0.8 }
 
 #declare SpiralControl = sphere{ <0,0,0>,0.05 texture{ T_Chrome_4B }}
 

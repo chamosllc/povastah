@@ -110,6 +110,7 @@ public class Diagram {
 		String objectName = this.getClass().getSimpleName() + hierarchy;
 		sceneWriter.write("#declare " + objectName + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
+		sceneWriter.write("// Links" + CR);
 		sceneWriter.flush();
 		writeLinks();
 		sceneWriter.write("}" + CR);
@@ -163,7 +164,6 @@ public class Diagram {
 		sceneWriter.write("}" + CR);
 		writeLabel(node);
 		stage.add(node.getRectangle());
-		sceneWriter.flush();
 		writeSubDiagram(hierarchy + 1, node);
 	}
 
