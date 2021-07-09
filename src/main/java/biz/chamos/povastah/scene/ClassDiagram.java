@@ -33,6 +33,15 @@ public class ClassDiagram extends Diagram {
 	}
 
 	/**
+	 * ダイアグラムのステージ、ラベル、リンク、フォントの設定
+	 * @throws IOException
+	 */
+	protected void declareTexture() throws IOException {
+		sceneWriter.write("#declare HierachyTecture = texture { T_Chrome_4A }" + CR);
+		super.declareTexture();
+	}
+	
+	/**
 	 * ダイアグラムのノード要素とリンク要素を抽出する
 	 * 
 	 * @throws InvalidUsingException
@@ -130,8 +139,10 @@ public class ClassDiagram extends Diagram {
 		INodePresentation target = link.getTarget();
 		Point2D sourcep = nodePosition(source);
 		Point2D targetp = nodePosition(target);
-		if(link.getType().equals("Generalization")) {
+		if(hierDepth.containsKey(source.getModel())) {
 			sourcez -= hierDepth.get(source.getModel()) * 32.0;
+		}
+		if(hierDepth.containsKey(target.getModel())) {
 			targetz -= hierDepth.get(target.getModel()) * 32.0;
 		}
 		sceneWriter.write("// " + link.getType() + ":" + link.getLabel() + CR);
@@ -150,7 +161,11 @@ public class ClassDiagram extends Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write("  texture { LinkTecture }" + CR);
+		if(link.getModel() instanceof IGeneralization) {
+			sceneWriter.write("  texture { HierachyTecture }" + CR);
+		}else {
+			sceneWriter.write("  texture { LinkTecture }" + CR);
+		}
 		sceneWriter.write("}" + CR);				
 	}
 	
