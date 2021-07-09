@@ -8,6 +8,14 @@ import com.change_vision.jude.api.inf.model.IState;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 
+/**
+ * StateMachineDiagram Object in POVRay Scene
+ * 	Enable Hierachy Diagram visualization
+ * 
+ * @author mashiro@chamos.biz
+ * @since 2021/07/01
+ *
+ */
 public class StateMachineDiagram extends Diagram {
 
 	public StateMachineDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {

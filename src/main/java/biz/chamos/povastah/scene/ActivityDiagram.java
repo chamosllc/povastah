@@ -8,6 +8,14 @@ import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 
+/**
+ * ActivityDiagram Object in POVRay Scene
+ *  Enable Hierachy Diagram visualization
+ * 
+ * @author mashiro@chamos.biz
+ * @since 2021/07/07
+ *
+ */
 public class ActivityDiagram extends Diagram {
 
 	public ActivityDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {

@@ -7,6 +7,14 @@ import java.io.OutputStreamWriter;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 
+/**
+ * UseCaseDiagram Object in POVRay Scene
+ *  Enable Actor, Boundary and UseCase Hierachy Visualization
+ * 
+ * @author mashiro@chamos.biz
+ * @since 2021/07/07
+ *
+ */
 public class UseCaseDiagram extends ClassDiagram {
 
 	public UseCaseDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {

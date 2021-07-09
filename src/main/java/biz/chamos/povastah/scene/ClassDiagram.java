@@ -9,6 +9,14 @@ import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IElement;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 
+/**
+ * ClassDiagram Object in POVRay Scene
+ *  Enable Class Hierachy Visualization
+ * 
+ * @author mashiro@chamos.biz
+ * @since 2021/07/07
+ *
+ */
 public class ClassDiagram extends Diagram {
 
 	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
