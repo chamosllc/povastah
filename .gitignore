@@ -1,4 +1,4 @@
 /pov/*.pov
 /pov/*.png
-/target/generated-sources
-/target/
+/target/*
+!/target/*.jar
