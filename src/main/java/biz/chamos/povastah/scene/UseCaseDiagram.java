@@ -53,7 +53,7 @@ public class UseCaseDiagram extends ClassDiagram {
 	protected void declareTexture() throws IOException {
 		sceneWriter.write("#declare PlaneTexture = texture { pigment{ crackle form <-0.8,0.8,0>*3 scale 3"
 				+ " color_map{[0.0 color rgb<1.0,0.7,0.5>][0.5 White] }} rotate -x*90 rotate z*45 scale 96 }" + CR);
-		sceneWriter.write("#declare LabelTecture = texture { T_Grnt15 }" + CR);
+		sceneWriter.write("#declare LabelTecture = texture { T_Grnt21 }" + CR);
 		sceneWriter.write("#declare LinkTecture = texture { Yellow_Glass }" + CR);
 		sceneWriter.write("#declare LabelFont = \"msgothic.ttc\"" + CR + CR);
 	}
