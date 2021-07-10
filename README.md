@@ -10,7 +10,7 @@
 
 インストール
 - "target/povastah-X.X-SNAPSHOT.jar" をastahツールのインストールディレクトリ配下のpluginsディレクトリに配置する。
-- "includes"配下のインクルードファイル"astahuml.inc", "child.inc", "wheel.inc"をPOVRayのインクルードファイルディレクトリに配置する。
+- "includes"配下のインクルードファイル"astahuml.inc", "astahTexture.inc", "child.inc", "wheel.inc"をPOVRayのインクルードファイルディレクトリに配置する。
 
 プラグインツール
 - [ツール]→[画像出力]→[POVRayスクリプト]で、出力ディレクトリを指定する。
