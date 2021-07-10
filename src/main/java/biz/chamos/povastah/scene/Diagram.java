@@ -87,19 +87,7 @@ public class Diagram {
 		sceneWriter.write("#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 				+ "#global_settings { charset utf8 }" + CR + CR);	
 		sceneWriter.write("#include \"astahuml.inc\"" + CR + CR);
-		declareTexture();
 		sceneWriter.flush();
-	}
-	
-	/**
-	 * ダイアグラムのステージ、ラベル、リンク、フォントの設定
-	 * @throws IOException
-	 */
-	protected void declareTexture() throws IOException {
-		sceneWriter.write("#declare PlaneTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }" + CR);
-		sceneWriter.write("#declare LabelTecture = texture { T_Grnt15 }" + CR);
-		sceneWriter.write("#declare LinkTecture = texture { Yellow_Glass }" + CR);
-		sceneWriter.write("#declare LabelFont = \"msgothic.ttc\"" + CR + CR);
 	}
 	
 	/**
@@ -110,8 +98,6 @@ public class Diagram {
 		String objectName = this.getClass().getSimpleName() + hierarchy;
 		sceneWriter.write("#declare " + objectName + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
-		sceneWriter.write("// Links" + CR);
-		sceneWriter.flush();
 		writeLinks();
 		sceneWriter.write("}" + CR);
 		sceneWriter.write("object { " + objectName + " ");
@@ -134,8 +120,12 @@ public class Diagram {
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
 		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
 		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
-		sceneWriter.write("plane { z, 32.0 texture { PlaneTexture }}" + CR);
+		sceneWriter.write("plane { z, 32.0 texture { " + stageTexture() + " }}" + CR);
 		sceneWriter.flush();
+	}
+
+	protected String stageTexture() {
+		return getClass().getSimpleName() + "Texture";
 	}
 
 	/**
@@ -264,8 +254,7 @@ public class Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write("  texture { LinkTecture }" + CR);
-		sceneWriter.write("}" + CR);				
+		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
 	}
 
 	/**

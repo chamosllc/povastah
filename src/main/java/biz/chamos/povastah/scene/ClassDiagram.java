@@ -31,15 +31,6 @@ public class ClassDiagram extends Diagram {
 	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
 		super(projectName, diagram, writer);
 	}
-
-	/**
-	 * ダイアグラムのステージ、ラベル、リンク、フォントの設定
-	 * @throws IOException
-	 */
-	protected void declareTexture() throws IOException {
-		sceneWriter.write("#declare HierachyTecture = texture { T_Chrome_4A }" + CR);
-		super.declareTexture();
-	}
 	
 	/**
 	 * ダイアグラムのノード要素とリンク要素を抽出する
@@ -161,12 +152,7 @@ public class ClassDiagram extends Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 		}
-		if(link.getModel() instanceof IGeneralization) {
-			sceneWriter.write("  texture { HierachyTecture }" + CR);
-		}else {
-			sceneWriter.write("  texture { LinkTecture }" + CR);
-		}
-		sceneWriter.write("}" + CR);				
+		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
 	}
 	
 	/**

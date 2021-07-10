@@ -45,15 +45,4 @@ public class ActivityDiagram extends Diagram {
 			sceneWriter.flush();
 		}
 	}
-	
-	/**
-	 * ダイアグラムのステージ、ラベル、リンク、フォントの設定
-	 * @throws IOException
-	 */
-	protected void declareTexture() throws IOException {
-		sceneWriter.write("#declare PlaneTexture = texture { pigment { checker color White color GreenYellow } rotate -x*90 rotate z*45 scale 96 }" + CR);
-		sceneWriter.write("#declare LabelTecture = texture { T_Grnt15 }" + CR);
-		sceneWriter.write("#declare LinkTecture = texture { Yellow_Glass }" + CR);
-		sceneWriter.write("#declare LabelFont = \"msgothic.ttc\"" + CR + CR);
-	}
 }
