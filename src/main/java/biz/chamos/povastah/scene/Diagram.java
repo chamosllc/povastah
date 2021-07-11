@@ -114,9 +114,13 @@ public class Diagram {
 	 */
 	protected void writeStage() throws IOException {
 		final String DEFVAR = "#declare %s = " + COORDINATE + ";" + CR;
-		double stageX = stage.getCenterX() + 64;
-		double stageY = stage.getCenterY()/2 - stage.getMaxY() + 64;
-		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY, stageY - stageX));
+		double stageX = stage.getCenterX() + 32;
+		double stageY = stage.getCenterY()/2 - stage.getMaxY() + 32;
+		double stageZ = stageY - Math.abs(stageX) - 32.0;
+		if(stageZ > -256) {
+			stageZ = -256;
+		}
+		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY, stageZ));
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
 		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
 		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
@@ -134,7 +138,7 @@ public class Diagram {
 	 */
 	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
 		for (INodePresentation node : nodes) {
-			if(node.getType() != "Frame" && node.getType() != "Note" ) { // Frame,NoteはSceneから除外
+			if(!excludeIPresentation(node)){
 				writeNode(hierarchy, node);
 			}
 		}
@@ -153,10 +157,31 @@ public class Diagram {
 		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point) + " ");
 		sceneWriter.write("}" + CR);
 		writeLabel(node);
-		stage.add(node.getRectangle());
+		stage.add(node.getRectangle().getBounds());
 		writeSubDiagram(hierarchy + 1, node);
 	}
 
+	/**
+	 * POVRayオブジェクト変換対象除外
+	 * @param presentation
+	 * @return
+	 */
+	protected Boolean excludeIPresentation(IPresentation presentation) {
+		/**
+		 * 除外対象要素
+		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
+		 *  | 画像 : "Image" | 直線 : "Line" | フリーハンド : "FreeHand" | 
+		 */	
+		final String[] common = {"Frame", "Note", "Text", "Rectangle", "Oval", "Image", "Line", "FreeHand", "Highlighter"};
+		String type = presentation.getType();
+		for(String exclude: common) {
+			if(type.equals(exclude)) {
+				return true;
+			}
+		}	 
+		return false;
+	}
+	
 	/**
 	 * ノードオブジェクトの中心座標を決める
 	 * @param node
@@ -221,13 +246,12 @@ public class Diagram {
 		double lineRadius = 3.0;
 		double offsetZ = 4;
 		for (ILinkPresentation link : links) {
-			if(!(link.getSource().getType() == "Note" || link.getTarget().getType() == "Note")) { // NoteはSceneから除外
+			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) { // NoteはSceneから除外
 				writeLink(link, lineRadius, offsetZ);
 			}
 		}
-
 	}
-
+	
 	/**
 	 * リンクオブジェクトを出力する 
 	 * @param link
@@ -257,6 +281,10 @@ public class Diagram {
 		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
 	}
 
+	protected String linkTextureName(ILinkPresentation link) {
+		return link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_');
+	}
+	
 	/**
 	 * POVRayスクリプトのtranslate句を返す
 	 * @param point

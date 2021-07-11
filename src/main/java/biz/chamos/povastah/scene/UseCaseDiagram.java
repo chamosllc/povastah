@@ -39,7 +39,7 @@ public class UseCaseDiagram extends ClassDiagram {
 					+ " finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-" + (max*2.0/30) +", -0.5, -2>" + CR 
 					+ " } scale 64 " + translate(point));
 			sceneWriter.write("}" + CR);
-			stage.add(node.getRectangle());
+			stage.add(node.getRectangle().getBounds());
 			sceneWriter.flush();		
 		}else {
 			super.writeNode(hierarchy, node);

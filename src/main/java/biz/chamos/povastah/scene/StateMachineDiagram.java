@@ -7,6 +7,7 @@ import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IState;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
+import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 /**
  * StateMachineDiagram Object in POVRay Scene
@@ -20,6 +21,27 @@ public class StateMachineDiagram extends Diagram {
 
 	public StateMachineDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
 		super(projectName, diagram, writer);
+	}
+
+	
+	/**
+	 * POVRayオブジェクト変換対象除外
+	 * @param presentation
+	 * @return
+	 */
+	protected Boolean excludeIPresentation(IPresentation presentation) {
+		/**
+		 * 除外対象要素
+		 * パーティション : "Partition" | 入場点 : "EntryPointPseudostate" | 退場点 : "ExitPointPseudostate" | サブマシン状態の擬似状態 : "StubState in SubmachineState" 
+		 */	
+		final String[] common = {"Partition", "EntryPointPseudostate", "ExitPointPseudostate", "StubState in SubmachineState"};
+		String type = presentation.getType();
+		for(String exclude: common) {
+			if(type.equals(exclude)) {
+				return true;
+			}
+		}	 
+		return super.excludeIPresentation(presentation);
 	}
 	
 	/**

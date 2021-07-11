@@ -16,6 +16,7 @@ import com.change_vision.jude.api.inf.model.IElement;
 import com.change_vision.jude.api.inf.model.IGeneralization;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
+import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 /**
  * ClassDiagram Object in POVRay Scene
@@ -112,10 +113,30 @@ public class ClassDiagram extends Diagram {
 		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
 		sceneWriter.write("}" + CR);
 		writeLabel(node);
-		stage.add(node.getRectangle());
+		stage.add(node.getRectangle().getBounds2D());
 	//	writeSubDiagram(hierarchy + 1, node);
 	}
 
+	/**
+	 * POVRayオブジェクト変換対象除外
+	 * @param presentation
+	 * @return
+	 */
+	protected Boolean excludeIPresentation(IPresentation presentation) {
+		/**
+		 * 除外対象要素
+		 * 関連クラス : "AssociationClass" | パッケージ : "Package" | サブシステム : "SubSystem" | 構造化クラス : "StructuredClass" 
+		 */	
+		final String[] common = {"AssociationClass", "Package", "SubSystem", "StructuredClass"};
+		String type = presentation.getType();
+		for(String exclude: common) {
+			if(type.equals(exclude)) {
+				return true;
+			}
+		}	 
+		return super.excludeIPresentation(presentation);
+	}
+	
 	/**
 	 * リンクオブジェクトを出力する 
 	 * @param link

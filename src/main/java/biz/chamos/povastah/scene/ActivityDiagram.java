@@ -7,6 +7,7 @@ import com.change_vision.jude.api.inf.model.IAction;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
+import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 /**
  * ActivityDiagram Object in POVRay Scene
@@ -22,6 +23,27 @@ public class ActivityDiagram extends Diagram {
 		super(projectName, diagram, writer);
 	}
 
+	
+	/**
+	 * POVRayオブジェクト変換対象除外
+	 * @param presentation
+	 * @return
+	 */
+	protected Boolean excludeIPresentation(IPresentation presentation) {
+		/**
+		 * 除外対象要素
+		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition"
+		 */	
+		final String[] common = {"InputPin", "OutputPin", "ActivityParameterNode", "Partition"};
+		String type = presentation.getType();
+		for(String exclude: common) {
+			if(type.equals(exclude)) {
+				return true;
+			}
+		}	 
+		return super.excludeIPresentation(presentation);
+	}
+	
 	/**
 	 * 振る舞い呼び出しアクション、サブマシン状態にサブダイアグラムを配置する
 	 * ※pending : とりあえず、サブダイアグラムのPOVRayオブジェクトを呼び出すテンプレートをコメント出力する
