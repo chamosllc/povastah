@@ -29,7 +29,7 @@ public class StateMachineDiagram extends Diagram {
 	 * @param presentation
 	 * @return
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(IPresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * パーティション : "Partition" | 入場点 : "EntryPointPseudostate" | 退場点 : "ExitPointPseudostate" | サブマシン状態の擬似状態 : "StubState in SubmachineState" 

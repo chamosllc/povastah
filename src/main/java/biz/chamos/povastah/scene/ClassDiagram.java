@@ -122,12 +122,12 @@ public class ClassDiagram extends Diagram {
 	 * @param presentation
 	 * @return
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(IPresentation presentation) {
 		/**
 		 * 除外対象要素
-		 * 関連クラス : "AssociationClass" | パッケージ : "Package" | サブシステム : "SubSystem" | 構造化クラス : "StructuredClass" 
+		 * 関連クラス : "AssociationClass" | パッケージ : "Package" | サブシステム : "Subsystem" | 構造化クラス : "StructuredClass" | 汎化共有表記 : "GeneralizationGroup"
 		 */	
-		final String[] common = {"AssociationClass", "Package", "SubSystem", "StructuredClass"};
+		final String[] common = {"AssociationClass", "Package", "Subsystem", "StructuredClass", "GeneralizationGroup"};
 		String type = presentation.getType();
 		for(String exclude: common) {
 			if(type.equals(exclude)) {
@@ -157,8 +157,7 @@ public class ClassDiagram extends Diagram {
 		if(hierDepth.containsKey(target.getModel())) {
 			targetz -= hierDepth.get(target.getModel()) * 32.0;
 		}
-		sceneWriter.write("// " + link.getType() + ":" + link.getLabel() + CR);
-		sceneWriter.flush();
+
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 32.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
@@ -173,7 +172,7 @@ public class ClassDiagram extends Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
+		sceneWriter.write(linkTextureName(link));		
 	}
 	
 	/**

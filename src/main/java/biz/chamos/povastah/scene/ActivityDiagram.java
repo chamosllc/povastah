@@ -29,7 +29,7 @@ public class ActivityDiagram extends Diagram {
 	 * @param presentation
 	 * @return
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(IPresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition"

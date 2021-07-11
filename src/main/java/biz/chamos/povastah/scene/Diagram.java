@@ -55,7 +55,12 @@ public class Diagram {
 			writeDiagram(0, new Point2D.Double(), 0.0);
 			writeStage();
 			sceneWriter.close();
-		} catch (IOException | InvalidUsingException e) {}
+		} catch (InvalidUsingException e) {
+			try {
+				sceneWriter.write(CR + e.getMessage());
+				sceneWriter.close();
+			} catch (IOException e1) {}
+		} catch (IOException e1) {}			
 	}
 
 	/**
@@ -67,7 +72,7 @@ public class Diagram {
 		nodes = new ArrayList<INodePresentation>();
 		links = new ArrayList<ILinkPresentation>();
 		for(IPresentation presence: diagram.getPresentations()){
-			if(presence instanceof INodePresentation) {
+			if(presence instanceof INodePresentation && !excludeIPresentation(presence)) {
 				nodes.add((INodePresentation)presence);
 			}else if(presence instanceof ILinkPresentation) {
 				links.add((ILinkPresentation)presence);
@@ -138,9 +143,8 @@ public class Diagram {
 	 */
 	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
 		for (INodePresentation node : nodes) {
-			if(!excludeIPresentation(node)){
-				writeNode(hierarchy, node);
-			}
+			writeNode(hierarchy, node);
+			sceneWriter.flush();
 		}
 	}
 
@@ -152,10 +156,10 @@ public class Diagram {
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		String SCALE = " scale 24 ";
-
-		Point2D point = nodePosition(node);
+		Point2D point = nodePosition(node);	
 		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point) + " ");
 		sceneWriter.write("}" + CR);
+
 		writeLabel(node);
 		stage.add(node.getRectangle().getBounds());
 		writeSubDiagram(hierarchy + 1, node);
@@ -166,7 +170,7 @@ public class Diagram {
 	 * @param presentation
 	 * @return
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(IPresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
@@ -211,7 +215,7 @@ public class Diagram {
 		final double scale = 16.0;
 		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
 		double labelShift = 36.0;
-		if(!node.getType().contains("Initial") && !node.getType().contains("Final") && !node.getType().contains("Choice")) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+		if(!noLabel(node.getType())) { // 名前が表示されない。デフォルトでついた名前を空にできない。
 			double labelY = 0.0;
 			int merginX = 0;
 			for(String label: node.getLabel().split("\n")) {
@@ -227,6 +231,9 @@ public class Diagram {
 		}
 	}
 
+	protected boolean noLabel(String type) {
+		return type.contains("Initial") || type.contains("Final") || type.contains("Choice");
+	}
 	/**
 	 * Node要素の特定の型に対するPOVRayオブジェクト型をマッピングする
 	 * 
@@ -248,6 +255,7 @@ public class Diagram {
 		for (ILinkPresentation link : links) {
 			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) { // NoteはSceneから除外
 				writeLink(link, lineRadius, offsetZ);
+				sceneWriter.flush();
 			}
 		}
 	}
@@ -278,11 +286,11 @@ public class Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
+		sceneWriter.write(linkTextureName(link));		
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
-		return link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_');
+		return "  texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }" + CR + "}" + CR;
 	}
 	
 	/**
