@@ -172,9 +172,9 @@ public class Diagram {
 		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
 		 *  | 画像 : "Image" | 直線 : "Line" | フリーハンド : "FreeHand" | 
 		 */	
-		final String[] common = {"Frame", "Note", "Text", "Rectangle", "Oval", "Image", "Line", "FreeHand", "Highlighter"};
+		final String[] excludes = {"Frame", "Note", "Text", "Rectangle", "Oval", "Image", "Line", "FreeHand", "Highlighter"};
 		String type = presentation.getType();
-		for(String exclude: common) {
+		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
 				return true;
 			}

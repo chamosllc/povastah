@@ -34,9 +34,9 @@ public class StateMachineDiagram extends Diagram {
 		 * 除外対象要素
 		 * パーティション : "Partition" | 入場点 : "EntryPointPseudostate" | 退場点 : "ExitPointPseudostate" | サブマシン状態の擬似状態 : "StubState in SubmachineState" 
 		 */	
-		final String[] common = {"Partition", "EntryPointPseudostate", "ExitPointPseudostate", "StubState in SubmachineState"};
+		final String[] excludes = {"Partition", "EntryPointPseudostate", "ExitPointPseudostate", "StubState in SubmachineState"};
 		String type = presentation.getType();
-		for(String exclude: common) {
+		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
 				return true;
 			}

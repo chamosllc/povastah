@@ -34,9 +34,9 @@ public class ActivityDiagram extends Diagram {
 		 * 除外対象要素
 		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition"
 		 */	
-		final String[] common = {"InputPin", "OutputPin", "ActivityParameterNode", "Partition"};
+		final String[] excludes = {"InputPin", "OutputPin", "ActivityParameterNode", "Partition"};
 		String type = presentation.getType();
-		for(String exclude: common) {
+		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
 				return true;
 			}
