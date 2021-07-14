@@ -170,11 +170,7 @@ public class Diagram {
 	 * @return
 	 * @throws IOException 
 	 */
-<<<<<<< HEAD
-	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
-=======
 	protected boolean excludeIPresentation(IPresentation presentation) {
->>>>>>> refs/heads/master
 		/**
 		 * 除外対象要素
 		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
@@ -187,7 +183,6 @@ public class Diagram {
 				if(exclude.equals("Frame")) { // フレームの矩形を保持する
 					 stage = presentation.getDiagram().getBoundRect();
 				}
-				sceneWriter.write("// exclude: " + type +CR);
 				return true;
 			}
 		}	 
@@ -330,12 +325,7 @@ public class Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
 		}
-<<<<<<< HEAD
-		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);	
-		writeLabel(link);
-=======
 		sceneWriter.write(linkTextureName(link));		
->>>>>>> refs/heads/master
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
