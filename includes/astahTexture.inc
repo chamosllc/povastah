@@ -8,12 +8,21 @@
 /*
 	Link Tecture
 */
+<<<<<<< HEAD
 #declare LinkTexture = texture { Yellow_Glass }
+=======
+#declare LinkTecture = texture { Yellow_Glass }
+>>>>>>> refs/heads/master
 #declare AssociationTexture = texture { Yellow_Glass }
 #declare ControlFlow_ObjectFlowTexture = texture { Yellow_Glass }
 #declare TransitionTexture = texture { NBoldglass }
 #declare GeneralizationTexture = texture { Orange_Glass }
 #declare RealizationTexture = texture { Vicks_Bottle_Glass }
+#declare AssociationClassTexture = texture { Yellow_Glass }
+#declare DependencyTexture = texture { Yellow_Glass }
+#declare UsageTexture = texture { Yellow_Glass }
+
+#declare TemplateBindingTexture = texture { Yellow_Glass }
 
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkLabelTecture = texture { Peel }

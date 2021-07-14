@@ -124,12 +124,20 @@ public class ClassDiagram extends Diagram {
 	 * @return
 	 * @throws IOException 
 	 */
+<<<<<<< HEAD
 	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
+=======
+	protected boolean excludeIPresentation(IPresentation presentation) {
+>>>>>>> refs/heads/master
 		/**
 		 * 除外対象要素
-		 * 関連クラス : "AssociationClass" | パッケージ : "Package" | サブシステム : "SubSystem" | 構造化クラス : "StructuredClass" 
+		 * 関連クラス : "AssociationClass" | パッケージ : "Package" | サブシステム : "Subsystem" | 構造化クラス : "StructuredClass" | 汎化共有表記 : "GeneralizationGroup"
 		 */	
+<<<<<<< HEAD
 		final String[] excludes = {"Package", "SubSystem", "StructuredClass", "GeneralizationGroup", "ContainmentGroup"};
+=======
+		final String[] common = {"AssociationClass", "Package", "Subsystem", "StructuredClass", "GeneralizationGroup"};
+>>>>>>> refs/heads/master
 		String type = presentation.getType();
 		for(String exclude: excludes) {
 			if(type.startsWith(exclude)) {
@@ -160,8 +168,11 @@ public class ClassDiagram extends Diagram {
 		if(hierDepth.containsKey(target.getModel())) {
 			targetz -= hierDepth.get(target.getModel()) * 32.0;
 		}
+<<<<<<< HEAD
 		sceneWriter.write("// CD Link " + link.getType() + ":" + link.getLabel() + CR);
 		sceneWriter.flush();
+=======
+>>>>>>> refs/heads/master
 
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 32.0;
@@ -177,8 +188,12 @@ public class ClassDiagram extends Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 		}
+<<<<<<< HEAD
 		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);	
 		writeLabel(link);
+=======
+		sceneWriter.write(linkTextureName(link));		
+>>>>>>> refs/heads/master
 	}
 	
 	/**

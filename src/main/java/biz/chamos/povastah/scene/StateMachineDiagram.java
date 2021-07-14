@@ -30,7 +30,11 @@ public class StateMachineDiagram extends Diagram {
 	 * @return
 	 * @throws IOException 
 	 */
+<<<<<<< HEAD
 	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
+=======
+	protected boolean excludeIPresentation(IPresentation presentation) {
+>>>>>>> refs/heads/master
 		/**
 		 * 除外対象要素
 		 * パーティション : "Partition" | 入場点 : "EntryPointPseudostate" | 退場点 : "ExitPointPseudostate" | サブマシン状態の擬似状態 : "StubState in SubmachineState" 
