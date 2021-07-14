@@ -42,7 +42,6 @@ public class Diagram {
 		this.projectName = projectName;
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
-		this.stage = new Rectangle2D.Double();
 	}
 	
 	/**
@@ -114,8 +113,9 @@ public class Diagram {
 	 */
 	protected void writeStage() throws IOException {
 		final String DEFVAR = "#declare %s = " + COORDINATE + ";" + CR;
-		double stageX = stage.getCenterX() + 32;
-		double stageY = stage.getCenterY()/2 - stage.getMaxY() + 32;
+		// フレームの矩形の中心をカメラ焦点にする
+		double stageX = stage.getCenterX();
+		double stageY = -stage.getCenterY();
 		double stageZ = stageY - Math.abs(stageX) - 32.0;
 		if(stageZ > -256) {
 			stageZ = -256;
@@ -157,7 +157,6 @@ public class Diagram {
 		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point) + " ");
 		sceneWriter.write("}" + CR);
 		writeLabel(node);
-		stage.add(node.getRectangle().getBounds());
 		writeSubDiagram(hierarchy + 1, node);
 	}
 
@@ -165,8 +164,9 @@ public class Diagram {
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
 	 * @return
+	 * @throws IOException 
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
 		/**
 		 * 除外対象要素
 		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
@@ -176,6 +176,10 @@ public class Diagram {
 		String type = presentation.getType();
 		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
+				if(exclude.equals("Frame")) { // フレームの矩形を保持する
+					 stage = presentation.getDiagram().getBoundRect();
+				}
+				sceneWriter.write("// exclude: " + type +CR);
 				return true;
 			}
 		}	 
@@ -189,6 +193,17 @@ public class Diagram {
 	 */
 	protected Point2D nodePosition(INodePresentation node) {
 		return new Point2D.Double(node.getRectangle().getCenterX(), node.getRectangle().getCenterY());
+	}
+
+	/**
+	 * リンクオブジェクトの中心座標を決める
+	 * @param node
+	 * @return Point2D 中心座標
+	 */
+	protected Point2D nodePosition(ILinkPresentation link) {
+		Rectangle2D bound = link.getSource().getRectangle();
+		bound.add(link.getTarget().getRectangle());
+		return new Point2D.Double(bound.getCenterX(), bound.getCenterY());
 	}
 	
 	/**
@@ -228,6 +243,31 @@ public class Diagram {
 	}
 
 	/**
+	 * Nodeのラベルオブジェクトを出力する
+	 * @param link
+	 * @throws IOException
+	 */
+	protected void writeLabel(ILinkPresentation link) throws IOException {
+		final double scale = 16.0;
+		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
+		double labelShift = 36.0;
+		if(!link.getType().contains("Initial") && !link.getType().contains("Final") && !link.getType().contains("Choice")) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+			double labelY = 0.0;
+			int merginX = 0;
+			for(String label: link.getLabel().split("\n")) {
+				Point2D point = (Point2D)nodePosition(link).clone();
+				if(merginX == 0) {
+					merginX = label.getBytes().length*3;
+				}
+				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
+				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LinkLabelTecture }"
+					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
+				labelY+= scale;
+			}
+		}
+	}
+	
+	/**
 	 * Node要素の特定の型に対するPOVRayオブジェクト型をマッピングする
 	 * 
 	 * @param node
@@ -246,12 +286,12 @@ public class Diagram {
 		double lineRadius = 3.0;
 		double offsetZ = 4;
 		for (ILinkPresentation link : links) {
-			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) { // NoteはSceneから除外
+			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) {
 				writeLink(link, lineRadius, offsetZ);
 			}
 		}
 	}
-	
+
 	/**
 	 * リンクオブジェクトを出力する 
 	 * @param link
@@ -264,7 +304,7 @@ public class Diagram {
 		INodePresentation target = link.getTarget();
 		Point2D sourcep = nodePosition(source);
 		Point2D targetp = nodePosition(target);
-		sceneWriter.write("// " + link.getType() + ":" + link.getLabel() + CR);
+		sceneWriter.write("// link " + link.getType() + ":" + link.getLabel() + CR);
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 32.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
@@ -278,7 +318,8 @@ public class Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
+		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);	
+		writeLabel(link);
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {

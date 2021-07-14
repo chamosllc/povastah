@@ -28,8 +28,9 @@ public class StateMachineDiagram extends Diagram {
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
 	 * @return
+	 * @throws IOException 
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
 		/**
 		 * 除外対象要素
 		 * パーティション : "Partition" | 入場点 : "EntryPointPseudostate" | 退場点 : "ExitPointPseudostate" | サブマシン状態の擬似状態 : "StubState in SubmachineState" 
@@ -38,6 +39,7 @@ public class StateMachineDiagram extends Diagram {
 		String type = presentation.getType();
 		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
+				sceneWriter.write("// SMD exclude: " + type +CR);
 				return true;
 			}
 		}	 

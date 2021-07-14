@@ -8,7 +8,7 @@
 /*
 	Link Tecture
 */
-//#declare LinkTecture = texture { Yellow_Glass }
+#declare LinkTexture = texture { Yellow_Glass }
 #declare AssociationTexture = texture { Yellow_Glass }
 #declare ControlFlow_ObjectFlowTexture = texture { Yellow_Glass }
 #declare TransitionTexture = texture { NBoldglass }
@@ -16,6 +16,7 @@
 #declare RealizationTexture = texture { Vicks_Bottle_Glass }
 
 #declare LabelTecture = texture { T_Grnt15 }
+#declare LinkLabelTecture = texture { Peel }
 
 #declare HierachyTecture = texture { T_Chrome_4A }
 

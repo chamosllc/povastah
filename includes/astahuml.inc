@@ -74,6 +74,7 @@
  */
  
 #declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
+#declare AssociationClass = sphere { 0, 1 texture { T_Yellow_Glass }}
 
 #declare Boundary=union {
     union { 
@@ -97,6 +98,7 @@
 }
 
 #declare Interface = object { Class texture { T_Old_Glass } scale 0.8 }
+#declare InstanceSpecification = object { Class texture { T_Wood23 }}
 
 #declare SpiralControl = sphere{ <0,0,0>,0.05 texture{ T_Chrome_4B }}
 
@@ -126,4 +128,5 @@ union{
 }
 
 #declare ObjectNode = object { Entity }
+
 

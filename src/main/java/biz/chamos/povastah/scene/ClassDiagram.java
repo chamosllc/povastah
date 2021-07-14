@@ -104,7 +104,7 @@ public class ClassDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
-		String SCALE = " scale 24 ";
+		final String SCALE = " scale 24 ";
 		Point2D point = nodePosition(node);
 		double z = 0;
 		if(hierDepth.containsKey(node.getModel())) {
@@ -112,8 +112,9 @@ public class ClassDiagram extends Diagram {
 		}
 		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
 		sceneWriter.write("}" + CR);
+		sceneWriter.flush();
 		writeLabel(node);
-		stage.add(node.getRectangle().getBounds2D());
+		sceneWriter.flush();	
 	//	writeSubDiagram(hierarchy + 1, node);
 	}
 
@@ -121,16 +122,18 @@ public class ClassDiagram extends Diagram {
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
 	 * @return
+	 * @throws IOException 
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
 		/**
 		 * 除外対象要素
 		 * 関連クラス : "AssociationClass" | パッケージ : "Package" | サブシステム : "SubSystem" | 構造化クラス : "StructuredClass" 
 		 */	
-		final String[] common = {"AssociationClass", "Package", "SubSystem", "StructuredClass"};
+		final String[] excludes = {"Package", "SubSystem", "StructuredClass", "GeneralizationGroup", "ContainmentGroup"};
 		String type = presentation.getType();
-		for(String exclude: common) {
-			if(type.equals(exclude)) {
+		for(String exclude: excludes) {
+			if(type.startsWith(exclude)) {
+				sceneWriter.write("// CD exclude: " + type +CR);
 				return true;
 			}
 		}	 
@@ -157,8 +160,9 @@ public class ClassDiagram extends Diagram {
 		if(hierDepth.containsKey(target.getModel())) {
 			targetz -= hierDepth.get(target.getModel()) * 32.0;
 		}
-		sceneWriter.write("// " + link.getType() + ":" + link.getLabel() + CR);
+		sceneWriter.write("// CD Link " + link.getType() + ":" + link.getLabel() + CR);
 		sceneWriter.flush();
+
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 32.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
@@ -173,7 +177,8 @@ public class ClassDiagram extends Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);		
+		sceneWriter.write("  texture { " + link.getType().replace('/', '_') + "Texture }" + CR + "}" + CR);	
+		writeLabel(link);
 	}
 	
 	/**

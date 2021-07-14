@@ -28,8 +28,9 @@ public class ActivityDiagram extends Diagram {
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
 	 * @return
+	 * @throws IOException 
 	 */
-	protected Boolean excludeIPresentation(IPresentation presentation) {
+	protected Boolean excludeIPresentation(IPresentation presentation) throws IOException {
 		/**
 		 * 除外対象要素
 		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition"
@@ -38,6 +39,7 @@ public class ActivityDiagram extends Diagram {
 		String type = presentation.getType();
 		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
+				sceneWriter.write("// AD exclude: " + type +CR);
 				return true;
 			}
 		}	 
