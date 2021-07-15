@@ -325,7 +325,7 @@ public class Diagram {
 			}
 			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write(linkTextureName(link));		
+		sceneWriter.write(linkTextureName(link));
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
