@@ -1,5 +1,6 @@
 package biz.chamos.povastah.scene;
 
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -55,9 +56,11 @@ public class ActivityDiagram extends Diagram {
 	 */
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
 		if(node.getType()=="CallBehaviorAction") {
-			String objectName = this.getClass().getSimpleName() + hierarchy;
 			IActivityDiagram subdiagram = ((IAction) node.getModel()).getCallingActivity().getActivityDiagram();
-			sceneWriter.write("// object { " + objectName + " scale 0.15 " + translate(node.getLocation(), 30-Math.pow(1.23, hierarchy) ) + " }" + CR);
+			Rectangle2D p = node.getRectangle();
+			Rectangle2D r = subdiagram.getBoundRect();
+			double scale = Math.min(p.getWidth()/r.getWidth(), p.getHeight()/r.getHeight());
+			sceneWriter.write("// object { " + objectName(subdiagram) + " scale " + scale + " translate <" + (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + (-27.0 - Math.pow(1.23, hierarchy) ) + "> }" + CR);
 			/*
 			 * pending
 			 */

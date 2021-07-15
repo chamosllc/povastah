@@ -146,34 +146,16 @@ public class ClassDiagram extends Diagram {
 	 * @param offsetZ
 	 * @throws IOException
 	 */
-	protected void writeLink(ILinkPresentation link, double lineRadius, double offsetZ) throws IOException {
+	protected void writeLink(ILinkPresentation link) throws IOException {
 		double sourcez = offsetZ;
 		double targetz = offsetZ;
-		INodePresentation source = link.getSource();
-		INodePresentation target = link.getTarget();
-		Point2D sourcep = nodePosition(source);
-		Point2D targetp = nodePosition(target);
-		if(hierDepth.containsKey(source.getModel())) {
-			sourcez -= hierDepth.get(source.getModel()) * 32.0;
+		if(hierDepth.containsKey(link.getSource().getModel())) {
+			sourcez -= hierDepth.get(link.getSource().getModel()) * 32.0;
 		}
-		if(hierDepth.containsKey(target.getModel())) {
-			targetz -= hierDepth.get(target.getModel()) * 32.0;
+		if(hierDepth.containsKey(link.getTarget().getModel())) {
+			targetz -= hierDepth.get(link.getTarget().getModel()) * 32.0;
 		}
-		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
-			double torusRadius = 32.0;
-			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + sourcez));
-		}else {
-			Point2D[] points = link.getPoints();
-			sceneWriter.write("sphere_sweep { linear_spline, " + points.length + ", " + CR); // 始点、終点の2点とpointsから最初と最後の2点を抜いた数の合計
-			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
-			for(int i=1; i < points.length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-				double z = (sourcez - targetz)*i/(points.length) + targetz;
-				sceneWriter.write(coordinate(points[i], z) + ", " + lineRadius + CR);
-			}
-			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
-		}
-		sceneWriter.write(linkTextureName(link));
+		writeSpline(link, sourcez, targetz);
 	}
 	
 	/**

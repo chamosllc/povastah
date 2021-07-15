@@ -24,6 +24,7 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  *
  */
 public class Diagram {
+	static protected double offsetZ = 4.0;
 	static protected String CR = System.lineSeparator(); // 改行
 	static protected String HEADER_COMMENT = "/**" + CR
 			+ " * astah* Diagram 3D Visualization\n * %s %s" + CR
@@ -99,7 +100,7 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
-		String objectName = this.getClass().getSimpleName() + hierarchy;
+		String objectName = objectName();
 		sceneWriter.write("#declare " + objectName + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
 		writeLinks();
@@ -110,6 +111,14 @@ public class Diagram {
 		}
 		sceneWriter.write(" }" + CR);
 		sceneWriter.flush();
+	}
+	
+	protected String objectName() {
+		return objectName(this.diagram);
+	}
+	
+	protected String objectName(IDiagram diagram) {
+		return this.getClass().getSimpleName() + "_" + diagram.getId().replace('-', '_');
 	}
 
 	/**
@@ -155,11 +164,10 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
-		String SCALE = " scale 24 ";
+		final double scale = 24.0;
 		Point2D point = nodePosition(node);	
-		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point) + " ");
+		sceneWriter.write("object { " + object(node) + " rotate -x*90 scale " + scale + translate(point) + " ");
 		sceneWriter.write("}" + CR);
-
 		writeLabel(node);
 		writeSubDiagram(hierarchy + 1, node);
 	}
@@ -289,11 +297,9 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void writeLinks() throws IOException {
-		double lineRadius = 3.0;
-		double offsetZ = 4;
 		for (ILinkPresentation link : links) {
 			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) {
-				writeLink(link, lineRadius, offsetZ);
+				writeLink(link);
 				sceneWriter.flush();
 			}
 		}
@@ -303,29 +309,50 @@ public class Diagram {
 	 * リンクオブジェクトを出力する 
 	 * @param link
 	 * @param lineRadius
-	 * @param offsetZ
+	 * @param offsetZ ノードの高さ
 	 * @throws IOException
 	 */
-	protected void writeLink(ILinkPresentation link, double lineRadius, double offsetZ) throws IOException {
-		INodePresentation source = link.getSource();
-		INodePresentation target = link.getTarget();
-		Point2D sourcep = nodePosition(source);
-		Point2D targetp = nodePosition(target);
+	protected void writeLink(ILinkPresentation link) throws IOException {
 		sceneWriter.write("// link " + link.getType() + ":" + link.getLabel() + CR);
+		writeSpline(link, offsetZ, offsetZ);	
+	}
+
+	/**
+	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * @param link
+	 * @param lineRadius 
+	 * @param sourcez ソースノードの高さ
+	 * @param targetz ターゲットノードの高さ
+	 * @param sourcep ソースノードの座標
+	 * @param targetp ターゲットノードの座標
+	 * @throws IOException
+	 */
+	protected void writeSpline(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+		Point2D sourcep = nodePosition(link.getSource());
+		Point2D targetp = nodePosition(link.getTarget());
+		double lineRadius = 3.0;
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
-			double torusRadius = 32.0;
+			double torusRadius = 36.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + offsetZ));
+			sceneWriter.write("torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + sourcez));
 		}else {
 			Point2D[] points = link.getPoints();
-			sceneWriter.write("sphere_sweep { linear_spline, " + points.length + ", " + CR); // 始点、終点の2点とpointsから最初と最後の2点を抜いた数の合計
-			sceneWriter.write(coordinate(sourcep, offsetZ) + ", " + lineRadius + CR); // 始点
-			for(int i=1; i < points.length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-				sceneWriter.write(coordinate(points[i], offsetZ) + ", " + lineRadius + CR);
+			if(points.length <= 2) { // 直線
+				sceneWriter.write("sphere_sweep { linear_spline, " + 2 + ", " + CR); // 始点、終点の2点
+				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
+				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
+			}else { // 曲線(折れ線も)
+				double deltaz = (sourcez - targetz)/points.length;
+				sceneWriter.write("sphere_sweep { cubic_spline, " + (points.length + 2) + ", " + CR); // 始点、終点の2点とpointsの数の合計
+				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
+				for(int i=0; i < points.length; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + CR);
+					deltaz += deltaz;
+				}
+				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 			}
-			sceneWriter.write(coordinate(targetp, offsetZ) + ", " + lineRadius + CR); // 終点
 		}
-		sceneWriter.write(linkTextureName(link));		
+		sceneWriter.write(linkTextureName(link));	
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
