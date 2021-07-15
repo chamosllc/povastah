@@ -37,7 +37,9 @@
  */
 
 #declare State = cylinder {-0.1*y, 0.1*y, 1.0 texture{Gold_Texture}}
-#declare SubmachineState = cylinder {-0.1*y, 0.1*y, 2.0 texture{New_Brass}}
+#declare SubmachineState = cylinder { -0.1*y, 0.1*y, 2.0
+     texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10>][0.6 color rgb<0.9,0.95,1>*1.2]}}
+              finish{ Metal } scale 0.5 }}
 #declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
