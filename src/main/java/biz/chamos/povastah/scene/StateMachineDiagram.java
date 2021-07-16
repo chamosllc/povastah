@@ -1,5 +1,6 @@
 package biz.chamos.povastah.scene;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -24,7 +25,27 @@ public class StateMachineDiagram extends Diagram {
 		super(projectName, diagram, writer);
 	}
 
+	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
+		try {
+			StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram(parent), sceneWriter);
+			nestDiagram.extractElement();
+			nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected IStateMachineDiagram subDiagram(INodePresentation parent) {
+		return ((IState) parent.getModel()).getSubmachine().getStateMachineDiagram();
+	}
 	
+	protected boolean hasSubDiagram(INodePresentation parent) {
+		return parent.getType()=="SubmachineState";
+	}
+
+	protected double subHeight(int hierarchy) {
+		return -7.0 - Math.pow(1.23, hierarchy);
+	}
 	/**
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
@@ -56,18 +77,13 @@ public class StateMachineDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
-		if(node.getType()=="SubmachineState") {
-			IStateMachineDiagram subdiagram = ((IState) node.getModel()).getSubmachine().getStateMachineDiagram();
+		if(hasSubDiagram(node)) {
+			IStateMachineDiagram subdiagram = subDiagram(node);
 			Rectangle2D p = node.getRectangle();
 			Rectangle2D r = subdiagram.getBoundRect();
-			double scale = Math.min(p.getWidth()/r.getWidth(), p.getHeight()/r.getHeight());
-			sceneWriter.write("// object { " + objectName(subdiagram) + " scale " + scale + " translate <" + (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + (-7.0 - Math.pow(1.23, hierarchy) ) + "> }" + CR);
-		/*
-		 * pending
-		 */
-//			StateMachineDiagram nestDiagram = new StateMachineDiagram(subdiagram, sceneFile);
-//			double hz = (hierarchy==0)?30.0:30-Math.pow(1.23, hierarchy);
-//			nestDiagram.writeDiagram(++hierarchy, node.getLocation(), hz);
+			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());
+			sceneWriter.write("object { " + objectName(subdiagram) + " scale " + scale + " translate <"
+			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
 			sceneWriter.flush();
 		}
 	}

@@ -36,10 +36,12 @@
  * State Transition Diagram
  */
 
-#declare State = cylinder {-0.1*y, 0.1*y, 1.0 texture{Gold_Texture}}
-#declare SubmachineState = cylinder { -0.1*y, 0.1*y, 2.0
-     texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10>][0.6 color rgb<0.9,0.95,1>*1.2]}}
-              finish{ Metal } scale 0.5 }}
+#declare State = cylinder {-0.1*y, 0.1*y, 1.0
+     texture{ pigment{ spiral1 1 color_map{[0.0 color rgb <0.85, 0.85, 0.10>][1.6 color rgb<0.9,0.9,0.95, 0.7>]}}
+              finish{ Metal } scale 0.2 rotate x*90 } }
+#declare SubmachineState = cylinder { -0.2*y, 0.0*y, 3
+     texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10, 0.7>][0.6 color rgb<0.9,0.95,1, 0.4>*1.2]}}
+              finish{ Metal } scale 0.15 } scale z*0.8 }
 #declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
@@ -56,10 +58,10 @@
 #declare InitialNode = object { InitialPseudostate }
 #declare ActivityFinal = object { FinalState }
 #declare Action=union{
-	box{<-0.7,-0.5,-0.5>,<0.7,0.3,0.5>}
-	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.5}
+	box{<-0.7,-0.5,-0.6>,<0.7,0.3,0.6>}
+	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
 	texture{
-		pigment {hexagon color Bronze2 color Flesh color LightSteelBlue}
+		pigment {hexagon color Bronze2 color Flesh color <0.560784, 0.560784, 0.737255, 0.6>}
 		finish{F_MetalA}
 		rotate z*90 scale 0.1
 	}
