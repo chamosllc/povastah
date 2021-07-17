@@ -50,17 +50,24 @@ public class ActivityDiagram extends Diagram {
 	}
 
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
-		try {
-			ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram(parent), sceneWriter);
-			nestDiagram.extractElement();
-			nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
-		} catch (Exception e) {
-			e.printStackTrace();
+		IActivityDiagram subDiagram;
+		if((subDiagram = subDiagram(parent)) != null) {
+			try {
+				ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram, sceneWriter);
+				nestDiagram.extractElement();
+				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	protected IActivityDiagram subDiagram(INodePresentation parent) {
-		return ((IAction) parent.getModel()).getCallingActivity().getActivityDiagram();
+		if(hasSubDiagram(parent)) {
+			return ((IAction) parent.getModel()).getCallingActivity().getActivityDiagram();
+		}else {
+			return null;
+		}
 	}
 	
 	protected boolean hasSubDiagram(INodePresentation parent) {
@@ -81,14 +88,42 @@ public class ActivityDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
-		if(node.getType()=="CallBehaviorAction") {
-			IActivityDiagram subdiagram = subDiagram(node);
+		IActivityDiagram subDiagram;
+		if((subDiagram = subDiagram(node)) != null) {
+			double expand = -16;
+			Rectangle2D r = subDiagram.getBoundRect();
 			Rectangle2D p = node.getRectangle();
-			Rectangle2D r = subdiagram.getBoundRect();
-			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight()) * 0.9;
-			sceneWriter.write("object { " + objectName(subdiagram) + " scale " + scale + " translate <"
+			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
+			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());
+			sceneWriter.write("object { " + objectName(subDiagram) + " scale " + scale + " translate <"
 			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
 			sceneWriter.flush();
+		}
+	}
+	
+	/**
+	 * Nodeのラベルオブジェクトを出力する
+	 * @param node
+	 * @throws IOException
+	 */
+	protected void writeLabel(INodePresentation node) throws IOException {
+		final double scale = 16.0;
+		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
+		double labelShift = 36.0;
+		String nodeLabel = "";
+		if(!(nodeLabel = label(node)).isEmpty()) {
+			double labelY = 0.0;
+			int merginX = 0;
+			for(String label: nodeLabel.split("\n")) {
+				Point2D point = nodePosition(node);
+				if(merginX == 0) {
+					merginX = label.getBytes().length*3;
+				}
+				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
+				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
+					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
+				labelY+= scale;
+			}
 		}
 	}
 }
