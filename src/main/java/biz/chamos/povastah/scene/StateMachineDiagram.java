@@ -26,17 +26,24 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
-		try {
-			StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram(parent), sceneWriter);
-			nestDiagram.extractElement();
-			nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
-		} catch (Exception e) {
-			e.printStackTrace();
+		IStateMachineDiagram subDiagram;
+		if((subDiagram = subDiagram(parent)) != null) {
+			try {
+				StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram, sceneWriter);
+				nestDiagram.extractElement();
+				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	protected IStateMachineDiagram subDiagram(INodePresentation parent) {
-		return ((IState) parent.getModel()).getSubmachine().getStateMachineDiagram();
+		if(hasSubDiagram(parent)) {
+			return ((IState) parent.getModel()).getSubmachine().getStateMachineDiagram();
+		}else {
+			return null;
+		}
 	}
 	
 	protected boolean hasSubDiagram(INodePresentation parent) {
@@ -77,14 +84,16 @@ public class StateMachineDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
-		if(hasSubDiagram(node)) {
-			IStateMachineDiagram subdiagram = subDiagram(node);
+		IStateMachineDiagram subDiagram;
+		if((subDiagram = subDiagram(node)) != null) {
+			double expand = 16;
+			Rectangle2D r = subDiagram.getBoundRect();
+			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
 			Rectangle2D p = node.getRectangle();
-			Rectangle2D r = subdiagram.getBoundRect();
-			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());
-			sceneWriter.write("object { " + objectName(subdiagram) + " scale " + scale + " translate <"
+			double scale = Math.min(p.getWidth()/r.getWidth(), p.getHeight()/r.getHeight());
+			sceneWriter.write("object { " + objectName(subDiagram) + " scale " + scale + " translate <"
 			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
-			sceneWriter.flush();
+			sceneWriter.flush();	
 		}
 	}
 

@@ -1,5 +1,12 @@
 # povastah
 A Tool of UML Diagram visualization by POVRay Scene Description Laungage
+- クラス図
+-- クラス継承階層を立体表現する
+-- ロバストネス図表現対応(インスタンス仕様も含む)
+- ステートマシン図
+-- サブマシン状態をそのステートマシン図によって入れ子構造表現する
+- アクティビティ図
+-- 振る舞い呼び出しアクションをそのアクティビティ図によって入れ子構造表現する
 
 ## Requirement
 実行環境

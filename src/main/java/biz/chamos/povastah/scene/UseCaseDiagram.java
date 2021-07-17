@@ -44,4 +44,30 @@ public class UseCaseDiagram extends ClassDiagram {
 			super.writeNode(hierarchy, node);
 		}
 	}
+	
+	/**
+	 * Nodeのラベルオブジェクトを出力する
+	 * @param node
+	 * @throws IOException
+	 */
+	protected void writeLabel(INodePresentation node) throws IOException {
+		final double scale = 16.0;
+		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
+		double labelShift = 36.0;
+		String nodeLabel = "";
+		if(!(nodeLabel = label(node)).isEmpty()) {
+			double labelY = 0.0;
+			int merginX = 0;
+			for(String label: nodeLabel.split("\n")) {
+				Point2D point = nodePosition(node);
+				if(merginX == 0) {
+					merginX = label.getBytes().length*3;
+				}
+				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
+				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
+					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
+				labelY+= scale;
+			}
+		}
+	}
 }

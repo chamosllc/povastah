@@ -14,9 +14,10 @@ import com.change_vision.jude.api.inf.model.IClass;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IElement;
 import com.change_vision.jude.api.inf.model.IGeneralization;
+import com.change_vision.jude.api.inf.model.IInstanceSpecification;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
-import com.change_vision.jude.api.inf.presentation.IPresentation;
+import com.change_vision.jude.api.inf.presentation.IPresentation;;
 
 /**
  * ClassDiagram Object in POVRay Scene
@@ -115,9 +116,17 @@ public class ClassDiagram extends Diagram {
 		sceneWriter.flush();
 		writeLabel(node);
 		sceneWriter.flush();	
-	//	writeSubDiagram(hierarchy + 1, node);
 	}
 
+	protected String label(IPresentation presence) {
+		String label = super.label(presence);
+		if(presence.getType().equals("InstanceSpecification")) {
+			IClass model = ((IInstanceSpecification)(presence.getModel())).getClassifier();
+			label += ":" + model.getName();
+		}
+		return label;
+	}
+	
 	/**
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
@@ -167,7 +176,7 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected String object(INodePresentation node) {
 		IElement model = node.getModel();
-		if(node.getModel() != null) {
+		if(model != null) {
 			List<String> types = Arrays.asList(model.getStereotypes());
 			if(!types.isEmpty()) {
 				 if(types.contains("actor")) {
@@ -181,7 +190,25 @@ public class ClassDiagram extends Diagram {
 				}else if(types.contains("interface")) {
 					return "Interface";
 				}
-			}			
+			}else if(node.getType().equals("InstanceSpecification")){
+				model = ((IInstanceSpecification)(node.getModel())).getClassifier();
+				types = Arrays.asList(model.getStereotypes());
+				if(!types.isEmpty()) {
+					 if(types.contains("actor")) {
+						return "Actor";
+					}else if(types.contains("boundary")) {
+						return "BoundaryInstance";
+					}else if(types.contains("control")) {
+						return "ControlInstance";
+					}else if(types.contains("entity")) {
+						return "EntityInstance";
+					}else if(types.contains("interface")) {
+						return "Interface";
+					}
+				}else {
+					return "InstanceSpecification";
+				}
+			}
 		}
 		return super.object(node);
 	}
