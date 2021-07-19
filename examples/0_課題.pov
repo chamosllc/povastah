@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
- * povastah 0_課題
- * created at 2021/07/16
+ * 給与システムSalaryMan 0_課題
+ * created at 2021/07/18
  * presented by povastah
  **/
 

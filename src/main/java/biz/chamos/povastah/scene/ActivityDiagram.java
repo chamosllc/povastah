@@ -23,9 +23,7 @@ public class ActivityDiagram extends Diagram {
 
 	
 	public ActivityDiagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
-		this.projectName = projectName;
-		this.diagram = (IActivityDiagram)diagram;
-		this.sceneWriter = sceneWriter;
+		super(projectName, diagram, sceneWriter);
 	}
 
 	

@@ -30,7 +30,7 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;;
 public class ClassDiagram extends Diagram {
 	protected Map<IClass, Integer> hierDepth = new HashMap<>();
 
-	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
+	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
 	}
 	

@@ -39,7 +39,7 @@ public class Diagram {
 	protected List<ILinkPresentation> links; // ダイアグラム中のリンク要素
 	protected Rectangle2D stage; // nodesの含まれる矩形
 	
-	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter) throws IOException {
+	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
 		this.projectName = projectName;
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
@@ -237,7 +237,7 @@ public class Diagram {
 		final double scale = 16.0;
 		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
 		double labelShift = 36.0;
-		if(!noLabel(node.getType())) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+		if(!label(node).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
 			double labelY = 0.0;
 			int merginX = 0;
 			for(String label: node.getLabel().split("\n")) {
@@ -253,9 +253,19 @@ public class Diagram {
 		}
 	}
 
-	protected boolean noLabel(String type) {
-		return type.contains("Initial") || type.contains("Final") || type.contains("Choice");
+	/**
+	 * POVRay textオブジェクトに変換する文字列を返す
+	 * @param presence
+	 * @return
+	 */
+	protected String label(IPresentation presence) {
+		String label = presence.getType();
+		if(label.contains("Initial") || label.contains("Final") || label.contains("Choice")) {
+			return "";
+		}
+		return label;
 	}
+	
 	/**
 	 * Nodeのラベルオブジェクトを出力する
 	 * @param link
