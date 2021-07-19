@@ -98,19 +98,31 @@ public class Diagram {
 	/**
 	 * ダイアグラムオブジェクトを出力する
 	 * @throws IOException
+	 * @throws InvalidUsingException 
 	 */
-	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
+	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException, InvalidUsingException {
+		declareSubDiagrams(hierarchy, dpoint, z);
 		String objectName = objectName();
 		sceneWriter.write("#declare " + objectName + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
 		writeLinks();
 		sceneWriter.write("}" + CR);
-		sceneWriter.write("object { " + objectName + " ");
-		if(hierarchy > 0) {
-			sceneWriter.write(String.format(" scale %f translate %s ", hierarchy*0.1, translate(dpoint, z)));
+		if(hierarchy == 0) {
+			sceneWriter.write("object { " + objectName + " }" +CR);
 		}
-		sceneWriter.write(" }" + CR);
 		sceneWriter.flush();
+	}
+
+	protected void declareSubDiagrams(int hierarchy, Point2D dpoint, double z) {
+		for(INodePresentation parent: nodes) {
+			declareDiagram(parent, hierarchy+1, dpoint, z);
+		}
+	}
+
+	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z) {}
+
+	protected boolean hasSubDiagram(INodePresentation parent) {
+		return false;
 	}
 	
 	protected String objectName() {
@@ -237,33 +249,21 @@ public class Diagram {
 		final double scale = 16.0;
 		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
 		double labelShift = 36.0;
-		if(!label(node).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
-			double labelY = 0.0;
-			int merginX = 0;
-			for(String label: node.getLabel().split("\n")) {
-				Point2D point = (Point2D)nodePosition(node).clone();
-				if(merginX == 0) {
-					merginX = label.getBytes().length*3;
-				}
-				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
-					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
-				labelY+= scale;
-			}
+		String label = "";
+		if(!(label = label(node)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+			Point2D point = nodePosition(node);
+			point.setLocation(node.getLocation().getX() + 48 - label.getBytes().length*4 , point.getY() + labelShift );
+			sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
+				+ CR + translate(point, 30.0) + " }" + CR);
 		}
 	}
-
-	/**
-	 * POVRay textオブジェクトに変換する文字列を返す
-	 * @param presence
-	 * @return
-	 */
+	
 	protected String label(IPresentation presence) {
-		String label = presence.getType();
-		if(label.contains("Initial") || label.contains("Final") || label.contains("Choice")) {
+		String type = presence.getType();
+		if(type.contains("Initial") || type.contains("Final") || type.contains("Choice")) {
 			return "";
 		}
-		return label;
+		return presence.getLabel();
 	}
 	
 	/**
@@ -275,10 +275,11 @@ public class Diagram {
 		final double scale = 16.0;
 		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
 		double labelShift = 36.0;
-		if(!link.getType().contains("Initial") && !link.getType().contains("Final") && !link.getType().contains("Choice")) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+		String linkLabel = "";
+		if(!(linkLabel = label(link)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
 			double labelY = 0.0;
 			int merginX = 0;
-			for(String label: link.getLabel().split("\n")) {
+			for(String label: linkLabel.split("\n")) {
 				Point2D point = (Point2D)nodePosition(link).clone();
 				if(merginX == 0) {
 					merginX = label.getBytes().length*3;
