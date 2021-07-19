@@ -38,6 +38,8 @@ public class Diagram {
 	protected List<INodePresentation> nodes; // ダイアグラム中のノード要素(Frame, Noteを除く)
 	protected List<ILinkPresentation> links; // ダイアグラム中のリンク要素
 	protected Rectangle2D stage; // nodesの含まれる矩形
+
+	protected Diagram() {}
 	
 	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter) throws IOException {
 		this.projectName = projectName;
@@ -98,21 +100,33 @@ public class Diagram {
 	/**
 	 * ダイアグラムオブジェクトを出力する
 	 * @throws IOException
+	 * @throws InvalidUsingException 
 	 */
-	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
+	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException, InvalidUsingException {
+		declareSubDiagrams(hierarchy, dpoint, z);
 		String objectName = objectName();
 		sceneWriter.write("#declare " + objectName + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
 		writeLinks();
 		sceneWriter.write("}" + CR);
-		sceneWriter.write("object { " + objectName + " ");
-		if(hierarchy > 0) {
-			sceneWriter.write(String.format(" scale %f translate %s ", hierarchy*0.1, translate(dpoint, z)));
+		if(hierarchy == 0) {
+			sceneWriter.write("object { " + objectName + " }" +CR);
 		}
-		sceneWriter.write(" }" + CR);
 		sceneWriter.flush();
 	}
+
+	protected void declareSubDiagrams(int hierarchy, Point2D dpoint, double z) {
+		for(INodePresentation parent: nodes) {
+			declareDiagram(parent, hierarchy+1, dpoint, z);
+		}
+	}
 	
+	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z) {}
+
+	protected boolean hasSubDiagram(INodePresentation parent) {
+		return false;
+	}
+
 	protected String objectName() {
 		return objectName(this.diagram);
 	}
@@ -165,11 +179,13 @@ public class Diagram {
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		final double scale = 24.0;
-		Point2D point = nodePosition(node);	
+		Point2D point = nodePosition(node);
 		sceneWriter.write("object { " + object(node) + " rotate -x*90 scale " + scale + translate(point) + " ");
 		sceneWriter.write("}" + CR);
 		writeLabel(node);
-		writeSubDiagram(hierarchy + 1, node);
+		if(hasSubDiagram(node)) {
+			writeSubDiagram(hierarchy + 1, node);
+		}
 	}
 
 	/**
@@ -237,25 +253,23 @@ public class Diagram {
 		final double scale = 16.0;
 		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
 		double labelShift = 36.0;
-		if(!noLabel(node.getType())) { // 名前が表示されない。デフォルトでついた名前を空にできない。
-			double labelY = 0.0;
-			int merginX = 0;
-			for(String label: node.getLabel().split("\n")) {
-				Point2D point = (Point2D)nodePosition(node).clone();
-				if(merginX == 0) {
-					merginX = label.getBytes().length*3;
-				}
-				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
-					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
-				labelY+= scale;
-			}
+		String label = "";
+		if(!(label = label(node)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+			Point2D point = nodePosition(node);
+			point.setLocation(node.getLocation().getX() + 48 - label.getBytes().length*4 , point.getY() + labelShift );
+			sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
+				+ CR + translate(point, 30.0) + " }" + CR);
 		}
 	}
-
-	protected boolean noLabel(String type) {
-		return type.contains("Initial") || type.contains("Final") || type.contains("Choice");
+	
+	protected String label(IPresentation presence) {
+		String type = presence.getType();
+		if(type.contains("Initial") || type.contains("Final") || type.contains("Choice")) {
+			return "";
+		}
+		return presence.getLabel();
 	}
+
 	/**
 	 * Nodeのラベルオブジェクトを出力する
 	 * @param link
@@ -300,7 +314,6 @@ public class Diagram {
 		for (ILinkPresentation link : links) {
 			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) {
 				writeLink(link);
-				sceneWriter.flush();
 			}
 		}
 	}
@@ -352,11 +365,11 @@ public class Diagram {
 				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
 			}
 		}
-		sceneWriter.write(linkTextureName(link));	
+		sceneWriter.write(linkTextureName(link));
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
-		return "  texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }" + CR + "}" + CR;
+		return "  texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }}" + CR + CR;
 	}
 	
 	/**
