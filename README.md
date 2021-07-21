@@ -10,7 +10,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 ## Demo
 
-<img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/0_%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9_0.png" width="360">
+
 
 
 ## Requirement
