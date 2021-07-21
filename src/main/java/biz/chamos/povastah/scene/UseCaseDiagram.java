@@ -36,7 +36,7 @@ public class UseCaseDiagram extends ClassDiagram {
 				sceneWriter.write("  text { ttf LabelFont \"" + labels[i] + "\", 1, 0 translate <-1, -" + i + ", 0> }" + CR);
 			}
 			sceneWriter.write(" scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}" +CR
-					+ " finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-" + (max*2.0/30) +", -0.5, -2>" + CR 
+					+ " finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-" + (max/32.0) +", -0.5, -2>" + CR 
 					+ " } scale 64 " + translate(point));
 			sceneWriter.write("}" + CR);
 			sceneWriter.flush();		
@@ -63,7 +63,7 @@ public class UseCaseDiagram extends ClassDiagram {
 				if(merginX == 0) {
 					merginX = label.getBytes().length*3;
 				}
-				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
+				point.setLocation(point.getX() - merginX*0.8, point.getY() + labelY + labelShift );
 				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
 					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
 				labelY+= scale;

@@ -88,7 +88,7 @@ public class ActivityDiagram extends Diagram {
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
-			double expand = -16;
+			double expand = 0.0;
 			Rectangle2D r = subDiagram.getBoundRect();
 			Rectangle2D p = node.getRectangle();
 			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);

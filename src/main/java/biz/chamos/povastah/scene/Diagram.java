@@ -142,16 +142,17 @@ public class Diagram {
 		// フレームの矩形の中心をカメラ焦点にする
 		double stageX = stage.getCenterX();
 		double stageY = -stage.getCenterY();
-		double stageZ = stageY - Math.abs(stageX) - 32.0;
-		if(stageZ > -256) {
-			stageZ = -256;
-		}
+		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
 		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY, stageZ));
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
 		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
 		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
 		sceneWriter.write("plane { z, 32.0 texture { " + stageTexture() + " }}" + CR);
 		sceneWriter.flush();
+	}
+
+	protected double cameraDistance(double z) {
+		return (z > -256)?-256:z;
 	}
 
 	protected String stageTexture() {

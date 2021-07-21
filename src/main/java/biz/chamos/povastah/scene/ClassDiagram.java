@@ -3,13 +3,13 @@ package biz.chamos.povastah.scene;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
+import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IClass;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IElement;
@@ -46,58 +46,93 @@ public class ClassDiagram extends Diagram {
 	}
 
 	/**
-	 * find class hierachy
+	 * caliculate class hierachy depth
 	 * @throws IOException 
 	 */
 	protected void classHierachies() {
-		List<IClass> iclasses = new ArrayList<>();
-		List<IGeneralization> hierarchies = new ArrayList<>();
 		for(INodePresentation node: nodes) {
-			if(node.getType().equals("Class")) {
-				for(IGeneralization hier: ((IClass)node.getModel()).getSpecializations()){
-					if(!hierarchies.contains(hier)) {
-						hierarchies.add(hier);
-					}
-				}
-				
-			}
-			if(node.getModel() instanceof IClass &&  !iclasses.contains(node.getModel())) { 
-				iclasses.add((IClass)node.getModel());
-			}
-		}
-		for(IGeneralization hier: hierarchies) {
-			int depth = 0;
-			if(iclasses.contains(hier.getSubType()) && iclasses.contains(hier.getSuperType())){
-				if(hierDepth.containsKey(hier.getSubType())) {
-					depth = hierDepth.get(hier.getSubType());	
-					if(!hierDepth.containsKey(hier.getSuperType())) {
-						hierDepth.put(hier.getSuperType(), depth+1);
-					}
-				}else {
-					hierDepth.put(hier.getSubType(), 0);
-					if(hierDepth.containsKey(hier.getSuperType())) {
-						IClass parent = hier.getSuperType();
-						if(hierDepth.get(parent) == 0) {
-							hierDepth.replace(parent, 1);
-							shiftDepth(hierarchies, parent);
+			if(node.getModel() instanceof IClass) { // IClassを対象とする
+				IClass target = (IClass) node.getModel();
+				// スーパークラス群があれば階層の深さを決める
+				IGeneralization[] generals = target.getGeneralizations();
+				if(generals.length > 0) {
+					int depth = 1;
+					// サブクラス群があれば自分の階層の深さを決める
+					IGeneralization[] specials = target.getSpecializations();
+					if(specials.length > 0) {
+						for(IGeneralization special: specials) {
+							IClass subClass = (IClass)special.getSubType();
+							if(hierDepth.containsKey(subClass)) {
+								depth = Math.max(depth, hierDepth.get(subClass) + 1);
+							}
 						}
-					}else {
-						hierDepth.put(hier.getSuperType(), depth+1);
+						if(hierDepth.containsKey(target)) {
+							hierDepth.replace(target, depth);
+						}else {
+							hierDepth.put(target, depth);
+						}
+					}
+					depth++;
+					for(IGeneralization general: generals) {
+						IClass superClass = (IClass) general.getSuperType();
+						if(hierDepth.containsKey(superClass)) {
+							if(depth >  hierDepth.get(superClass)) {
+								hierDepth.replace(superClass, depth);
+								spreadRoot(superClass.getGeneralizations(), depth + 1);
+							}
+						}else {
+							hierDepth.put(superClass, depth);
+						}
 					}
 				}
 			}
 		}
 	}
 	
-	protected void shiftDepth(List<IGeneralization> hierarchies, IClass child) {
-		for(IGeneralization hier: hierarchies) {
-			if(hier.getSubType() == child) {
-				IClass parent = hier.getSuperType();
-				hierDepth.replace(parent, hierDepth.get(parent) + 1);
-				shiftDepth(hierarchies, parent);
+	/*
+	 * クラス階層の深さの変更をルートクラスまで波及させる
+	 */
+	protected void spreadRoot(IGeneralization[] generals, int depth) {
+		for(IGeneralization general: generals) {
+			IClass superClass = (IClass) general.getSuperType();
+			if(hierDepth.containsKey(superClass)) {
+				if(depth > hierDepth.get(superClass)) {
+					hierDepth.replace(superClass, depth);
+					spreadRoot(superClass.getGeneralizations(), depth + 1);
+				}
 			}
 		}
 	}
+
+	/**
+	 * 階層の深さに応じてカメラを離す
+	 */
+	protected double cameraDistance(double z) {
+		if(hierDepth.isEmpty()) {
+			return super.cameraDistance(z);
+		}else {
+			int distance = 0;
+			for(Integer depth: hierDepth.values()) {
+				distance = Math.max(distance, depth);
+			}
+			return super.cameraDistance(z - (distance + 1) * 32.0);
+		}
+	}
+	
+	/**
+	 * スクリプトのヘッダ部を出力する
+	 * @throws IOException
+	 * @throws ProjectNotFoundException 
+	 */
+	protected void writeHeader() throws IOException {
+		super.writeHeader();
+		if(!hierDepth.isEmpty()) {
+			sceneWriter.write("// hierachy depth: " + hierDepth + CR);
+			sceneWriter.write("// #declare Depth = -32.0;" + CR + CR);
+			sceneWriter.flush();
+		}
+	}
+	
 	/**
 	 * ノードオブジェクトを出力する
 	 * @param hierarchy
@@ -106,10 +141,11 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		final String SCALE = " scale 24 ";
+		final double depth = -32.0;
 		Point2D point = nodePosition(node);
 		double z = 0;
 		if(hierDepth.containsKey(node.getModel())) {
-			z = hierDepth.get(node.getModel()) * -32.0;
+			z = hierDepth.get(node.getModel()) * depth;
 		}
 		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
 		sceneWriter.write("}" + CR);
