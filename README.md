@@ -10,11 +10,62 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 ## Demo
 
-- クラス図
-- <img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9.png" width="360">
-　- ロバストネス図
-  - - <img src="https://github.com/chamosllc/povastah/blob/master/examples/%E3%83%AD%E3%83%90%E3%82%B9%E3%83%88%E3%83%8D%E3%82%B9%E5%9B%B3.png" width="360">
+##### クラス図
+<table>
+<thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
+<tbody>
+<tr><td>クラスとインタフェース</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9.jpg" width="96"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9.png" width="240"></td></tr>
 
+<tr><td>ロバストネス図</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%83%AD%E3%83%90%E3%82%B9%E3%83%88%E3%83%8D%E3%82%B9%E5%9B%B3.jpg" width="240"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%83%AD%E3%83%90%E3%82%B9%E3%83%88%E3%83%8D%E3%82%B9%E5%9B%B3.png" width="320"></td></tr>
+
+<tr><td>クラス継承階層</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E7%B6%99%E6%89%BF%E9%9A%8E%E5%B1%A4.jpg" width="240"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%82%AF%E3%83%A9%E3%82%B9%E7%B6%99%E6%89%BF%E9%9A%8E%E5%B1%A4.png" width="320"></td></tr>
+</tbody>
+</table>
+
+##### ユースケース図
+<table>
+<thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
+<tbody>
+<tr><td>ユースケース</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9%E5%9B%B3/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9.png" width="320"></td></tr>
+</tbody>
+</table>
+
+##### アクティビティ図
+<table>
+<thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
+<tbody>
+<tr><td>ライフサイクル</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB.png" width="320"></td></tr>
+<tr><td>ムーブメント</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A0%E3%83%BC%E3%83%96%E3%83%A1%E3%83%B3%E3%83%88.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%83%A0%E3%83%BC%E3%83%96%E3%83%A1%E3%83%B3%E3%83%88.png" width="320"></td></tr>
+<tr><td>ライフ<br>「ムーブメント」呼び出し</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A9%E3%82%A4%E3%83%95.jpg" width="120"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%83%A9%E3%82%A4%E3%83%95.png" width="320"></td></tr>
+</tbody>
+</table>
+
+##### ステートマシン図
+<table>
+<thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
+<tbody>
+<tr><td>エンティティ画面</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3%E7%94%BB%E9%9D%A2.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3%E7%94%BB%E9%9D%A2.png" width="320"></td></tr>
+<tr><td>トップページ<br>(「エンティティ画面」呼び出し)</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%83%88%E3%83%83%E3%83%97%E3%83%9A%E3%83%BC%E3%82%B8.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/%E3%83%88%E3%83%83%E3%83%97%E3%83%9A%E3%83%BC%E3%82%B8.png" width="320"></td></tr>
+</tbody>
+</table>
 
 ## Requirement
 実行環境
