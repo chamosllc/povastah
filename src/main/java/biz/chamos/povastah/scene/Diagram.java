@@ -30,6 +30,8 @@ public class Diagram {
 			+ " * astah* Diagram 3D Visualization\n * %s %s" + CR
 			+ " * created at %s" + CR
 			+ " * presented by povastah" + CR + " **/" + CR + CR;
+	static protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
+			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"astahuml.inc\"" + CR + CR;
 	static final String COORDINATE = "<%.2f, %.2f, %.2f>"; // 座標系フォーマット
 
 	protected String projectName;
@@ -39,150 +41,54 @@ public class Diagram {
 	protected List<ILinkPresentation> links; // ダイアグラム中のリンク要素
 	protected Rectangle2D stage; // nodesの含まれる矩形
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @param diagram
+	 * @param sceneWriter
+	 * @throws InvalidUsingException // ダイアグラムに要素がない
+	 */
 	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
 		this.projectName = projectName;
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
 	}
-	
+
 	/**
 	 * astahダイアグラムの3DCG表現を出力する
 	 */
 	public void produce(){
-		try {
-			extractElement();
-			writeHeader();
-			writeDiagram(0, new Point2D.Double(), 0.0);
-			writeStage();
-			sceneWriter.close();
-		} catch (InvalidUsingException e) {
+		if(existsTragetNodes()) {
 			try {
-				sceneWriter.write(CR + e.getMessage());
-				sceneWriter.close();
-			} catch (IOException e1) {}
-		} catch (IOException e1) {}			
+				writeHeader();
+				writeDiagram(0, new Point2D.Double(), 0.0);
+				writeStage();
+			}catch(IOException | InvalidUsingException e) {}
+		}
 	}
-
+	
 	/**
-	 * ダイアグラムのノード要素とリンク要素を抽出する
+	 * 対象とするダイアグラムのノード要素とリンク要素を抽出し、対象があるかどうかを返す
+	 * @return 対象があればtrue、なければfalse
+	 * @throws InvalidUsingException 
 	 * 
-	 * @throws InvalidUsingException
 	 */
-	protected void extractElement() throws InvalidUsingException {
+	protected boolean existsTragetNodes(){
 		nodes = new ArrayList<INodePresentation>();
 		links = new ArrayList<ILinkPresentation>();
-		for(IPresentation presence: diagram.getPresentations()){
-			if(presence instanceof INodePresentation && !excludeIPresentation(presence)) {
-				nodes.add((INodePresentation)presence);
-			}else if(presence instanceof ILinkPresentation) {
-				links.add((ILinkPresentation)presence);
+		try {
+			for(IPresentation presence: diagram.getPresentations()){ // 除外ノードでないノードを集める
+				if(presence instanceof INodePresentation && !excludeIPresentation(presence)) {
+					nodes.add((INodePresentation)presence);
+				}else if(presence instanceof ILinkPresentation) { // 除外ノードに繫がっていないリンクを集める
+					ILinkPresentation link = (ILinkPresentation)presence;
+					if(!excludeIPresentation(link.getSource()) && !excludeIPresentation(link.getTarget())){
+						links.add(link);
+					}
+				}
 			}
-		}
-	}
-	
-	/**
-	 * スクリプトのヘッダ部を出力する
-	 * @throws IOException
-	 * @throws ProjectNotFoundException 
-	 */
-	protected void writeHeader() throws IOException {
-		Calendar cl = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		sceneWriter.write(String.format(HEADER_COMMENT, projectName, diagram.getName(), sdf.format(cl.getTime())));
-		sceneWriter.write("#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
-				+ "#global_settings { charset utf8 }" + CR + CR);	
-		sceneWriter.write("#include \"astahuml.inc\"" + CR + CR);
-		sceneWriter.flush();
-	}
-	
-	/**
-	 * ダイアグラムオブジェクトを出力する
-	 * @throws IOException
-	 * @throws InvalidUsingException 
-	 */
-	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException, InvalidUsingException {
-		declareSubDiagrams(hierarchy, dpoint, z);
-		String objectName = objectName();
-		sceneWriter.write("#declare " + objectName + " = union {" + CR);
-		writeNodes(hierarchy, dpoint, z);
-		writeLinks();
-		sceneWriter.write("}" + CR);
-		if(hierarchy == 0) {
-			sceneWriter.write("object { " + objectName + " }" +CR);
-		}
-		sceneWriter.flush();
-	}
-
-	protected void declareSubDiagrams(int hierarchy, Point2D dpoint, double z) {
-		for(INodePresentation parent: nodes) {
-			declareDiagram(parent, hierarchy+1, dpoint, z);
-		}
-	}
-
-	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z) {}
-
-	protected boolean hasSubDiagram(INodePresentation parent) {
-		return false;
-	}
-	
-	protected String objectName() {
-		return objectName(this.diagram);
-	}
-	
-	protected String objectName(IDiagram diagram) {
-		return this.getClass().getSimpleName() + "_" + diagram.getId().replace('-', '_');
-	}
-
-	/**
-	 * カメラ、光源、平面等のベースシーン環境を出力する
-	 * @throws IOException
-	 */
-	protected void writeStage() throws IOException {
-		final String DEFVAR = "#declare %s = " + COORDINATE + ";" + CR;
-		// フレームの矩形の中心をカメラ焦点にする
-		double stageX = stage.getCenterX();
-		double stageY = -stage.getCenterY();
-		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
-		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY, stageZ));
-		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
-		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
-		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
-		sceneWriter.write("plane { z, 32.0 texture { " + stageTexture() + " }}" + CR);
-		sceneWriter.flush();
-	}
-
-	protected double cameraDistance(double z) {
-		return (z > -256)?-256:z;
-	}
-
-	protected String stageTexture() {
-		return getClass().getSimpleName() + "Texture";
-	}
-
-	/**
-	 * Node要素をマッピングする
-	 * @throws IOException
-	 */
-	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
-		for (INodePresentation node : nodes) {
-			writeNode(hierarchy, node);
-			sceneWriter.flush();
-		}
-	}
-
-	/**
-	 * ノードオブジェクトを出力する
-	 * @param hierarchy
-	 * @param node
-	 * @throws IOException
-	 */
-	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
-		final double scale = 24.0;
-		Point2D point = nodePosition(node);	
-		sceneWriter.write("object { " + object(node) + " rotate -x*90 scale " + scale + translate(point) + " ");
-		sceneWriter.write("}" + CR);
-		writeLabel(node);
-		writeSubDiagram(hierarchy + 1, node);
+		} catch (InvalidUsingException e) {} // astah* communityでエラーになるとのこと
+		return !nodes.isEmpty();
 	}
 
 	/**
@@ -209,9 +115,156 @@ public class Diagram {
 		}	 
 		return false;
 	}
+
+	/**
+	 * スクリプトのヘッダ部を出力する
+	 * @throws IOException
+	 * @throws ProjectNotFoundException 
+	 */
+	protected void writeHeader() throws IOException {
+		Calendar cl = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		sceneWriter.write(String.format(HEADER_COMMENT, projectName, diagram.getName(), sdf.format(cl.getTime())));
+		sceneWriter.write(GLOBAL_SETTINGS);
+		sceneWriter.flush();
+	}
 	
 	/**
-	 * ノードオブジェクトの中心座標を決める
+	 * ダイアグラムオブジェクトを出力する
+	 * @throws IOException
+	 * @throws InvalidUsingException 
+	 */
+	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException, InvalidUsingException {
+		declareSubDiagrams(hierarchy, dpoint, z);
+		String name = povrayName();
+		sceneWriter.write("#declare " + name + " = union {" + CR);
+		writeNodes(hierarchy, dpoint, z);
+		writeLinks();
+		sceneWriter.write("}" + CR);
+		if(hierarchy == 0) { // サブダイアグラムは宣言のみ
+			sceneWriter.write("object { " + name + " }" +CR);
+		}
+		sceneWriter.flush();
+	}
+
+	/**
+	 * サブダイアグラムを持つノードすべてのサブダイアグラムを宣言する
+	 * 
+	 * @param hierarchy
+	 * @param dpoint
+	 * @param z
+	 */
+	protected void declareSubDiagrams(int hierarchy, Point2D dpoint, double z) {
+		for(INodePresentation parent: nodes) {
+			declareDiagram(parent, hierarchy+1, dpoint, z);
+		}
+	}
+
+	/**
+	 * 指定されたノードのサブダイアグラムを宣言する
+	 * 
+	 * @param parent
+	 * @param hierarchy
+	 * @param dpoint
+	 * @param z
+	 */
+	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z) {}
+
+	/**
+	 * ノードがサブダイアグラムを持つ
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	protected boolean hasSubDiagram(INodePresentation parent) {
+		return false;
+	}
+	
+	/**
+	 * ダイアグラムの宣言名を返す
+	 * 
+	 * @return 
+	 */
+	protected String povrayName() {
+		return povrayName(this.diagram);
+	}
+	
+	/**
+	 * 指定 ダイアグラムの宣言名を返す
+	 * ※ユニークな名前が必要なので、IPresentaion.getID()を利用しているが、ハイフォンが入っているためアンダースコアへ置換している
+	 * 
+	 * @param diagram
+	 * @return
+	 */
+	protected String povrayName(IDiagram diagram) {
+		return this.getClass().getSimpleName() + "_" + diagram.getId().replace('-', '_');
+	}
+
+	/**
+	 * カメラ、光源、平面等のベースシーン環境を出力する
+	 * @throws IOException
+	 */
+	protected void writeStage() throws IOException {
+		final String DEFVAR = "#declare %s = " + COORDINATE + ";" + CR;
+		// フレームの矩形の中心をカメラ焦点にする
+		double stageX = stage.getCenterX();
+		double stageY = -stage.getCenterY();
+		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
+		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY, stageZ));
+		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
+		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
+		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
+		sceneWriter.write("plane { z, 32.0 texture { " + stageTexture() + " }}" + CR);
+		sceneWriter.flush();
+	}
+
+	/**
+	 * 焦点からのカメラの距離を算出する
+	 * 
+	 * @param z
+	 * @return
+	 */
+	protected double cameraDistance(double z) {
+		return (z > -256)?-256:z;
+	}
+
+	/**
+	 * ダイアグラムのステージ(POVRayオブジェクトplaneのテクスチャ宣言名を返す
+	 * 
+	 * @return
+	 */
+	protected String stageTexture() {
+		return getClass().getSimpleName() + "Texture";
+	}
+
+	/**
+	 * 対象ノードすべてをPOVRayオブジェクトへマッピングする
+	 * @throws IOException
+	 */
+	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
+		for (INodePresentation node : nodes) {
+			writeNode(hierarchy, node);
+			sceneWriter.flush();
+		}
+	}
+
+	/**
+	 * 指定ノードをPOVRayオブジェクトとして出力する
+	 * 
+	 * @param hierarchy
+	 * @param node
+	 * @throws IOException
+	 */
+	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
+		final double scale = 24.0;
+		Point2D point = nodePosition(node);	
+		sceneWriter.write("object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point) + " }" + CR);
+		writeLabel(node);
+		writeSubDiagram(hierarchy + 1, node);
+	}
+
+	/**
+	 * ノードオブジェクトの中心座標を取得する
 	 * @param node
 	 * @return Point2D 中心座標
 	 */
@@ -220,7 +273,7 @@ public class Diagram {
 	}
 
 	/**
-	 * リンクオブジェクトの中心座標を決める
+	 * リンクオブジェクトの中心座標を取得する
 	 * @param node
 	 * @return Point2D 中心座標
 	 */
@@ -231,9 +284,17 @@ public class Diagram {
 	}
 	
 	/**
+	 * 指定ノードのPOVRayオブジェクト型をマッピングする
+	 * ※IPresentation.getType()を宣言名とするノード
+	 * @param node
+	 * @return
+	 */
+	protected String povrayObjectType(INodePresentation node) {
+		return node.getType();
+	}
+
+	/**
 	 * 振る舞い呼び出しアクション、サブマシン状態にサブダイアグラムを配置する
-	 * ※pending : とりあえず、サブダイアグラムのPOVRayオブジェクトを呼び出すテンプレートをコメント出力する
-	 * 				エディタで編集する
 	 * 
 	 * @param hierarchy
 	 * @param node
@@ -242,7 +303,7 @@ public class Diagram {
 	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {	}
 
 	/**
-	 * Nodeのラベルオブジェクトを出力する
+	 * ノードのラベルを出力する
 	 * @param node
 	 * @throws IOException
 	 */
@@ -268,7 +329,7 @@ public class Diagram {
 	}
 	
 	/**
-	 * Nodeのラベルオブジェクトを出力する
+	 * ノードのラベルを出力する
 	 * @param link
 	 * @throws IOException
 	 */
@@ -294,26 +355,15 @@ public class Diagram {
 	}
 	
 	/**
-	 * Node要素の特定の型に対するPOVRayオブジェクト型をマッピングする
+	 * リンクをPOVRayで記述する
 	 * 
-	 * @param node
-	 * @return
-	 */
-	protected String object(INodePresentation node) {
-		return node.getType();
-	}
-
-	/**
-	 * Link要素をマッピングする
 	 * astahダイアグラムのLinkのNodeへの端点は使わない 
 	 * @throws IOException
 	 */
 	protected void writeLinks() throws IOException {
 		for (ILinkPresentation link : links) {
-			if(!(excludeIPresentation(link.getSource()) || excludeIPresentation(link.getTarget()))) {
 				writeLink(link);
-				sceneWriter.flush();
-			}
+//				sceneWriter.flush();
 		}
 	}
 

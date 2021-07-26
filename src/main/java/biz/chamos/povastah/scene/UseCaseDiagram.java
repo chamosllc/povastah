@@ -17,7 +17,7 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  */
 public class UseCaseDiagram extends ClassDiagram {
 
-	public UseCaseDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
+	public UseCaseDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
 	}
 	

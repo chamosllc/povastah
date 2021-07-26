@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IClass;
 import com.change_vision.jude.api.inf.model.IDiagram;
@@ -33,20 +32,18 @@ public class ClassDiagram extends Diagram {
 	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
 	}
+
+	protected boolean existsTragetNodes(){
+		boolean exists = super.existsTragetNodes();
+		if(exists) {
+			classHierachies();
+		}
+		return exists;
+	}
 	
 	/**
-	 * ダイアグラムのノード要素とリンク要素を抽出する
+	 * クラス継承関係にあるのクラス毎の深さを決める
 	 * 
-	 * @throws InvalidUsingException
-	 * @throws  
-	 */
-	protected void extractElement() throws InvalidUsingException {
-		super.extractElement();
-		classHierachies();
-	}
-
-	/**
-	 * caliculate class hierachy depth
 	 * @throws IOException 
 	 */
 	protected void classHierachies() {
@@ -147,7 +144,7 @@ public class ClassDiagram extends Diagram {
 		if(hierDepth.containsKey(node.getModel())) {
 			z = hierDepth.get(node.getModel()) * depth;
 		}
-		sceneWriter.write("object { " + object(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
+		sceneWriter.write("object { " + povrayObjectType(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
 		sceneWriter.write("}" + CR);
 		sceneWriter.flush();
 		writeLabel(node);
@@ -210,7 +207,7 @@ public class ClassDiagram extends Diagram {
 	 * @param node
 	 * @return
 	 */
-	protected String object(INodePresentation node) {
+	protected String povrayObjectType(INodePresentation node) {
 		IElement model = node.getModel();
 		if(model != null) {
 			List<String> types = Arrays.asList(model.getStereotypes());
@@ -246,6 +243,6 @@ public class ClassDiagram extends Diagram {
 				}
 			}
 		}
-		return super.object(node);
+		return super.povrayObjectType(node);
 	}
 }

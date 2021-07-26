@@ -52,7 +52,7 @@ public class ActivityDiagram extends Diagram {
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
 				ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram, sceneWriter);
-				nestDiagram.extractElement();
+				nestDiagram.existsTragetNodes();
 				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -93,7 +93,7 @@ public class ActivityDiagram extends Diagram {
 			Rectangle2D p = node.getRectangle();
 			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
 			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());
-			sceneWriter.write("object { " + objectName(subDiagram) + " scale " + scale + " translate <"
+			sceneWriter.write("object { " + povrayName(subDiagram) + " scale " + scale + " translate <"
 			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
 			sceneWriter.flush();
 		}

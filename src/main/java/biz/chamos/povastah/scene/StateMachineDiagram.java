@@ -21,7 +21,7 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  */
 public class StateMachineDiagram extends Diagram {
 
-	public StateMachineDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer) throws IOException {
+	public StateMachineDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
 	}
 
@@ -30,7 +30,7 @@ public class StateMachineDiagram extends Diagram {
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
 				StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram, sceneWriter);
-				nestDiagram.extractElement();
+				nestDiagram.existsTragetNodes();
 				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -91,7 +91,7 @@ public class StateMachineDiagram extends Diagram {
 			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
 			Rectangle2D p = node.getRectangle();
 			double scale = Math.min(p.getWidth()/r.getWidth(), p.getHeight()/r.getHeight());
-			sceneWriter.write("object { " + objectName(subDiagram) + " scale " + scale + " translate <"
+			sceneWriter.write("object { " + povrayName(subDiagram) + " scale " + scale + " translate <"
 			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
 			sceneWriter.flush();	
 		}

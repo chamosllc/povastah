@@ -45,30 +45,39 @@ public class SceneProducer {
 	 * @throws ProjectNotFoundException
 	 */
 	public void produceAll() throws ProjectNotFoundException, IOException {
-		String projectName =accessor.getProject().getName();
+		String projectName = accessor.getProject().getName();
+
 		/*
 		 * プロジェクト中のすべてのユースケース図を出力する
 		 */
 		for(INamedElement diagram: accessor.findElements(new IUseCaseDiagramPicker())){
-			(new UseCaseDiagram(projectName, (IUseCaseDiagram)diagram, createWriter(diagram, targetDirectory))).produce();
+			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
+				(new UseCaseDiagram(projectName, (IUseCaseDiagram)diagram, writer)).produce();
+			}
 		}
 		/**
 		 * プロジェクト中のすべてのクラス図を出力する
 		 */
 		for(INamedElement diagram: accessor.findElements(new IClassDiagramPicker())){
-			(new ClassDiagram(projectName, (IClassDiagram)diagram, createWriter(diagram, targetDirectory))).produce();
+			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
+				(new ClassDiagram(projectName, (IClassDiagram)diagram, writer)).produce();
+			}
 		}
 		/*
 		 * プロジェクト中のすべてのステートマシン図を出力する
 		 */
 		for(INamedElement diagram: accessor.findElements(new IStateMachineDiagramPicker())){
-			(new StateMachineDiagram(projectName, (IStateMachineDiagram)diagram, createWriter(diagram, targetDirectory))).produce();
+			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
+				(new StateMachineDiagram(projectName, (IStateMachineDiagram)diagram, writer)).produce();
+			}
 		}
 		/*
 		 * プロジェクト中のすべてのアクティビティ図を出力する
 		 */
 		for(INamedElement diagram: accessor.findElements(new IActivityDiagramPicker())){
-			(new ActivityDiagram(projectName, (IActivityDiagram)diagram, createWriter(diagram, targetDirectory))).produce();
+			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
+				(new ActivityDiagram(projectName, (IActivityDiagram)diagram, writer)).produce();
+			}
 		}
 	}
 
