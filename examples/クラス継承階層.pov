@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-// hierachy depth: {JpaRepository=1,  Repository=4,  CrudRepository=2,  PagingAndSortingRepository=3}
+// hierachy depth: { CrudRepository=2,  PagingAndSortingRepository=3, JpaRepository=1,  Repository=4}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq_6174cfd7c659288bc9badb700978b1e1 = union {
@@ -36,28 +36,23 @@ object { Boundary rotate -x*90 scale 24  translate <221.48, -86.65, -64.00> }
 sphere_sweep { linear_spline, 2, 
 <221.48, -257.82, 4.00>, 3.0
 <477.62, -257.82, 4.00>, 3.0
-  texture { AssociationTexture }
-}
+  texture { AssociationTexture }}
 sphere_sweep { linear_spline, 2, 
 <221.48, 1.35, -92.00>, 3.0
 <221.48, 86.68, -124.00>, 3.0
-  texture { GeneralizationTexture }
-}
+  texture { GeneralizationTexture }}
 sphere_sweep { linear_spline, 2, 
 <221.48, -86.65, -60.00>, 3.0
 <221.48, 1.35, -92.00>, 3.0
-  texture { GeneralizationTexture }
-}
+  texture { GeneralizationTexture }}
 sphere_sweep { linear_spline, 2, 
 <221.48, -174.27, -28.00>, 3.0
 <221.48, -86.65, -60.00>, 3.0
-  texture { GeneralizationTexture }
-}
+  texture { GeneralizationTexture }}
 sphere_sweep { linear_spline, 2, 
 <221.48, -257.82, 4.00>, 3.0
 <221.48, -174.27, -28.00>, 3.0
-  texture { GeneralizationTexture }
-}
+  texture { GeneralizationTexture }}
 }
 object { ClassDiagram_1muq_6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <297.20, -90.50, -579.70>;
