@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-// hierachy depth: { Repository=4,  CrudRepository=2,  PagingAndSortingRepository=3, JpaRepository=1}
+// hierachy depth: {JpaRepository=1,  Repository=4,  CrudRepository=2,  PagingAndSortingRepository=3}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq_6174cfd7c659288bc9badb700978b1e1 = union {

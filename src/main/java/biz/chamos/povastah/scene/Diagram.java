@@ -117,6 +117,31 @@ public class Diagram {
 	}
 
 	/**
+	 * POVRayオブジェクト変換対象除外
+	 * @param presentation
+	 * @return
+	 * @throws IOException 
+	 */
+	protected boolean excludeIPresentation(ILinkPresentation presentation) {
+		/**
+		 * 除外対象要素
+		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
+		 *  | 画像 : "Image" | 直線 : "Line" | フリーハンド : "FreeHand" | 
+		 */	
+		final String[] excludes = {"Frame", "Note", "Text", "Rectangle", "Oval", "Image", "Line", "FreeHand", "Highlighter"};
+		String type = presentation.getType();
+		for(String exclude: excludes) {
+			if(type.equals(exclude)) {
+				if(exclude.equals("Frame")) { // フレームの矩形を保持する
+					 stage = presentation.getDiagram().getBoundRect();
+				}
+				return true;
+			}
+		}	 
+		return false;
+	}
+	
+	/**
 	 * スクリプトのヘッダ部を出力する
 	 * @throws IOException
 	 * @throws ProjectNotFoundException 
@@ -363,7 +388,6 @@ public class Diagram {
 	protected void writeLinks() throws IOException {
 		for (ILinkPresentation link : links) {
 				writeLink(link);
-//				sceneWriter.flush();
 		}
 	}
 
@@ -418,7 +442,7 @@ public class Diagram {
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
-		return "  texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }" + CR + "}" + CR;
+		return "  texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }}" + CR;
 	}
 	
 	/**

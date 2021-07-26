@@ -199,6 +199,31 @@ public class ClassDiagram extends Diagram {
 		}
 		writeSpline(link, sourcez, targetz);
 	}
+
+	/**
+	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * @param link
+	 * @param lineRadius 
+	 * @param sourcez ソースノードの高さ
+	 * @param targetz ターゲットノードの高さ
+	 * @param sourcep ソースノードの座標
+	 * @param targetp ターゲットノードの座標
+	 * @throws IOException
+	 */
+	protected void writeSpline(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+		if(link.getType().equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
+			Point2D sourcep = nodePosition(link.getSource());
+			Point2D targetp = nodePosition(link.getTarget());
+			double lineRadius = 3.0;
+
+			sceneWriter.write("sphere_sweep { linear_spline, " + 2 + ", " + CR); // 始点、終点の2点
+			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
+			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
+			sceneWriter.write(linkTextureName(link));
+		}else {
+			super.writeSpline(link, sourcez, targetz);
+		}	
+	}
 	
 	/**
 	 * ロバストネス図対応
