@@ -27,13 +27,11 @@ object { Entity rotate -x*90 scale 24  translate <350.36, -265.31, 0.00> }
 sphere_sweep { linear_spline, 2, 
 <61.33, -182.31, 4.00>, 3.0
 <179.92, -265.39, 4.00>, 3.0
-  texture { AssociationTexture }
-}
+  texture { AssociationTexture }}
 sphere_sweep { linear_spline, 2, 
 <179.92, -265.39, 4.00>, 3.0
 <350.36, -265.31, 4.00>, 3.0
-  texture { AssociationTexture }
-}
+  texture { AssociationTexture }}
 }
 object { ClassDiagram_1ppa_6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <184.33, -223.99, -536.32>;

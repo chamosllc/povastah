@@ -27,11 +27,9 @@ object { FinalState rotate -x*90 scale 24.0 translate <130.00, -222.67, 0.00> }
 sphere_sweep { linear_spline, 2, 
 <130.00, -89.33, 4.00>, 3.0
 <232.57, -89.15, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:retry
-torus { 36.0, 3.0 translate <232.57, -89.15, -32.00>  texture { TransitionTexture }
-}
+torus { 36.0, 3.0 translate <232.57, -89.15, -32.00>  texture { TransitionTexture }}
 // link Transition:
 sphere_sweep { cubic_spline, 5, 
 <232.57, -89.15, 4.00>, 3.0
@@ -39,27 +37,23 @@ sphere_sweep { cubic_spline, 5,
 <300.00, -55.33, 4.00>, 3.0
 <392.57, -167.15, 4.00>, 3.0
 <392.57, -167.15, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:
 sphere_sweep { linear_spline, 2, 
 <392.57, -167.15, 4.00>, 3.0
 <241.90, -222.49, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:
 sphere_sweep { linear_spline, 2, 
 <241.90, -222.49, 4.00>, 3.0
 <130.00, -222.67, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:back
 
 sphere_sweep { linear_spline, 2, 
 <392.57, -167.15, 4.00>, 3.0
 <232.57, -89.15, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 }
 #declare StateMachineDiagram_bffk_e8128ac6c1d56428bfcbc5567f70b355 = union {
 object { InitialPseudostate rotate -x*90 scale 24.0 translate <88.67, -131.33, 0.00> }
@@ -78,29 +72,24 @@ object { StateMachineDiagram_e7_881a9fa389742b575ef0aabbe66a5249 scale 0.2681633
 sphere_sweep { linear_spline, 2, 
 <88.67, -131.33, 4.00>, 3.0
 <168.00, -130.67, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:entry
 sphere_sweep { linear_spline, 2, 
 <168.00, -130.67, 4.00>, 3.0
 <218.76, -13.82, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:submit / save
 sphere_sweep { linear_spline, 2, 
 <218.76, -13.82, 4.00>, 3.0
 <435.97, -53.82, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:submit
 sphere_sweep { linear_spline, 2, 
 <435.97, -53.82, 4.00>, 3.0
 <168.00, -130.67, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:reset
-torus { 36.0, 3.0 translate <218.76, -13.82, -32.00>  texture { TransitionTexture }
-}
+torus { 36.0, 3.0 translate <218.76, -13.82, -32.00>  texture { TransitionTexture }}
 // link Transition:back
 sphere_sweep { cubic_spline, 5, 
 <218.76, -13.82, 4.00>, 3.0
@@ -108,14 +97,12 @@ sphere_sweep { cubic_spline, 5,
 <159.33, -56.33, 4.00>, 3.0
 <168.00, -130.67, 4.00>, 3.0
 <168.00, -130.67, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:back
 sphere_sweep { linear_spline, 2, 
 <412.02, -159.51, 4.00>, 3.0
 <168.00, -130.67, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:list
 sphere_sweep { cubic_spline, 5, 
 <168.00, -130.67, 4.00>, 3.0
@@ -123,8 +110,7 @@ sphere_sweep { cubic_spline, 5,
 <258.67, -185.00, 4.00>, 3.0
 <412.02, -159.51, 4.00>, 3.0
 <412.02, -159.51, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 }
 #declare StateMachineDiagram_1u2y_6174cfd7c659288bc9badb700978b1e1 = union {
 object { InitialPseudostate rotate -x*90 scale 24.0 translate <169.11, -133.81, 0.00> }
@@ -139,14 +125,12 @@ object { StateMachineDiagram_bffk_e8128ac6c1d56428bfcbc5567f70b355 scale 0.24274
 sphere_sweep { linear_spline, 2, 
 <298.87, -133.81, 4.00>, 3.0
 <538.14, -133.81, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 // link Transition:
 sphere_sweep { linear_spline, 2, 
 <169.11, -133.81, 4.00>, 3.0
 <298.87, -133.81, 4.00>, 3.0
-  texture { TransitionTexture }
-}
+  texture { TransitionTexture }}
 }
 object { StateMachineDiagram_1u2y_6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <392.61, -133.67, -558.28>;

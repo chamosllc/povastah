@@ -21,8 +21,7 @@ object { Entity rotate -x*90 scale 24  translate <139.55, -250.11, 0.00> }
 sphere_sweep { linear_spline, 2, 
 <140.09, -152.97, 4.00>, 3.0
 <139.55, -250.11, 4.00>, 3.0
-  texture { RealizationTexture }
-}
+  texture { RealizationTexture }}
 }
 object { ClassDiagram_zm3_6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <139.49, -220.15, -391.65>;

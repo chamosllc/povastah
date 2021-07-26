@@ -24,8 +24,7 @@ object { Actor rotate -x*90 scale 24  translate <89.33, -240.71, 0.00> }
 sphere_sweep { linear_spline, 2, 
 <89.33, -240.71, 4.00>, 3.0
 <348.56, -233.67, 4.00>, 3.0
-  texture { AssociationTexture }
-}
+  texture { AssociationTexture }}
 }
 object { UseCaseDiagram_3rj_6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <250.83, -238.83, -521.67>;

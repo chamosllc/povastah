@@ -27,8 +27,7 @@ object { ActivityFinal rotate -x*90 scale 24.0 translate <188.54, -324.67, 0.00>
 sphere_sweep { linear_spline, 2, 
 <188.54, -61.33, 4.00>, 3.0
 <188.54, -147.32, 4.00>, 3.0
-  texture { ControlFlow_ObjectFlowTexture }
-}
+  texture { ControlFlow_ObjectFlowTexture }}
 // link ControlFlow/ObjectFlow:[UPDATE]
 sphere_sweep { cubic_spline, 5, 
 <188.54, -147.32, 4.00>, 3.0
@@ -36,8 +35,7 @@ sphere_sweep { cubic_spline, 5,
 <294.67, -190.00, 4.00>, 3.0
 <426.54, -147.32, 4.00>, 3.0
 <426.54, -147.32, 4.00>, 3.0
-  texture { ControlFlow_ObjectFlowTexture }
-}
+  texture { ControlFlow_ObjectFlowTexture }}
 // link ControlFlow/ObjectFlow:
 sphere_sweep { cubic_spline, 5, 
 <426.54, -147.32, 4.00>, 3.0
@@ -45,23 +43,19 @@ sphere_sweep { cubic_spline, 5,
 <305.33, -90.67, 4.00>, 3.0
 <188.54, -147.32, 4.00>, 3.0
 <188.54, -147.32, 4.00>, 3.0
-  texture { ControlFlow_ObjectFlowTexture }
-}
+  texture { ControlFlow_ObjectFlowTexture }}
 // link ControlFlow/ObjectFlow:[DELETE]
 sphere_sweep { linear_spline, 2, 
 <188.54, -147.32, 4.00>, 3.0
 <188.54, -246.65, 4.00>, 3.0
-  texture { ControlFlow_ObjectFlowTexture }
-}
+  texture { ControlFlow_ObjectFlowTexture }}
 // link ControlFlow/ObjectFlow:
 sphere_sweep { linear_spline, 2, 
 <188.54, -246.65, 4.00>, 3.0
 <188.54, -324.67, 4.00>, 3.0
-  texture { ControlFlow_ObjectFlowTexture }
-}
+  texture { ControlFlow_ObjectFlowTexture }}
 // link ControlFlow/ObjectFlow:[READ]
-torus { 36.0, 3.0 translate <188.54, -147.32, -32.00>  texture { ControlFlow_ObjectFlowTexture }
-}
+torus { 36.0, 3.0 translate <188.54, -147.32, -32.00>  texture { ControlFlow_ObjectFlowTexture }}
 }
 object { ActivityDiagram_ei_16c82e3456575d0ee46bca982933226e }
 #declare EYE = <229.17, -190.67, -451.83>;

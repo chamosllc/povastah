@@ -36,23 +36,19 @@ object { EntityInstance rotate -x*90 scale 24  translate <350.11, -446.64, 0.00>
 sphere_sweep { linear_spline, 2, 
 <61.33, -182.31, 4.00>, 3.0
 <179.92, -265.39, 4.00>, 3.0
-  texture { AssociationTexture }
-}
+  texture { AssociationTexture }}
 sphere_sweep { linear_spline, 2, 
 <179.92, -265.39, 4.00>, 3.0
 <350.36, -265.31, 4.00>, 3.0
-  texture { AssociationTexture }
-}
+  texture { AssociationTexture }}
 sphere_sweep { linear_spline, 2, 
 <61.44, -377.31, 4.00>, 3.0
 <180.11, -446.64, 4.00>, 3.0
-  texture { LinkTexture }
-}
+  texture { LinkTexture }}
 sphere_sweep { linear_spline, 2, 
 <180.11, -446.64, 4.00>, 3.0
 <350.11, -446.64, 4.00>, 3.0
-  texture { LinkTexture }
-}
+  texture { LinkTexture }}
 }
 object { ClassDiagram_bj_3d6ceec00a507a2b70caaa0df577508a }
 #declare EYE = <186.23, -314.49, -628.71>;
