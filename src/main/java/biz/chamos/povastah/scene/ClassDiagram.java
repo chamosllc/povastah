@@ -4,7 +4,9 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -47,40 +49,54 @@ public class ClassDiagram extends Diagram {
 	 * @throws IOException 
 	 */
 	protected void classHierachies() {
+		Collection<IClass> models = new HashSet<>();
 		for(INodePresentation node: nodes) {
-			if(node.getModel() instanceof IClass) { // IClassを対象とする
-				IClass target = (IClass) node.getModel();
-				// スーパークラス群があれば階層の深さを決める
-				IGeneralization[] generals = target.getGeneralizations();
-				if(generals.length > 0) {
-					int depth = 1;
-					// サブクラス群があれば自分の階層の深さを決める
-					IGeneralization[] specials = target.getSpecializations();
-					if(specials.length > 0) {
-						for(IGeneralization special: specials) {
-							IClass subClass = (IClass)special.getSubType();
-							if(hierDepth.containsKey(subClass)) {
-								depth = Math.max(depth, hierDepth.get(subClass) + 1);
-							}
-						}
-						if(hierDepth.containsKey(target)) {
-							hierDepth.replace(target, depth);
-						}else {
-							hierDepth.put(target, depth);
+			if(node.getModel() instanceof IClass) {
+				models.add((IClass)node.getModel());
+			}
+		}
+		for(IClass target: models) {
+			Collection<IClass> generals = new HashSet<>();
+			// スーパークラス群があれば階層の深さを決める
+			for(IGeneralization general: target.getGeneralizations()) {
+				if(models.contains(general.getSuperType())){
+					generals.add(general.getSuperType());
+				}
+			}
+			if(generals.size() > 0) {
+				int depth = 1;
+				// サブクラス群があれば自分の階層の深さを決める
+				Collection<IClass> specials = new HashSet<>();
+				for(IGeneralization special: target.getSpecializations()) {
+					if(models.contains(special.getSubType())){
+						specials.add(special.getSubType());
+					}
+				}
+				if(specials.size() > 0) {
+					for(IClass subClass: specials) {
+						if(hierDepth.containsKey(subClass)) {
+							depth = Math.max(depth, hierDepth.get(subClass) + 1);
 						}
 					}
-					depth++;
-					for(IGeneralization general: generals) {
-						IClass superClass = (IClass) general.getSuperType();
-						if(hierDepth.containsKey(superClass)) {
-							if(depth >  hierDepth.get(superClass)) {
-								hierDepth.replace(superClass, depth);
-								spreadRoot(superClass.getGeneralizations(), depth + 1);
-							}
-						}else {
-							hierDepth.put(superClass, depth);
-						}
+					if(hierDepth.containsKey(target)) {
+						hierDepth.replace(target, depth);
+					}else {
+						hierDepth.put(target, depth);
 					}
+				}
+				depth++;
+				for(IClass superClass: generals) {
+					if(hierDepth.containsKey(superClass)) {
+						if(depth >  hierDepth.get(superClass)) {
+							hierDepth.replace(superClass, depth);
+							spreadRoot(superClass.getGeneralizations(), depth + 1);
+						}
+					}else {
+						hierDepth.put(superClass, depth);
+					}
+				}
+				if(!hierDepth.containsKey(target)) {
+					hierDepth.put(target, 1);
 				}
 			}
 		}
@@ -126,25 +142,16 @@ public class ClassDiagram extends Diagram {
 			sceneWriter.flush();
 		}
 	}
-	
+
 	/**
-	 * ノードオブジェクトを出力する
-	 * @param hierarchy
-	 * @param node
-	 * @throws IOException
+	 * クラス継承関係による高さ
 	 */
-	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
-		final String SCALE = " scale 24 ";
-		Point2D point = nodePosition(node);
-		double z = 0;
+	protected double nodePositionZ(INodePresentation node) {
+		double z = super.nodePositionZ(node);
 		if(hierDepth.containsKey(node.getModel())) {
 			z = hierDepth.get(node.getModel()) * DEPTH_OFFSET;
 		}
-		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
-		sceneWriter.write("}" + CR);
-		sceneWriter.flush();
-		writeLabel(node);
-		sceneWriter.flush();	
+		return z;
 	}
 
 	protected String label(IPresentation presence) {
@@ -179,20 +186,10 @@ public class ClassDiagram extends Diagram {
 	/**
 	 * リンクオブジェクトを出力する 
 	 * @param link
-	 * @param lineRadius
-	 * @param OFFSET_Z
 	 * @throws IOException
 	 */
 	protected void writeLink(ILinkPresentation link) throws IOException {
-		double sourcez = OFFSET_Z;
-		double targetz = OFFSET_Z;
-		if(hierDepth.containsKey(link.getSource().getModel())) {
-			sourcez += hierDepth.get(link.getSource().getModel()) * DEPTH_OFFSET;
-		}
-		if(hierDepth.containsKey(link.getTarget().getModel())) {
-			targetz += hierDepth.get(link.getTarget().getModel()) * DEPTH_OFFSET;
-		}
-		writeSpline(link, sourcez, targetz);
+		writeSpline(link, OFFSET_Z + nodePositionZ(link.getSource()), OFFSET_Z + nodePositionZ(link.getTarget()));
 	}
 
 	/**

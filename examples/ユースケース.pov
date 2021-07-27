@@ -17,7 +17,7 @@
      scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}
     finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-0.375, -0.5, -2>
   } scale 64  translate <348.56, -233.67, 0.00>}
-  object { Actor rotate -x*90 scale 24  translate <89.33, -240.71, 0.00> }
+  object { Actor rotate -x*90 scale 24.0 translate <89.33, -240.71, 0.00> }
    text { ttf LabelFont, "アクター", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <70.13, -276.71, 30.00> }
     sphere_sweep { linear_spline, 2, <89.33, -240.71, 4.00>, 3.0 <348.56, -233.67, 4.00>, 3.0 texture { AssociationTexture }}
 }

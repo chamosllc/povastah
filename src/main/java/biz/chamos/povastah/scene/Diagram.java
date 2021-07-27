@@ -283,11 +283,15 @@ public class Diagram {
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		final double scale = 24.0;
 		Point2D point = nodePosition(node);	
-		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point) + " }" + CR);
+		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point, nodePositionZ(node)) + " }" + CR);
 		writeLabel(node);
 		writeSubDiagram(hierarchy + 1, node);
 	}
 
+	protected double nodePositionZ(INodePresentation node) {
+		return 0.0;
+	}
+	
 	/**
 	 * ノードオブジェクトの中心座標を取得する
 	 * @param node
@@ -347,7 +351,7 @@ public class Diagram {
 	
 	protected String label(IPresentation presence) {
 		String type = presence.getType();
-		if(type.contains("Initial") || type.contains("Final") || type.contains("Choice")) {
+		if(type.contains("Initial") || type.contains("Final") || type.contains("Choice") || type.equals("ForkNode") || type.equals("JoinNode")) {
 			return "";
 		}
 		return presence.getLabel();
@@ -394,23 +398,17 @@ public class Diagram {
 	/**
 	 * リンクオブジェクトを出力する 
 	 * @param link
-	 * @param lineRadius
-	 * @param OFFSET_Z ノードの高さ
 	 * @throws IOException
 	 */
 	protected void writeLink(ILinkPresentation link) throws IOException {
-		sceneWriter.write("// link " + link.getType() + ":" + link.getLabel() + CR);
 		writeSpline(link, OFFSET_Z, OFFSET_Z);	
 	}
 
 	/**
 	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
-	 * @param lineRadius 
 	 * @param sourcez ソースノードの高さ
 	 * @param targetz ターゲットノードの高さ
-	 * @param sourcep ソースノードの座標
-	 * @param targetp ターゲットノードの座標
 	 * @throws IOException
 	 */
 	protected void writeSpline(ILinkPresentation link, double sourcez, double targetz) throws IOException {
@@ -428,7 +426,7 @@ public class Diagram {
 				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
 				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 			}else { // 曲線(折れ線も)
-				double deltaz = (sourcez - targetz)/points.length;
+				double deltaz = (targetz - sourcez)/(points.length + 1);
 				sceneWriter.write("    sphere_sweep { cubic_spline, " + (points.length + 2) + ", "); // 始点、終点の2点とpointsの数の合計
 				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
 				for(int i=0; i < points.length; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
