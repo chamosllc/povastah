@@ -57,13 +57,22 @@
  */ 
 #declare InitialNode = object { InitialPseudostate }
 #declare ActivityFinal = object { FinalState }
-#declare Action=union{
+#declare Action = union{
 	box{<-0.7,-0.5,-0.6>,<0.7,0.3,0.6>}
 	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
-	texture{checker texture{T_Stone8} texture{T_Stone21} 
-		rotate z*90 scale 0.3
-	}
+	texture{checker texture{T_Stone8} texture{T_Stone21} rotate z*90 scale 0.3 }
 }
+
+#declare ForkNode = union {
+    cylinder {<0, 0, -0.3>, <0, 0, 0.2>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
+    cylinder {<0, 0,  0.2>, <0, 0, 0.3>, 1 texture {T_Copper_4A}}
+}
+
+#declare JoinNode = union {
+    cylinder {<0, 0, -0.3>, <0, 0, -0.2>, 1 texture {T_Copper_4A}}
+    cylinder {<0, 0, -0.2>, <0, 0,  0.3>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }} 
+}
+
 #declare Activity=union{
   object{Fence}
   box{<-1,-0.25,-1>, <1, 0, 1> texture{checker texture{T_Stone8} texture{T_Stone5} scale 1/4}}

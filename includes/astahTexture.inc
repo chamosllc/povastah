@@ -16,6 +16,7 @@
 #declare RealizationTexture = texture { Vicks_Bottle_Glass }
 #declare DependencyTexture = texture { Peel }
 #declare AssociationClassTexture = texture { Peel }
+#declare IncludeTexture = texture { Yellow_Pine } 
 
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkLabelTecture = texture { Peel }
