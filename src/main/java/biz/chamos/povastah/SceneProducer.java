@@ -11,7 +11,6 @@ import com.change_vision.jude.api.inf.model.IClassDiagram;
 import com.change_vision.jude.api.inf.model.INamedElement;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
 import com.change_vision.jude.api.inf.model.IUseCaseDiagram;
-import com.change_vision.jude.api.inf.project.ModelFinder;
 import com.change_vision.jude.api.inf.project.ProjectAccessor;
 
 import biz.chamos.povastah.scene.ActivityDiagram;
@@ -49,32 +48,36 @@ public class SceneProducer {
 
 		/*
 		 * プロジェクト中のすべてのユースケース図を出力する
+		 * IUseCaseDiagram
 		 */
-		for(INamedElement diagram: accessor.findElements(new IUseCaseDiagramPicker())){
+		for(INamedElement diagram: accessor.findElements(IUseCaseDiagram.class)){
 			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
 				(new UseCaseDiagram(projectName, (IUseCaseDiagram)diagram, writer)).produce();
 			}
 		}
 		/**
 		 * プロジェクト中のすべてのクラス図を出力する
+		 * IClassDiagram
 		 */
-		for(INamedElement diagram: accessor.findElements(new IClassDiagramPicker())){
+		for(INamedElement diagram: accessor.findElements(IClassDiagram.class)){
 			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
 				(new ClassDiagram(projectName, (IClassDiagram)diagram, writer)).produce();
 			}
 		}
 		/*
 		 * プロジェクト中のすべてのステートマシン図を出力する
+		 * IStateMachineDiagram
 		 */
-		for(INamedElement diagram: accessor.findElements(new IStateMachineDiagramPicker())){
+		for(INamedElement diagram: accessor.findElements(IStateMachineDiagram.class)){
 			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
 				(new StateMachineDiagram(projectName, (IStateMachineDiagram)diagram, writer)).produce();
 			}
 		}
 		/*
 		 * プロジェクト中のすべてのアクティビティ図を出力する
+		 * IActivityDiagram
 		 */
-		for(INamedElement diagram: accessor.findElements(new IActivityDiagramPicker())){
+		for(INamedElement diagram: accessor.findElements(IActivityDiagram.class)){
 			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
 				(new ActivityDiagram(projectName, (IActivityDiagram)diagram, writer)).produce();
 			}
@@ -84,41 +87,5 @@ public class SceneProducer {
 	protected OutputStreamWriter createWriter(INamedElement diagram, File directory)
 			throws IOException {
 		return new OutputStreamWriter(new FileOutputStream(directory + File.separator + diagram.getName() + FILE_EXT), "UTF-8");
-	}
-	
-	/**
-	 * ユースケース図検索条件
-	 */
-	protected class IUseCaseDiagramPicker implements ModelFinder {
-	    public boolean isTarget(INamedElement namedElement) {
-	        return namedElement instanceof IUseCaseDiagram;
-	    }
-	}
-
-	/**
-	 * クラス図検索条件
-	 */
-	protected class IClassDiagramPicker implements ModelFinder {
-	    public boolean isTarget(INamedElement namedElement) {
-	        return namedElement instanceof IClassDiagram;
-	    }
-	}
-
-	/**
-	 * ステートマシン図検索条件
-	 */
-	protected class IStateMachineDiagramPicker implements ModelFinder {
-	    public boolean isTarget(INamedElement namedElement) {
-	        return namedElement instanceof IStateMachineDiagram;
-	    }
-	}
-
-	/**
-	 * アクティビティ図検索条件
-	 */
-	protected class IActivityDiagramPicker implements ModelFinder {
-	    public boolean isTarget(INamedElement namedElement) {
-	        return namedElement instanceof IActivityDiagram;
-	    }
 	}
 }
