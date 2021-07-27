@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IClass;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IElement;
@@ -28,6 +27,7 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;;
  */
 public class ClassDiagram extends Diagram {
 	protected Map<IClass, Integer> hierDepth = new HashMap<>();
+	static final protected double DEPTH_OFFSET = -32.0;
 
 	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
@@ -116,16 +116,13 @@ public class ClassDiagram extends Diagram {
 		}
 	}
 	
-	/**
-	 * スクリプトのヘッダ部を出力する
-	 * @throws IOException
-	 * @throws ProjectNotFoundException 
+	/*
+	 * debug用 スクリプトのヘッダ部を出力する
 	 */
 	protected void writeHeader() throws IOException {
 		super.writeHeader();
-		if(!hierDepth.isEmpty()) {
-			sceneWriter.write("// hierachy depth: " + hierDepth + CR);
-			sceneWriter.write("// #declare Depth = -32.0;" + CR + CR);
+		if(hierDepth.size() > 1) {
+			sceneWriter.write("// hierachy depth: " + hierDepth + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
 			sceneWriter.flush();
 		}
 	}
@@ -138,13 +135,12 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		final String SCALE = " scale 24 ";
-		final double depth = -32.0;
 		Point2D point = nodePosition(node);
 		double z = 0;
 		if(hierDepth.containsKey(node.getModel())) {
-			z = hierDepth.get(node.getModel()) * depth;
+			z = hierDepth.get(node.getModel()) * DEPTH_OFFSET;
 		}
-		sceneWriter.write("object { " + povrayObjectType(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
+		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90" + SCALE + translate(point, z) + " ");
 		sceneWriter.write("}" + CR);
 		sceneWriter.flush();
 		writeLabel(node);
@@ -164,7 +160,6 @@ public class ClassDiagram extends Diagram {
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
 	 * @return
-	 * @throws IOException 
 	 */
 	protected boolean excludeIPresentation(IPresentation presentation) {
 		/**
@@ -185,17 +180,17 @@ public class ClassDiagram extends Diagram {
 	 * リンクオブジェクトを出力する 
 	 * @param link
 	 * @param lineRadius
-	 * @param offsetZ
+	 * @param OFFSET_Z
 	 * @throws IOException
 	 */
 	protected void writeLink(ILinkPresentation link) throws IOException {
-		double sourcez = offsetZ;
-		double targetz = offsetZ;
+		double sourcez = OFFSET_Z;
+		double targetz = OFFSET_Z;
 		if(hierDepth.containsKey(link.getSource().getModel())) {
-			sourcez -= hierDepth.get(link.getSource().getModel()) * 32.0;
+			sourcez += hierDepth.get(link.getSource().getModel()) * DEPTH_OFFSET;
 		}
 		if(hierDepth.containsKey(link.getTarget().getModel())) {
-			targetz -= hierDepth.get(link.getTarget().getModel()) * 32.0;
+			targetz += hierDepth.get(link.getTarget().getModel()) * DEPTH_OFFSET;
 		}
 		writeSpline(link, sourcez, targetz);
 	}
@@ -216,9 +211,9 @@ public class ClassDiagram extends Diagram {
 			Point2D targetp = nodePosition(link.getTarget());
 			double lineRadius = 3.0;
 
-			sceneWriter.write("sphere_sweep { linear_spline, " + 2 + ", " + CR); // 始点、終点の2点
-			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
-			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
+			sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
+			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
+			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 			sceneWriter.write(linkTextureName(link));
 		}else {
 			super.writeSpline(link, sourcez, targetz);

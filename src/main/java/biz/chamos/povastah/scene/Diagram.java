@@ -24,13 +24,13 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  *
  */
 public class Diagram {
-	static protected double offsetZ = 4.0;
-	static protected String CR = System.lineSeparator(); // 改行
-	static protected String HEADER_COMMENT = "/**" + CR
+	static final protected double OFFSET_Z = 4.0;
+	static final protected String CR = System.lineSeparator(); // 改行
+	static final protected String HEADER_COMMENT = "/**" + CR
 			+ " * astah* Diagram 3D Visualization\n * %s %s" + CR
 			+ " * created at %s" + CR
 			+ " * presented by povastah" + CR + " **/" + CR + CR;
-	static protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
+	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"astahuml.inc\"" + CR + CR;
 	static final String COORDINATE = "<%.2f, %.2f, %.2f>"; // 座標系フォーマット
 
@@ -283,7 +283,7 @@ public class Diagram {
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		final double scale = 24.0;
 		Point2D point = nodePosition(node);	
-		sceneWriter.write("object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point) + " }" + CR);
+		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point) + " }" + CR);
 		writeLabel(node);
 		writeSubDiagram(hierarchy + 1, node);
 	}
@@ -340,8 +340,8 @@ public class Diagram {
 		if(!(label = label(node)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
 			Point2D point = nodePosition(node);
 			point.setLocation(node.getLocation().getX() + 48 - label.getBytes().length*4 , point.getY() + labelShift );
-			sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
-				+ CR + translate(point, 30.0) + " }" + CR);
+			sceneWriter.write("  text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
+				+ translate(point, 30.0) + " }" + CR);
 		}
 	}
 	
@@ -372,8 +372,8 @@ public class Diagram {
 					merginX = label.getBytes().length*3;
 				}
 				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write(" text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LinkLabelTecture }"
-					+ CR + translate(point, 32.0 - 2.0) + " }" + CR);
+				sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LinkLabelTecture }"
+					+ translate(point, 32.0 - 2.0) + " }" + CR);
 				labelY+= scale;
 			}
 		}
@@ -395,12 +395,12 @@ public class Diagram {
 	 * リンクオブジェクトを出力する 
 	 * @param link
 	 * @param lineRadius
-	 * @param offsetZ ノードの高さ
+	 * @param OFFSET_Z ノードの高さ
 	 * @throws IOException
 	 */
 	protected void writeLink(ILinkPresentation link) throws IOException {
 		sceneWriter.write("// link " + link.getType() + ":" + link.getLabel() + CR);
-		writeSpline(link, offsetZ, offsetZ);	
+		writeSpline(link, OFFSET_Z, OFFSET_Z);	
 	}
 
 	/**
@@ -420,29 +420,29 @@ public class Diagram {
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 36.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + sourcez));
+			sceneWriter.write("  torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + sourcez));
 		}else {
 			Point2D[] points = link.getPoints();
 			if(points.length <= 2) { // 直線
-				sceneWriter.write("sphere_sweep { linear_spline, " + 2 + ", " + CR); // 始点、終点の2点
-				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
-				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
+				sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
+				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
+				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 			}else { // 曲線(折れ線も)
 				double deltaz = (sourcez - targetz)/points.length;
-				sceneWriter.write("sphere_sweep { cubic_spline, " + (points.length + 2) + ", " + CR); // 始点、終点の2点とpointsの数の合計
-				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + CR); // 始点
+				sceneWriter.write("    sphere_sweep { cubic_spline, " + (points.length + 2) + ", "); // 始点、終点の2点とpointsの数の合計
+				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
 				for(int i=0; i < points.length; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + CR);
+					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + " ");
 					deltaz += deltaz;
 				}
-				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + CR); // 終点
+				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 			}
 		}
 		sceneWriter.write(linkTextureName(link));	
 	}
 
 	protected String linkTextureName(ILinkPresentation link) {
-		return "  texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }}" + CR;
+		return "texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }}" + CR;
 	}
 	
 	/**

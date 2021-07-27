@@ -91,7 +91,7 @@ public class StateMachineDiagram extends Diagram {
 			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
 			Rectangle2D p = node.getRectangle();
 			double scale = Math.min(p.getWidth()/r.getWidth(), p.getHeight()/r.getHeight());
-			sceneWriter.write("object { " + povrayName(subDiagram) + " scale " + scale + " translate <"
+			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + " translate <"
 			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
 			sceneWriter.flush();	
 		}
