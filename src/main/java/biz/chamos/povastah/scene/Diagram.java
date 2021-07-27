@@ -216,13 +216,13 @@ public class Diagram {
 	
 	/**
 	 * 指定 ダイアグラムの宣言名を返す
-	 * ※ユニークな名前が必要なので、IPresentaion.getID()を利用しているが、ハイフォンが入っているためアンダースコアへ置換している
+	 * ※ユニークな名前が必要なので、IPresentaion.getID()文字列を利用する。ただし、ハイフォンを除去する
 	 * 
 	 * @param diagram
 	 * @return
 	 */
 	protected String povrayName(IDiagram diagram) {
-		return this.getClass().getSimpleName() + "_" + diagram.getId().replace('-', '_');
+		return this.getClass().getSimpleName() + "_" + diagram.getId().replaceAll("-", "");
 	}
 
 	/**
@@ -314,12 +314,12 @@ public class Diagram {
 	
 	/**
 	 * 指定ノードのPOVRayオブジェクト型をマッピングする
-	 * ※IPresentation.getType()を宣言名とするノード
+	 * ※IPresentation.getType()文字列を宣言名とする。ただし、この文字列中の記号や空白文字を除去する。
 	 * @param node
 	 * @return
 	 */
 	protected String povrayObjectType(INodePresentation node) {
-		return node.getType();
+		return node.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
 	}
 
 	/**
