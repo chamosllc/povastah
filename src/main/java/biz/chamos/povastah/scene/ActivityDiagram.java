@@ -26,7 +26,6 @@ public class ActivityDiagram extends Diagram {
 		super(projectName, diagram, sceneWriter);
 	}
 
-	
 	/**
 	 * POVRayオブジェクト変換対象除外
 	 * @param presentation
@@ -35,18 +34,21 @@ public class ActivityDiagram extends Diagram {
 	protected boolean excludeIPresentation(IPresentation presentation) {
 		/**
 		 * 除外対象要素
-		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition"
+		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition" | レーン : "Lane"
 		 */	
-		final String[] common = {"InputPin", "OutputPin", "ActivityParameterNode", "Partition"};
+		final String[] common = {"InputPin", "OutputPin", "ActivityParameterNode", "Partition", "Lane"};
 		String type = presentation.getType();
 		for(String exclude: common) {
 			if(type.equals(exclude)) {
 				return true;
 			}
-		}	 
+		}
 		return super.excludeIPresentation(presentation);
 	}
-
+	
+	/**
+	 * サブダイアグラムがあれば、そのオブジェクトの宣言文を出力する
+	 */
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
@@ -54,24 +56,30 @@ public class ActivityDiagram extends Diagram {
 				ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram, sceneWriter);
 				nestDiagram.existsTragetNodes();
 				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			} catch (Exception e) {}
 		}
 	}
 
+	/**
+	 * サブダイアグラムオブジェクトを返す
+	 * @param parent
+	 * @return nullの場合がある
+	 */
 	protected IActivityDiagram subDiagram(INodePresentation parent) {
 		if(hasSubDiagram(parent)) {
-			return ((IAction) parent.getModel()).getCallingActivity().getActivityDiagram();
+			return ((IAction) parent.getModel()).getCallingActivity().getActivityDiagram(); // null場合がある
 		}else {
 			return null;
 		}
 	}
-	
-	protected boolean hasSubDiagram(INodePresentation parent) {
-		return parent.getType()=="CallBehaviorAction";
-	}
 
+	/**
+	 * サブダイアグラムを持つ性質のノードかどうか
+	 */
+	protected boolean hasSubDiagram(INodePresentation parent) {
+		return parent.getType().equals("CallBehaviorAction");
+	}
+	
 	protected double subHeight(int hierarchy) {
 		return -27.0 - Math.pow(1.23, hierarchy);
 	}
@@ -89,7 +97,7 @@ public class ActivityDiagram extends Diagram {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
 			double expand = 0.0;
-			Rectangle2D r = subDiagram.getBoundRect();
+			Rectangle2D r = subDiagram.getBoundRect(); 
 			Rectangle2D p = node.getRectangle();
 			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
 			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ロバストネス図_インスタンス
- * created at 2021/07/27
+ * created at 2021/07/28
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-#declare ClassDiagram_bj_3d6ceec00a507a2b70caaa0df577508a = union {
+#declare ClassDiagram_bj3d6ceec00a507a2b70caaa0df577508a = union {
   object { Boundary rotate -x*90 scale 24.0 translate <179.92, -265.39, 0.00> }
   text { ttf LabelFont, "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <133.92, -301.39, 30.00> }
   object { Control rotate -x*90 scale 24.0 translate <61.33, -182.31, 0.00> }
@@ -29,7 +29,7 @@
     sphere_sweep { linear_spline, 2, <61.44, -377.31, 4.00>, 3.0 <180.11, -446.64, 4.00>, 3.0 texture { LinkTexture }}
     sphere_sweep { linear_spline, 2, <180.11, -446.64, 4.00>, 3.0 <350.11, -446.64, 4.00>, 3.0 texture { LinkTexture }}
 }
-object { ClassDiagram_bj_3d6ceec00a507a2b70caaa0df577508a }
+object { ClassDiagram_bj3d6ceec00a507a2b70caaa0df577508a }
 #declare EYE = <186.23, -314.49, -532.71>;
 #declare FOCUS = <186.23, -314.49, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

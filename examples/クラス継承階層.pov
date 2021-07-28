@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah クラス継承階層
- * created at 2021/07/27
+ * created at 2021/07/28
  * presented by povastah
  **/
 
@@ -11,10 +11,10 @@
 
 #include "astahuml.inc"
 
-// hierachy depth: {EntityRepository=1,  CrudRepository=3,  Repository=5,  PagingAndSortingRepository=4, JpaRepository=2}
+// hierachy depth: {JpaRepository=2,  CrudRepository=3, EntityRepository=1,  PagingAndSortingRepository=4,  Repository=5}
 // #declare Depth = -32.0;
 
-#declare ClassDiagram_1muq_6174cfd7c659288bc9badb700978b1e1 = union {
+#declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {
   object { Boundary rotate -x*90 scale 24.0 translate <221.48, -257.82, -32.00> }
   text { ttf LabelFont, "EntityRepository", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <175.48, -293.82, 30.00> }
   object { Boundary rotate -x*90 scale 24.0 translate <221.48, -174.27, -64.00> }
@@ -33,7 +33,7 @@
     sphere_sweep { linear_spline, 2, <221.48, -174.27, -60.00>, 3.0 <221.48, -86.65, -92.00>, 3.0 texture { GeneralizationTexture }}
     sphere_sweep { linear_spline, 2, <221.48, -257.82, -28.00>, 3.0 <221.48, -174.27, -60.00>, 3.0 texture { GeneralizationTexture }}
 }
-object { ClassDiagram_1muq_6174cfd7c659288bc9badb700978b1e1 }
+object { ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <297.20, -90.50, -611.70>;
 #declare FOCUS = <297.20, -90.50, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

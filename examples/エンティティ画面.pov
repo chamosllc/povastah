@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah エンティティ画面
- * created at 2021/07/27
+ * created at 2021/07/28
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-#declare StateMachineDiagram_e7_881a9fa389742b575ef0aabbe66a5249 = union {
+#declare StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 = union {
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <130.00, -89.33, 0.00> }
   object { State rotate -x*90 scale 24.0 translate <232.57, -89.15, 0.00> }
   text { ttf LabelFont, "find", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <239.91, -125.15, 30.00> }
@@ -27,7 +27,7 @@
     sphere_sweep { linear_spline, 2, <241.90, -222.49, 4.00>, 3.0 <130.00, -222.67, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <392.57, -167.15, 4.00>, 3.0 <232.57, -89.15, 4.00>, 3.0 texture { TransitionTexture }}
 }
-#declare StateMachineDiagram_bffk_e8128ac6c1d56428bfcbc5567f70b355 = union {
+#declare StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 = union {
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <88.67, -131.33, 0.00> }
   object { State rotate -x*90 scale 24.0 translate <218.76, -13.82, 0.00> }
   text { ttf LabelFont, "show entity", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <167.29, -49.82, 30.00> }
@@ -35,8 +35,8 @@
   text { ttf LabelFont, "entityEntry.html", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <347.33, -89.82, 30.00> }
   object { ChoicePseudostate rotate -x*90 scale 24.0 translate <168.00, -130.67, 0.00> }
   object { SubmachineState rotate -x*90 scale 24.0 translate <412.02, -159.51, 0.00> }
-  text { ttf LabelFont, "entity list", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <319.13, -195.51, 30.00> }
-  object { StateMachineDiagram_e7_881a9fa389742b575ef0aabbe66a5249 scale 0.268163357400722 translate <339.0783249250245, -124.06378034277228, -8.23> }
+  text { ttf LabelFont, "entity list", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <324.19, -195.51, 30.00> }
+  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale 0.268163357400722 translate <339.0783249250245, -124.06378034277228, -8.23> }
     sphere_sweep { linear_spline, 2, <88.67, -131.33, 4.00>, 3.0 <168.00, -130.67, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <168.00, -130.67, 4.00>, 3.0 <218.76, -13.82, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <218.76, -13.82, 4.00>, 3.0 <435.97, -53.82, 4.00>, 3.0 texture { TransitionTexture }}
@@ -46,9 +46,9 @@
     sphere_sweep { linear_spline, 2, <412.02, -159.51, 4.00>, 3.0 <168.00, -130.67, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { cubic_spline, 5, <168.00, -130.67, 4.00>, 3.0 <168.00, -130.67, 4.00>, 3.0 <258.67, -185.00, 4.00>, 3.0 <412.02, -159.51, 4.00>, 3.0 <412.02, -159.51, 4.00>, 3.0 texture { TransitionTexture }}
 }
-object { StateMachineDiagram_bffk_e8128ac6c1d56428bfcbc5567f70b355 }
-#declare EYE = <293.67, -71.36, -357.03>;
-#declare FOCUS = <293.67, -71.36, 0.00>;
+object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 }
+#declare EYE = <293.67, -70.86, -396.53>;
+#declare FOCUS = <293.67, -70.86, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }
 plane { z, 32.0 texture { StateMachineDiagramTexture }}

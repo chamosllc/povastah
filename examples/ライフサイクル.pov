@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフサイクル
- * created at 2021/07/27
+ * created at 2021/07/28
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-#declare ActivityDiagram_iew_e76362ca895e31cbb57906ea3ad6f99f = union {
+#declare ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f = union {
   object { InitialNode rotate -x*90 scale 24.0 translate <194.67, 16.67, 0.00> }
   object { Action rotate -x*90 scale 24.0 translate <194.54, -61.99, 0.00> }
    text { ttf LabelFont, "物を作る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <170.54, -97.99, 30.00> }
@@ -36,7 +36,7 @@
     sphere_sweep { cubic_spline, 6, <539.87, -92.65, 4.00>, 3.0 <539.87, -92.65, 4.00>, 3.0 <536.67, -135.33, 4.00>, 3.0 <515.33, -174.00, 4.00>, 3.0 <459.67, -214.32, 4.00>, 3.0 <459.67, -214.32, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
     sphere_sweep { cubic_spline, 5, <695.45, -92.65, 4.00>, 3.0 <695.45, -92.65, 4.00>, 3.0 <640.67, -150.00, 4.00>, 3.0 <459.67, -214.32, 4.00>, 3.0 <459.67, -214.32, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
 }
-object { ActivityDiagram_iew_e76362ca895e31cbb57906ea3ad6f99f }
+object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f }
 #declare EYE = <440.50, -101.83, -574.33>;
 #declare FOCUS = <440.50, -101.83, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

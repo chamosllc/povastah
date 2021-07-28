@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフ
- * created at 2021/07/27
+ * created at 2021/07/28
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-#declare ActivityDiagram_ei_16c82e3456575d0ee46bca982933226e = union {
+#declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
   object { InitialNode rotate -x*90 scale 24.0 translate <188.54, -61.33, 0.00> }
   object { Action rotate -x*90 scale 24.0 translate <188.54, -147.32, 0.00> }
    text { ttf LabelFont, "物を見る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <164.54, -183.32, 30.00> }
@@ -27,19 +27,19 @@
     sphere_sweep { linear_spline, 2, <188.54, -246.65, 4.00>, 3.0 <188.54, -324.67, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
   torus { 36.0, 3.0 translate <188.54, -147.32, -32.00>texture { ControlFlow_ObjectFlowTexture }}
 }
-#declare ActivityDiagram_hbu_e76362ca895e31cbb57906ea3ad6f99f = union {
+#declare ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f = union {
   object { InitialNode rotate -x*90 scale 24.0 translate <192.54, -70.67, 0.00> }
   object { Action rotate -x*90 scale 24.0 translate <192.54, -147.32, 0.00> }
    text { ttf LabelFont, "物を作る", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <168.54, -183.32, 30.00> }
   object { ActivityFinal rotate -x*90 scale 24.0 translate <192.54, -341.33, 0.00> }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate <192.54, -236.82, 0.00> }
    text { ttf LabelFont, "物を取り扱う", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <156.54, -272.82, 30.00> }
-  object { ActivityDiagram_ei_16c82e3456575d0ee46bca982933226e scale 0.1481838474025974 translate <158.58120163690478, -208.56659226190473, -28.23> }
+  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.1481838474025974 translate <158.58120163690478, -208.56659226190473, -28.23> }
     sphere_sweep { linear_spline, 2, <192.54, -70.67, 4.00>, 3.0 <192.54, -147.32, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
     sphere_sweep { linear_spline, 2, <192.54, -147.32, 4.00>, 3.0 <192.54, -236.82, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
     sphere_sweep { linear_spline, 2, <192.54, -236.82, 4.00>, 3.0 <192.54, -341.33, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
 }
-object { ActivityDiagram_hbu_e76362ca895e31cbb57906ea3ad6f99f }
+object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
 #declare EYE = <192.50, -206.17, -430.67>;
 #declare FOCUS = <192.50, -206.17, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }

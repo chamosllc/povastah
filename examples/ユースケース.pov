@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ユースケース
- * created at 2021/07/27
+ * created at 2021/07/28
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "astahuml.inc"
 
-#declare UseCaseDiagram_3rj_6174cfd7c659288bc9badb700978b1e1 = union {
+#declare UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 = union {
   cylinder {-z, z 1 texture { T_Wood10 } scale <1.6, 0.6000000000000001, 0.05> texture { pigment { object { union { 
     text { ttf LabelFont "ユースケース", 1, 0 translate <-1, -0, 0> }
      scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}
@@ -21,9 +21,9 @@
    text { ttf LabelFont, "アクター", 1, 0 scale <16.0, 16.0, 2> texture { LabelTecture } translate <70.13, -276.71, 30.00> }
     sphere_sweep { linear_spline, 2, <89.33, -240.71, 4.00>, 3.0 <348.56, -233.67, 4.00>, 3.0 texture { AssociationTexture }}
 }
-object { UseCaseDiagram_3rj_6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <250.83, -600.83, -321.67>;
+object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
+#declare EYE = <250.83, -238.83, -521.67>;
 #declare FOCUS = <250.83, -238.83, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.00, -2000.00, -3000.00> color White }
+light_source { <-1000.00, -1000.00, -3000.00> color White }
 plane { z, 32.0 texture { UseCaseDiagramTexture }}

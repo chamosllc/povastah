@@ -25,6 +25,9 @@ public class StateMachineDiagram extends Diagram {
 		super(projectName, diagram, writer);
 	}
 
+	/**
+	 * サブダイアグラムがあれば、そのオブジェクトの宣言文を出力する
+	 */
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
@@ -32,22 +35,28 @@ public class StateMachineDiagram extends Diagram {
 				StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram, sceneWriter);
 				nestDiagram.existsTragetNodes();
 				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			} catch (Exception e) {}
 		}
 	}
 
+	/**
+	 * サブダイアグラムオブジェクトを返す
+	 * @param parent
+	 * @return nullの場合がある
+	 */
 	protected IStateMachineDiagram subDiagram(INodePresentation parent) {
 		if(hasSubDiagram(parent)) {
-			return ((IState) parent.getModel()).getSubmachine().getStateMachineDiagram();
+			return ((IState) parent.getModel()).getSubmachine().getStateMachineDiagram(); // null場合がある
 		}else {
 			return null;
 		}
 	}
 	
+	/**
+	 * サブダイアグラムを持つ性質のノードかどうか
+	 */
 	protected boolean hasSubDiagram(INodePresentation parent) {
-		return parent.getType()=="SubmachineState";
+		return parent.getType().equals("SubmachineState");
 	}
 
 	protected double subHeight(int hierarchy) {
