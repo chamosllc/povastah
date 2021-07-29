@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ムーブメント
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,7 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
 #declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
   object { InitialNode rotate -x*90 scale 24.0 translate <188.54, -61.33, 0.00> }

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah トップページ
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,7 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
 #declare StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 = union {
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <130.00, -89.33, 0.00> }
@@ -57,7 +57,7 @@
     sphere_sweep { linear_spline, 2, <169.11, -133.81, 4.00>, 3.0 <298.87, -133.81, 4.00>, 3.0 texture { TransitionTexture }}
 }
 object { StateMachineDiagram_1u2y6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <392.61, -133.67, -558.28>;
+#declare EYE = <392.61, -233.67, -358.28>;
 #declare FOCUS = <392.61, -133.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

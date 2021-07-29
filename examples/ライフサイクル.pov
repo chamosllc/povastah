@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフサイクル
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,7 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
 #declare ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f = union {
   object { InitialNode rotate -x*90 scale 24.0 translate <194.67, 16.67, 0.00> }

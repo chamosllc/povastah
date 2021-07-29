@@ -31,7 +31,7 @@ public class Diagram {
 			+ " * created at %s" + CR
 			+ " * presented by povastah" + CR + " **/" + CR + CR;
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
-			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"astahuml.inc\"" + CR + CR;
+			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR;
 	static final String COORDINATE = "<%.2f, %.2f, %.2f>"; // 座標系フォーマット
 
 	protected String projectName;

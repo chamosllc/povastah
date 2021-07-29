@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ロバストネス図
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,7 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
 #declare ClassDiagram_1ppa6174cfd7c659288bc9badb700978b1e1 = union {
   object { Boundary rotate -x*90 scale 24.0 translate <179.92, -265.39, 0.00> }

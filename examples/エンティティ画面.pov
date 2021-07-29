@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah エンティティ画面
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,7 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
 #declare StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 = union {
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <130.00, -89.33, 0.00> }

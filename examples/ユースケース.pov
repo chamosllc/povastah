@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ユースケース
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,7 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
 #declare UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 = union {
   cylinder {-z, z 1 texture { T_Wood10 } scale <1.6, 0.6000000000000001, 0.05> texture { pigment { object { union { 
@@ -22,7 +22,8 @@
     sphere_sweep { linear_spline, 2, <89.33, -240.71, 4.00>, 3.0 <348.56, -233.67, 4.00>, 3.0 texture { AssociationTexture }}
 }
 object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <250.83, -238.83, -521.67>;
+//#declare EYE = <250.83, -238.83, -521.67>;  
+#declare EYE = <250.83, -538.83, -261.67>;
 #declare FOCUS = <250.83, -238.83, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

@@ -97,7 +97,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 ## Install
 - [target/povastah-X.X-SNAPSHOT.jar](https://github.com/chamosllc/povastah/tree/master/target/povastah-1.1-SNAPSHOT.jar) をastahツールのインストールディレクトリ配下のpluginsディレクトリに配置する。
-- [includes](https://github.com/chamosllc/povastah/tree/master/includes)配下のインクルードファイル"astahuml.inc", "astahTexture.inc", "child.inc", "wheel.inc"をPOVRayのインクルードファイルディレクトリに配置する。
+- [includes](https://github.com/chamosllc/povastah/tree/master/includes)配下のインクルードファイル"povastah.inc", "umlTexture.inc", "povastahParts.inc"をPOVRayのインクルードファイルディレクトリに配置する。
 
 プラグインツール
 - [ツール]→[画像出力]→[POVRayスクリプト]で、出力ディレクトリを指定する。

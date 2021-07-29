@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah クラス継承階層
- * created at 2021/07/28
+ * created at 2021/07/29
  * presented by povastah
  **/
 
@@ -9,9 +9,9 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
-#include "astahuml.inc"
+#include "povastah.inc"
 
-// hierachy depth: {JpaRepository=2,  CrudRepository=3, EntityRepository=1,  PagingAndSortingRepository=4,  Repository=5}
+// hierachy depth: { CrudRepository=3,  Repository=5, JpaRepository=2,  PagingAndSortingRepository=4, EntityRepository=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {
