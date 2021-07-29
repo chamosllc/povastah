@@ -397,7 +397,7 @@ public class Diagram {
 	}
 
 	/**
-	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * torus | sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
 	 * @param sourcez ソースノードの高さ
 	 * @param targetz ターゲットノードの高さ
@@ -413,20 +413,30 @@ public class Diagram {
 			sceneWriter.write("  torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + sourcez));
 		}else {
 			Point2D[] points = link.getPoints();
-			if(points.length <= 2) { // 直線
-				sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
-				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
-				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
-			}else { // 曲線(折れ線も)
-				double deltaz = (targetz - sourcez)/(points.length + 1);
-				sceneWriter.write("    sphere_sweep { cubic_spline, " + (points.length + 2) + ", "); // 始点、終点の2点とpointsの数の合計
-				sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
-				for(int i=0; i < points.length; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + " ");
+			/*
+			 * 折れ線 sphere_sweep { linear_spline, points.length, ... } 始点・経由点N・終点のN+2点
+			 * 曲線   sphere_sweep { cubic_spline,  points.length+2, ... } 始点・始点・経由点・終点・終点の5点
+			 * 曲線   sphere_sweep { b_spline,  points.length+2, ... } 始点・始点・経由点N・終点・終点のN+4点
+			 * 
+			 * 経由点があるときは曲線(cubic_spline, N+4)、ないときは直線(linear_spline, 2)
+			 */
+			int length = points.length; // 2 or 5以上
+			if(length == 2) { // 直線
+				sceneWriter.write("    sphere_sweep { linear_spline, 2, ");
+			}else if(length == 3) { // 1点経由 曲線
+				sceneWriter.write("    sphere_sweep { cubic_spline, 5, ");
+			}else{ // 2点以上経由 曲線
+				sceneWriter.write("    sphere_sweep { b_spline, " + (length + 2) + ", ");
+			}
+			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
+			if(length > 2) { // 経由点を曲線で結ぶ
+				double deltaz = (targetz - sourcez)/(length + 1);
+				for(int i=0; i < length; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + " "); // 始点→経由点→終点
 					deltaz += deltaz;
 				}
-				sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 			}
+			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 		}
 		sceneWriter.write(linkTextureName(link));	
 	}
