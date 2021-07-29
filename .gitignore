@@ -1,6 +1,5 @@
 /pov/*.pov
 /pov/*.png
 LICENSE
-/target/*
 !/target/*.jar
 /target/
