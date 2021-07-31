@@ -24,10 +24,28 @@
 
 #declare State = cylinder {-0.1*y, 0.1*y, 1.0
      texture{ pigment{ spiral1 1 color_map{[0.0 color rgb <0.85, 0.85, 0.10>][1.6 color rgb<0.9,0.9,0.95, 0.7>]}}
-              finish{ Metal } scale 0.2 rotate x*90 } }
+              finish{ Metal } scale 0.2 rotate x*90 } } 
+/*
+#declare StateInternal = difference {
+    object { Round_Box_Union(<-0.5, -0.5, -0.5>, <0.5, 0.5, 0.5>, 0.002)}
+    object { Round_Box_Union(<-0.45, -0.45, -0.45>, <0.45, 0.45, 0.45>, 0.002)}
+    box { <-0.6, -0.6, -1>, <0.6, 0.6, 0> }
+  material { InternalTransitionTexture }}    
+*/    
+#declare StateInternal = difference {
+    box { <-0.5, -0.5, -0.5>, <0.5, 0.5, 1>}
+//    box { <-0.48, -0.47, -0.45>, <0.48, 0.47, 0.95> }
+    box { <-0.51, -0.51, -1>, <0.51, 0.51, 0> }
+//  texture { Yellow_Pine }}    
+ material { InternalTransitionTexture }}  
+/*
 #declare SubmachineState = cylinder { -0.2*y, 0.0*y, 2.6
      texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10, 0.7>][0.6 color rgb<0.9,0.95,1, 0.4>*1.2]}}
-              finish{ Metal } scale 0.15 } scale z*0.8 }
+              finish{ Metal } scale 0.15 } scale z*0.8 } 
+*/
+#declare SubmachineState = object { Round_Box_Union(<-0.6, -0.6, -0.2>, <0.6, 0.6, 0.0>, 0.1) 
+     texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10, 0.7>][0.6 color rgb<0.9,0.95,1, 0.4>*1.2]}}
+              finish{ Metal } scale 0.05 } scale z*0.8 }
 #declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }

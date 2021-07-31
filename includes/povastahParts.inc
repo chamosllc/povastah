@@ -14,8 +14,7 @@
 #include "agent.inc"
 #include "stones.inc"
 
-/** Private Materials for UML Objects **/
-#include "child.inc"
+#include"shapes.inc"
 
 /** povastah objects for UML elements **/
 #include "umlTexture.inc"

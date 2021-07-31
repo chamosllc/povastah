@@ -9,7 +9,6 @@ import com.change_vision.jude.api.inf.model.IAction;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
-import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 /**
  * ActivityDiagram Object in POVRay Scene
@@ -21,17 +20,19 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  */
 public class ActivityDiagram extends Diagram {
 
-	
+	/**
+	 * コンストラクタ
+	 */
 	public ActivityDiagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
 		super(projectName, diagram, sceneWriter);
 	}
 
 	/**
-	 * POVRayオブジェクト変換対象除外
-	 * @param presentation
-	 * @return
+	 * ノードが出力対象ではない
+	 * @param ノード
+	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition" | レーン : "Lane"
@@ -54,7 +55,7 @@ public class ActivityDiagram extends Diagram {
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
 				ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram, sceneWriter);
-				nestDiagram.existsTragetNodes();
+				nestDiagram.existsTragetPresence();
 				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
 		}

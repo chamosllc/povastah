@@ -14,6 +14,10 @@
 #declare AssociationTexture = texture { Yellow_Glass }
 #declare ControlFlow_ObjectFlowTexture = texture { Yellow_Glass }
 #declare TransitionTexture = texture { NBoldglass }
+#declare InternalTransitionTexture = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amethyst_04 } } 
+//#declare InternalTransitionTexture = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_02  } }
+//#declare InternalTransitionTexture = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } }
+//#declare InternalTransitionTexture = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Orange } }
 #declare GeneralizationTexture = texture { Orange_Glass }
 #declare RealizationTexture = texture { Vicks_Bottle_Glass }
 #declare DependencyTexture = texture { Peel }

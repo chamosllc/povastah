@@ -17,10 +17,22 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  */
 public class UseCaseDiagram extends ClassDiagram {
 
+	/**
+	 * コンストラクタ
+	 */
 	public UseCaseDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
 	}
-	
+
+	/**
+	 * 指定ノードをPOVRayオブジェクトとして出力する
+	 * UseCaseの場合はユースケース名を書いた楕円オブジェクトを出力する
+	 * 
+	 * @param hierarchy
+	 * @param node
+	 * @throws IOException
+	 */
+	@Override
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		if(node.getType().equals("UseCase")){
 			String[] labels = node.getLabel().split("\n");

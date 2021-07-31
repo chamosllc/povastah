@@ -24,28 +24,58 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  *
  */
 public class Diagram {
+	/**
+	 * POVRayオブジェクトのz値のオフセット
+	 */
 	static final protected double OFFSET_Z = 4.0;
-	static final protected String CR = System.lineSeparator(); // 改行
+	/**
+	 * 改行文字列
+	 */
+	static final protected String CR = System.lineSeparator();
+	/**
+	 * POVRayシーン記述のヘッダーコメント部
+	 */
 	static final protected String HEADER_COMMENT = "/**" + CR
 			+ " * astah* Diagram 3D Visualization\n * %s %s" + CR
 			+ " * created at %s" + CR
 			+ " * presented by povastah" + CR + " **/" + CR + CR;
+	/**
+	 * POVRayシーン記述のglobal_settings部
+	 */
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR;
+	/**
+	 * 3D座標系フォーマット
+	 */
 	static final String COORDINATE = "<%.2f, %.2f, %.2f>"; // 座標系フォーマット
 
+	/**
+	 * astahプロジェクト名
+	 */
 	protected String projectName;
-	protected OutputStreamWriter sceneWriter; // シーン言語スクリプト出力ファイル
+	/**
+	 * POVRayシーン記述出力ファイル
+	 */
+	protected OutputStreamWriter sceneWriter;
+	/**
+	 * 出力対象astahダイアグラム
+	 */
 	protected IDiagram diagram;
-	protected List<INodePresentation> nodes; // ダイアグラム中のノード要素(Frame, Noteを除く)
-	protected List<ILinkPresentation> links; // ダイアグラム中のリンク要素
-	protected Rectangle2D stage; // nodesの含まれる矩形
+	/**
+	 * ダイアグラム内の対象ノード要素
+	 */
+	protected List<INodePresentation> nodes;
+	/**
+	 * ダイアグラム内の対象リンク要素
+	 */
+	protected List<ILinkPresentation> links;
+	/**
+	 * ダイアグラム全体の表示領域
+	 */
+	protected Rectangle2D stage;
 	
 	/**
-	 * 
-	 * @param projectName
-	 * @param diagram
-	 * @param sceneWriter
+	 * コンストラクタ
 	 */
 	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
 		this.projectName = projectName;
@@ -54,10 +84,10 @@ public class Diagram {
 	}
 
 	/**
-	 * astahダイアグラムの3DCG表現を出力する
+	 * UMLダイアグラムのPOVRayシーン記述を出力する
 	 */
 	public void produce(){
-		if(existsTragetNodes()) {
+		if(existsTragetPresence()) {
 			try {
 				writeHeader();
 				writeDiagram(0, new Point2D.Double(), 0.0);
@@ -67,20 +97,22 @@ public class Diagram {
 	}
 	
 	/**
-	 * 対象とするダイアグラムのノード要素とリンク要素を抽出し、対象があるかどうかを返す
-	 * @return 対象があればtrue、なければfalse
-	 * 
+	 * POVRay出力対象のノードとリンクを抽出し、対象の有無を返す
+	 * @return 対象の有無
 	 */
-	protected boolean existsTragetNodes(){
+	protected boolean existsTragetPresence(){
 		nodes = new ArrayList<INodePresentation>();
 		links = new ArrayList<ILinkPresentation>();
 		try {
 			for(IPresentation presence: diagram.getPresentations()){ // 除外ノードでないノードを集める
-				if(presence instanceof INodePresentation && !excludeIPresentation(presence)) {
-					nodes.add((INodePresentation)presence);
-				}else if(presence instanceof ILinkPresentation) { // 除外ノードに繫がっていないリンクを集める
+				if(presence instanceof INodePresentation) {
+					INodePresentation node = (INodePresentation)presence;
+					if(!excludeIPresentation(node)) {
+						nodes.add(node);
+					}
+				}else if(presence instanceof ILinkPresentation) {
 					ILinkPresentation link = (ILinkPresentation)presence;
-					if(!excludeIPresentation(link.getSource()) && !excludeIPresentation(link.getTarget())){
+					if(!excludeIPresentation(link)){
 						links.add(link);
 					}
 				}
@@ -90,11 +122,11 @@ public class Diagram {
 	}
 
 	/**
-	 * POVRayオブジェクト変換対象除外
-	 * @param presentation
+	 * ノードが出力対象ではない
+	 * @param ノード
 	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
@@ -114,27 +146,16 @@ public class Diagram {
 	}
 
 	/**
-	 * POVRayオブジェクト変換対象除外
-	 * @param presentation
+	 * リンクが出力対象ではない
+	 * @param リンク
 	 * @return 除外リンクである
 	 */
 	protected boolean excludeIPresentation(ILinkPresentation presentation) {
-		/**
-		 * 除外対象要素
-		 * ノートアンカー : "NoteAnchor" |
-		 */	
-		final String[] excludes = {"NoteAnchor"};
-		String type = presentation.getType();
-		for(String exclude: excludes) {
-			if(type.equals(exclude)) {
-				return true;
-			}
-		}	 
-		return false;
+		return excludeIPresentation(presentation.getSource()) || excludeIPresentation(presentation.getTarget());
 	}
 	
 	/**
-	 * スクリプトのヘッダ部を出力する
+	 * シーン記述のヘッダ部を出力する
 	 * @throws IOException
 	 * @throws ProjectNotFoundException 
 	 */
@@ -147,7 +168,7 @@ public class Diagram {
 	}
 	
 	/**
-	 * ダイアグラムオブジェクトを出力する
+	 * ダイアグラムオブジェクト宣言部とそのシーン配置文を出力する
 	 * @throws IOException
 	 * @throws InvalidUsingException 
 	 */
@@ -158,7 +179,7 @@ public class Diagram {
 		writeNodes(hierarchy, dpoint, z);
 		writeLinks();
 		sceneWriter.write("}" + CR);
-		if(hierarchy == 0) { // サブダイアグラムは宣言のみ
+		if(hierarchy == 0) { // サブダイアグラムは宣言部で配置されており、シーンには直接配置しない
 			sceneWriter.write("object { " + name + " }" +CR);
 		}
 		sceneWriter.flush();

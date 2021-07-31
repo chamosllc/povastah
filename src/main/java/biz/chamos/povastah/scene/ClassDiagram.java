@@ -28,27 +28,42 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;;
  *
  */
 public class ClassDiagram extends Diagram {
-	protected Map<IClass, Integer> hierDepth = new HashMap<>();
+	/**
+	 * クラス継承関係にあるノード間のz値の差分
+	 */
 	static final protected double DEPTH_OFFSET = -32.0;
+	
+	/**
+	 * ダイアグラム内でのクラス継承順位(最下位は1)
+	 */
+	protected Map<IClass, Integer> classHierachyOrder = new HashMap<>();
 
+
+	/*
+	 * コンストラクタ
+	 */
 	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
 		super(projectName, diagram, writer);
 	}
 
-	protected boolean existsTragetNodes(){
-		boolean exists = super.existsTragetNodes();
+	/**
+	 * POVRay出力対象のノードとリンクを抽出し、対象の有無を返す
+	 * @return 対象の有無
+	 */
+	protected boolean existsTragetPresence(){
+		boolean exists = super.existsTragetPresence();
 		if(exists) {
-			classHierachies();
+			setClassHierachyOrder();
 		}
 		return exists;
 	}
 	
 	/**
-	 * クラス継承関係にあるのクラス毎の深さを決める
+	 * ダイアグラム内でのクラス継承順位を求める
 	 * 
 	 * @throws IOException 
 	 */
-	protected void classHierachies() {
+	protected void setClassHierachyOrder() {
 		Collection<IClass> models = new HashSet<>();
 		for(INodePresentation node: nodes) {
 			if(node.getModel() instanceof IClass) {
@@ -74,29 +89,29 @@ public class ClassDiagram extends Diagram {
 				}
 				if(specials.size() > 0) {
 					for(IClass subClass: specials) {
-						if(hierDepth.containsKey(subClass)) {
-							depth = Math.max(depth, hierDepth.get(subClass) + 1);
+						if(classHierachyOrder.containsKey(subClass)) {
+							depth = Math.max(depth, classHierachyOrder.get(subClass) + 1);
 						}
 					}
-					if(hierDepth.containsKey(target)) {
-						hierDepth.replace(target, depth);
+					if(classHierachyOrder.containsKey(target)) {
+						classHierachyOrder.replace(target, depth);
 					}else {
-						hierDepth.put(target, depth);
+						classHierachyOrder.put(target, depth);
 					}
 				}
 				depth++;
 				for(IClass superClass: generals) {
-					if(hierDepth.containsKey(superClass)) {
-						if(depth >  hierDepth.get(superClass)) {
-							hierDepth.replace(superClass, depth);
+					if(classHierachyOrder.containsKey(superClass)) {
+						if(depth >  classHierachyOrder.get(superClass)) {
+							classHierachyOrder.replace(superClass, depth);
 							spreadRoot(superClass.getGeneralizations(), depth + 1);
 						}
 					}else {
-						hierDepth.put(superClass, depth);
+						classHierachyOrder.put(superClass, depth);
 					}
 				}
-				if(!hierDepth.containsKey(target)) {
-					hierDepth.put(target, 1);
+				if(!classHierachyOrder.containsKey(target)) {
+					classHierachyOrder.put(target, 1);
 				}
 			}
 		}
@@ -108,9 +123,9 @@ public class ClassDiagram extends Diagram {
 	protected void spreadRoot(IGeneralization[] generals, int depth) {
 		for(IGeneralization general: generals) {
 			IClass superClass = (IClass) general.getSuperType();
-			if(hierDepth.containsKey(superClass)) {
-				if(depth > hierDepth.get(superClass)) {
-					hierDepth.replace(superClass, depth);
+			if(classHierachyOrder.containsKey(superClass)) {
+				if(depth > classHierachyOrder.get(superClass)) {
+					classHierachyOrder.replace(superClass, depth);
 					spreadRoot(superClass.getGeneralizations(), depth + 1);
 				}
 			}
@@ -121,11 +136,11 @@ public class ClassDiagram extends Diagram {
 	 * 階層の深さに応じてカメラを離す
 	 */
 	protected double cameraDistance(double z) {
-		if(hierDepth.isEmpty()) {
+		if(classHierachyOrder.isEmpty()) {
 			return super.cameraDistance(z);
 		}else {
 			int distance = 0;
-			for(Integer depth: hierDepth.values()) {
+			for(Integer depth: classHierachyOrder.values()) {
 				distance = Math.max(distance, depth);
 			}
 			return super.cameraDistance(z - (distance + 1) * 32.0);
@@ -137,8 +152,8 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void writeHeader() throws IOException {
 		super.writeHeader();
-		if(hierDepth.size() > 1) {
-			sceneWriter.write("// hierachy depth: " + hierDepth + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
+		if(classHierachyOrder.size() > 1) {
+			sceneWriter.write("// hierachy depth: " + classHierachyOrder + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
 			sceneWriter.flush();
 		}
 	}
@@ -148,8 +163,8 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected double nodePositionZ(INodePresentation node) {
 		double z = super.nodePositionZ(node);
-		if(hierDepth.containsKey(node.getModel())) {
-			z = hierDepth.get(node.getModel()) * DEPTH_OFFSET;
+		if(classHierachyOrder.containsKey(node.getModel())) {
+			z = classHierachyOrder.get(node.getModel()) * DEPTH_OFFSET;
 		}
 		return z;
 	}
@@ -164,11 +179,11 @@ public class ClassDiagram extends Diagram {
 	}
 	
 	/**
-	 * POVRayオブジェクト変換対象除外
-	 * @param presentation
-	 * @return
+	 * ノードが出力対象ではない
+	 * @param ノード
+	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(IPresentation presentation) {
+	protected boolean excludeIPresentation(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * パッケージ : "Package" | サブシステム : "Subsystem" | 構造化クラス : "StructuredClass" | 汎化共有表記 : "GeneralizationGroup"
