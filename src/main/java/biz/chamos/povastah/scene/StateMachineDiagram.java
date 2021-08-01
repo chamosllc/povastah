@@ -89,7 +89,7 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	/**
-	 * 指定ノードをPOVRayオブジェクトとして出力する
+	 * 指定ノードのPOVRayオブジェクトを描く
 	 * 内部状態のある状態
 	 * 
 	 * @param hierarchy
@@ -98,7 +98,6 @@ public class StateMachineDiagram extends Diagram {
 	 */
 	@Override
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
-		sceneWriter.flush();
 		if(hasSubDiagram(node)) {
 			writeSubmachineState(hierarchy, node);
 		}else if(!writeVertex(node)) {
@@ -123,7 +122,7 @@ public class StateMachineDiagram extends Diagram {
 					} catch (InvalidUsingException e) {}
 				}
 				sceneWriter.write("  }" + CR);
-				writeLabel(node);
+				writeLabelOnStage(node, node.getRectangle());
 				return true;
 			}
 		}
@@ -153,7 +152,11 @@ public class StateMachineDiagram extends Diagram {
 			scale = subBound.getWidth()/subBound.getHeight();
 		}
 		sceneWriter.write("  object { " + povrayObjectType(node) + " scale <" + bound.getWidth() + ", " + bound.getHeight() + ", 16> " + translate(nodePosition(node), nodePositionZ(node)) + " }" + CR);
-		writeLabel(node);
+		if(subDiagram != null) {
+			writeLabelOnStage(node, bound);
+		}else {
+			writeLabel(node);
+		}
 	}
 	
 	/**

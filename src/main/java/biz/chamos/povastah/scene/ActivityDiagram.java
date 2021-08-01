@@ -82,7 +82,7 @@ public class ActivityDiagram extends Diagram {
 	}
 	
 	protected double subHeight(int hierarchy) {
-		return -27.0 - Math.pow(1.23, hierarchy);
+		return -28.0 - Math.pow(1.23, hierarchy);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class ActivityDiagram extends Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
+	protected boolean writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
 			double expand = 0.0;
@@ -104,33 +104,26 @@ public class ActivityDiagram extends Diagram {
 			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());
 			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + " translate <"
 			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
-			sceneWriter.flush();
+			writeLabelOnStage(node, p);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
-	 * Nodeのラベルオブジェクトを出力する
+	 * サブダイアグラム上にノードのラベルを描く
 	 * @param node
+	 * @param bound
 	 * @throws IOException
 	 */
-	protected void writeLabel(INodePresentation node) throws IOException {
-		final double scale = 16.0;
-		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
-		double labelShift = 36.0;
-		String nodeLabel = "";
-		if(!(nodeLabel = label(node)).isEmpty()) {
-			double labelY = 0.0;
-			int merginX = 0;
-			for(String label: nodeLabel.split("\n")) {
-				Point2D point = nodePosition(node);
-				if(merginX == 0) {
-					merginX = label.getBytes().length*3;
-				}
-				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write("   text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
-					+ translate(point, 32.0 - 2.0) + " }" + CR);
-				labelY+= scale;
-			}
+	protected void writeLabelOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
+		/*
+		 * writeLabel
+		 */
+		String label = label(node);
+		if(!label.isEmpty()) {
+			sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0 scale <16, 16, 2> texture { LabelTecture }"
+					+ translate(new Point2D.Double(bound.getMinX() + 28.0, bound.getMaxY() + 32), nodePositionZ(node) + 31) + " }" + CR);
 		}
 	}
 }

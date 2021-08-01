@@ -25,7 +25,7 @@ public class UseCaseDiagram extends ClassDiagram {
 	}
 
 	/**
-	 * 指定ノードをPOVRayオブジェクトとして出力する
+	 * 指定ノードのPOVRayオブジェクトを描く
 	 * UseCaseの場合はユースケース名を書いた楕円オブジェクトを出力する
 	 * 
 	 * @param hierarchy
@@ -58,7 +58,7 @@ public class UseCaseDiagram extends ClassDiagram {
 	}
 	
 	/**
-	 * Nodeのラベルオブジェクトを出力する
+	 * ノードのラベルを描く
 	 * @param node
 	 * @throws IOException
 	 */

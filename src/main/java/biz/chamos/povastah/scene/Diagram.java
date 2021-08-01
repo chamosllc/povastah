@@ -248,7 +248,7 @@ public class Diagram {
 		double stageX = stage.getCenterX();
 		double stageY = -stage.getCenterY();
 		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
-		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY, stageZ));
+		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 180, stageZ + 120));
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
 		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
 		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
@@ -282,12 +282,11 @@ public class Diagram {
 	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
 		for (INodePresentation node : nodes) {
 			writeNode(hierarchy, node);
-			sceneWriter.flush();
 		}
 	}
 
 	/**
-	 * 指定ノードをPOVRayオブジェクトとして出力する
+	 * 指定ノードのPOVRayオブジェクトを描く
 	 * 
 	 * @param hierarchy
 	 * @param node
@@ -297,8 +296,9 @@ public class Diagram {
 		final double scale = 24.0;
 		Point2D point = nodePosition(node);	
 		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point, nodePositionZ(node)) + " }" + CR);
-		writeLabel(node);
-		writeSubDiagram(hierarchy + 1, node);
+		if(!writeSubDiagram(hierarchy + 1, node)) {
+			writeLabel(node);
+		}
 	}
 
 	protected double nodePositionZ(INodePresentation node) {
@@ -342,23 +342,48 @@ public class Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {	}
+	protected boolean writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
+		return false;
+	}
 
 	/**
-	 * ノードのラベルを出力する
+	 * ノードのラベルを描く
 	 * @param node
 	 * @throws IOException
 	 */
 	protected void writeLabel(INodePresentation node) throws IOException {
-		final double scale = 16.0;
-		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
-		double labelShift = 36.0;
-		String label = "";
-		if(!(label = label(node)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
-			Point2D point = nodePosition(node);
-			point.setLocation(node.getLocation().getX() + 48 - label.getBytes().length*4 , point.getY() + labelShift );
-			sceneWriter.write("  text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LabelTecture }"
-				+ translate(point, 30.0) + " }" + CR);
+		String nodeLabel = "";
+		if(!(nodeLabel = label(node)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+			double step = 0.8;
+			Point2D point = (Point2D)nodePosition(node);
+			for(String label: nodeLabel.split("\n")) {
+				double radius = 1.6;
+				double scale = 1.0;
+				if(label.getBytes().length >= 20) { // 文字列が1週を越えるとエラーになる。20文字を目安に、サイズの縮小と半径の拡大を補正してエラーを避ける。
+					scale -= (label.getBytes().length - 20)/30.0;
+					radius += (label.getBytes().length - 20)/30.0;
+				}
+				sceneWriter.write("    object { Circle_Text( LabelFont, \"" + label + "\", " + scale + ", 0, 2, " + radius + ", 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture }"
+					+ translate(point, 30.0) + " }" + CR);
+				radius += step;
+			}
+		}
+	}
+
+	/**
+	 * サブダイアグラム上にノードのラベルを描く
+	 * @param node
+	 * @param bound
+	 * @throws IOException
+	 */
+	protected void writeLabelOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
+		/*
+		 * writeLabel
+		 */
+		String label = label(node);
+		if(!label.isEmpty()) {
+			sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0 scale <16, 16, 2> texture { LabelTecture }"
+					+ translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), nodePositionZ(node) - 4) + " }" + CR);
 		}
 	}
 	
@@ -371,7 +396,7 @@ public class Diagram {
 	}
 	
 	/**
-	 * ノードのラベルを出力する
+	 * ノードのラベルを描く
 	 * @param link
 	 * @throws IOException
 	 */
@@ -409,7 +434,7 @@ public class Diagram {
 	}
 
 	/**
-	 * リンクオブジェクトを出力する 
+	 * リンクオブジェクトを描く
 	 * @param link
 	 * @throws IOException
 	 */
@@ -418,7 +443,7 @@ public class Diagram {
 	}
 
 	/**
-	 * torus | sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * torus | sphere_sweep{ linear_spline | cubic_spline }を描く
 	 * @param link
 	 * @param sourcez ソースノードの高さ
 	 * @param targetz ターゲットノードの高さ

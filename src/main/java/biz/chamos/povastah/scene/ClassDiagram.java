@@ -199,7 +199,7 @@ public class ClassDiagram extends Diagram {
 	}
 	
 	/**
-	 * リンクオブジェクトを出力する 
+	 * リンクオブジェクトを描く
 	 * @param link
 	 * @throws IOException
 	 */
