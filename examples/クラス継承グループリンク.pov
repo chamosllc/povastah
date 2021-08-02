@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah クラス継承グループリンク
- * created at 2021/08/01
+ * created at 2021/08/02
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "povastah.inc"
 
-// hierachy depth: {クラス2=1, クラス1=1, クラス0=2}
+// hierachy depth: {クラス0=2, クラス1=1, クラス2=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {

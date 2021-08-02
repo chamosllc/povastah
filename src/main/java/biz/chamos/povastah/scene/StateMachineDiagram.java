@@ -39,7 +39,7 @@ public class StateMachineDiagram extends Diagram {
 			try {
 				StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram, sceneWriter);
 				nestDiagram.existsTragetPresence();
-				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
+				nestDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
 		}
 	}
@@ -105,20 +105,27 @@ public class StateMachineDiagram extends Diagram {
 		}
 	}
 	
+	/**
+	 * 内部状態ステージを描く
+	 * @param node
+	 * @return
+	 * @throws IOException
+	 */
 	protected boolean writeVertex(INodePresentation node) throws IOException {
 		if(node.getModel() instanceof IState) {
 			IState state = (IState)node.getModel();
 			if(state.getRegionSize() > 0) {
 				IVertex[] vertex = state.getSubvertexes();
-				sceneWriter.write("  difference { ");
 				Rectangle2D bound = node.getRectangle();
 				Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-				sceneWriter.write("    object { StateInternal scale <" + bound.getWidth() + ", " + bound.getHeight() + ", 16> " + translate(point, nodePositionZ(node)) + " }" + CR);
+				sceneWriter.write("  difference { object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+					+ translate(point, nodePositionZ(node)) + " }" + CR);
 				for(int i=0; i < vertex.length; i++) {
 					try {
 						bound = state.getRegionRectangle(i);
 						point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-						sceneWriter.write("    object { StateInternal scale <" + (bound.getWidth()*0.95) + ", " + (bound.getHeight()*0.95) + ", 12> " + translate(point, nodePositionZ(node) - 6) + " }" + CR);						
+						sceneWriter.write("    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth()*0.95, bound.getHeight()*0.95, 12.0)
+							+ translate(point, nodePositionZ(node) - 6) + " }" + CR);						
 					} catch (InvalidUsingException e) {}
 				}
 				sceneWriter.write("  }" + CR);
@@ -151,7 +158,8 @@ public class StateMachineDiagram extends Diagram {
 			writeSubDiagram(hierarchy + 1, node);
 			scale = subBound.getWidth()/subBound.getHeight();
 		}
-		sceneWriter.write("  object { " + povrayObjectType(node) + " scale <" + bound.getWidth() + ", " + bound.getHeight() + ", 16> " + translate(nodePosition(node), nodePositionZ(node)) + " }" + CR);
+		sceneWriter.write("  object { " + povrayObjectType(node) + " scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+			+ translate(nodePosition(node), nodePositionZ(node)) + " }" + CR);
 		if(subDiagram != null) {
 			writeLabelOnStage(node, bound);
 		}else {
@@ -180,18 +188,22 @@ public class StateMachineDiagram extends Diagram {
 				difference[0] = link.getTarget();
 			}
 		}
-		if(difference[0] != null || difference[1] != null) {
+		boolean connectVertex = !(difference[0] == null && difference[1] == null);
+		if(connectVertex) {
 			sceneWriter.write("  difference {" +CR);
 		}
+		//
 		super.writeSpline(link, sourcez, targetz);
+		//
 		for(int i=0; i < difference.length; i++) {
 			if(difference[i] != null) {
 				Rectangle2D bound = (i==0)?difference[i].getRectangle():difference[i].getRectangle();
 				Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-				sceneWriter.write("    object { StateInternal scale <" + bound.getWidth() + ", " + bound.getHeight() + ", 16> " + translate(point, nodePositionZ(difference[i])) + " }" + CR);
+				sceneWriter.write("    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+					+ translate(point, nodePositionZ(difference[i])) + " }" + CR);
 			}
 		}
-		if(difference[0] != null || difference[1] != null) {
+		if(connectVertex) {
 			sceneWriter.write("  }" +CR);
 		}
 	}

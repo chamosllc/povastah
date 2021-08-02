@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah リスト画面
- * created at 2021/08/01
+ * created at 2021/08/02
  * presented by povastah
  **/
 
@@ -15,11 +15,11 @@
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <130.00, -89.33, 0.00> }
   object { State rotate -x*90 scale 24.0 translate <232.57, -89.15, 0.00> }
     object { Circle_Text( LabelFont, "find", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <232.57, -89.15, 30.00> }
-  difference {     object { StateInternal scale <252.0, 180.30729166666669, 16>  translate <460.67, -185.85, 0.00> }
-    object { StateInternal scale <239.39999999999998, 98.11718750000001, 12>  translate <460.67, -147.33, -6.00> }
-    object { StateInternal scale <239.39999999999998, 73.17473958333333, 12>  translate <460.67, -237.49, -6.00> }
+  difference { object { StateInternal scale<252.00, 180.31, 16.00> translate <460.67, -185.85, 0.00> }
+    object { StateInternal scale<239.40, 98.12, 12.00> translate <460.67, -147.33, -6.00> }
+    object { StateInternal scale<239.40, 73.17, 12.00> translate <460.67, -237.49, -6.00> }
   }
-    text { ttf LabelFont, "show", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <346.67, -111.69, -4.00> }
+    text { ttf LabelFont, "show", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <346.67, -111.69, -0.01> }
   object { State rotate -x*90 scale 24.0 translate <241.90, -222.49, 0.00> }
     object { Circle_Text( LabelFont, "select", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <241.90, -222.49, 30.00> }
   object { FinalState rotate -x*90 scale 24.0 translate <130.00, -250.67, 0.00> }
@@ -35,16 +35,16 @@
   torus { 36.0, 3.0 translate <232.57, -89.15, -32.00>texture { TransitionTexture }}
   difference {
     sphere_sweep { cubic_spline, 5, <232.57, -89.15, 4.00>, 3.0 <232.57, -89.15, 4.00>, 3.0 <300.00, -55.33, 4.00>, 3.0 <460.67, -185.85, 4.00>, 3.0 <460.67, -185.85, 4.00>, 3.0 texture { TransitionTexture }}
-    object { StateInternal scale <252.0, 180.30729166666669, 16>  translate <460.67, -185.85, 0.00> }
+    object { StateInternal scale<252.00, 180.31, 16.00> translate <460.67, -185.85, 0.00> }
   }
   difference {
     sphere_sweep { linear_spline, 2, <460.67, -185.85, 4.00>, 3.0 <241.90, -222.49, 4.00>, 3.0 texture { TransitionTexture }}
-    object { StateInternal scale <252.0, 180.30729166666669, 16>  translate <460.67, -185.85, 0.00> }
+    object { StateInternal scale<252.00, 180.31, 16.00> translate <460.67, -185.85, 0.00> }
   }
     sphere_sweep { linear_spline, 2, <241.90, -222.49, 4.00>, 3.0 <130.00, -250.67, 4.00>, 3.0 texture { TransitionTexture }}
   difference {
     sphere_sweep { linear_spline, 2, <460.67, -185.85, 4.00>, 3.0 <232.57, -89.15, 4.00>, 3.0 texture { TransitionTexture }}
-    object { StateInternal scale <252.0, 180.30729166666669, 16>  translate <460.67, -185.85, 0.00> }
+    object { StateInternal scale<252.00, 180.31, 16.00> translate <460.67, -185.85, 0.00> }
   }
     sphere_sweep { linear_spline, 2, <360.00, -167.15, 4.00>, 3.0 <460.57, -167.15, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <360.00, -235.82, 4.00>, 3.0 <460.57, -235.82, 4.00>, 3.0 texture { TransitionTexture }}

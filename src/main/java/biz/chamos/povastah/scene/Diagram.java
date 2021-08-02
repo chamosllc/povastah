@@ -90,7 +90,7 @@ public class Diagram {
 		if(existsTragetPresence()) {
 			try {
 				writeHeader();
-				writeDiagram(0, new Point2D.Double(), 0.0);
+				writeDiagram(new Point2D.Double(), 0.0);
 				writeStage();
 			}catch(IOException | InvalidUsingException e) {}
 		}
@@ -168,25 +168,27 @@ public class Diagram {
 	}
 	
 	/**
-	 * ダイアグラムオブジェクト宣言部とそのシーン配置文を出力する
+	 * ダイアグラムオブジェクトを宣言し、ダイアグラムを描く
 	 * @throws IOException
 	 * @throws InvalidUsingException 
 	 */
-	protected void writeDiagram(int hierarchy, Point2D dpoint, double z) throws IOException, InvalidUsingException {
+	protected void writeDiagram(Point2D dpoint, double z) throws IOException, InvalidUsingException {
+		sceneWriter.write("object { " + declareDiagram(0, dpoint, z) + " }" +CR);
+		sceneWriter.flush();
+	}
+
+	protected String declareDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
 		declareSubDiagrams(hierarchy, dpoint, z);
 		String name = povrayName();
 		sceneWriter.write("#declare " + name + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
 		writeLinks();
 		sceneWriter.write("}" + CR);
-		if(hierarchy == 0) { // サブダイアグラムは宣言部で配置されており、シーンには直接配置しない
-			sceneWriter.write("object { " + name + " }" +CR);
-		}
-		sceneWriter.flush();
+		return name;
 	}
 
 	/**
-	 * サブダイアグラムを持つノードすべてのサブダイアグラムを宣言する
+	 * すべてのサブダイアグラムを宣言する
 	 * 
 	 * @param hierarchy
 	 * @param dpoint
@@ -383,7 +385,7 @@ public class Diagram {
 		String label = label(node);
 		if(!label.isEmpty()) {
 			sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0 scale <16, 16, 2> texture { LabelTecture }"
-					+ translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), nodePositionZ(node) - 4) + " }" + CR);
+					+ translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), nodePositionZ(node) - 0.01) + " }" + CR);
 		}
 	}
 	
@@ -402,7 +404,7 @@ public class Diagram {
 	 */
 	protected void writeLabel(ILinkPresentation link) throws IOException {
 		final double scale = 16.0;
-		final String SCALE = " scale <" + scale + ", " +  scale + ", 2> ";
+		final String SCALE = " scale" + String.format(COORDINATE, scale , scale, 2);
 		double labelShift = 36.0;
 		String linkLabel = "";
 		if(!(linkLabel = label(link)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。

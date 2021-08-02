@@ -56,7 +56,7 @@ public class ActivityDiagram extends Diagram {
 			try {
 				ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram, sceneWriter);
 				nestDiagram.existsTragetPresence();
-				nestDiagram.writeDiagram(hierarchy, new Point2D.Double(), z);
+				nestDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
 		}
 	}
