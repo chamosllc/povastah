@@ -390,10 +390,6 @@ public class Diagram {
 	}
 	
 	protected String label(IPresentation presence) {
-		String type = presence.getType();
-		if(type.contains("Initial") || type.contains("Final") || type.contains("Choice") || type.equals("ForkNode") || type.equals("JoinNode")) {
-			return "";
-		}
 		return presence.getLabel();
 	}
 	

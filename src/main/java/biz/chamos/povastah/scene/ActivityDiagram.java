@@ -8,7 +8,9 @@ import java.io.OutputStreamWriter;
 import com.change_vision.jude.api.inf.model.IAction;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
+import com.change_vision.jude.api.inf.model.IObjectNode;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
+import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 /**
  * ActivityDiagram Object in POVRay Scene
@@ -108,6 +110,14 @@ public class ActivityDiagram extends Diagram {
 			return true;
 		}
 		return false;
+	}
+
+	protected String label(IPresentation presence) {
+		String label = super.label(presence);
+		if(presence.getModel() instanceof IObjectNode) {
+			label = label.replace(" ", "");
+		}
+		return label;
 	}
 	
 	/**

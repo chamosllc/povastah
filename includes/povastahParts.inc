@@ -15,6 +15,8 @@
 #include "stones.inc"
 
 #include"shapes.inc"
+#include"shapes2.inc"
+#include"shapes3.inc"
 
 /** povastah objects for UML elements **/
 #include "umlTexture.inc"
@@ -89,6 +91,11 @@
         scale 2
 }
 
+/** ProcessShape **/
+#declare ProcessShape = union {
+        object{ Rhomboid scale <1.6,0.5,1>*0.5 translate -y*0.25 }
+        object{ Rhomboid scale <1.6,0.5,1>*0.5 rotate x*180 translate y*0.25  } rotate -x*90 }
+         
 /**** Child ****/
 //blob constants
 #declare T = 0.57;	//threshold

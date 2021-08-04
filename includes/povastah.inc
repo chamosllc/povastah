@@ -12,11 +12,17 @@
 
 #declare LabelFont = "msgothic.ttc"
 /*
- * Diagram
+ * Class Diagram
  */
 #declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
 
-#declare ObjectNode = object { Class texture { T_Wood23 }}
+#declare Interface = object { Class texture { T_Old_Glass } scale 0.8 }
+#declare InstanceSpecification = object { Class texture { T_Wood23 }} 
+
+/*
+ * Use Case Diagram
+ */
+#declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
 
 /*
  * State Transition Diagram
@@ -59,13 +65,7 @@
 #declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
-
-/*
- * Use Case Diagram
- */
-#declare UseCase = object { SubmachineState }
-#declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
-                      
+                 
 /*
  * Activity Diagram
  */ 
@@ -94,7 +94,7 @@
 
 #declare JoinNode = union {
     cylinder {<0, 0, -0.3>, <0, 0, -0.2>, 1 texture {T_Copper_4A}}
-    cylinder {<0, 0, -0.2>, <0, 0,  0.3>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }} 
+    cylinder {<0, 0, -0.2>, <0, 0,  0.3>, 1 material { texture { pigment { color rgbf<1, 1, 1, 0.8> } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }} 
 }
 
 #declare Activity=union{
@@ -104,9 +104,25 @@
 }
 
 #declare CallBehaviorAction = object { Activity scale 2 translate y*1 }
-#declare SendSignalAction = object { Action }
+
+#declare Process = union {
+        object{ ProcessShape }
+        texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> } } scale 1/4 } }
+#declare SendSignalAction = difference {
+    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_01 } } }
+    box { <-2, -1, -1>, <-0.5, 1, 1> } translate -x*0.4 }
 #declare DecisionNodeMergeNode  = object { Wheel }
-#declare AcceptEventAction = object { Action }   
+#declare AcceptEventAction = difference {
+    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } } }
+    box { <0.5, -1, -1>, <2, 1, 1> } translate x*0.4 }
+#declare AcceptTimeEventAction = intersection{
+    box {<-2.5,-1.25, -2.5>,<2.5, 1.25, 2.5>}
+    object{ Hyperboloid_Y }
+    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } }
+    scale 0.5
+}
+  
+#declare ObjectNode = object { InstanceSpecification }
 
 /*
  * Robustness Diagram
@@ -138,9 +154,6 @@
     object { Spiral scale 1.15 }     
     object { Class }
 }
-
-#declare Interface = object { Class texture { T_Old_Glass } scale 0.8 }
-#declare InstanceSpecification = object { ObjectNode } 
 
 #declare BoundaryInstance = union {
     union { 

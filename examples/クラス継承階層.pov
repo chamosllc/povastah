@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah クラス継承階層
- * created at 2021/08/02
+ * created at 2021/08/04
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "povastah.inc"
 
-// hierachy depth: {EntityRepository=1, PagingAndSortingRepository=4, JpaRepository=2, Repository=5, CrudRepository=3}
+// hierachy depth: {JpaRepository=2, Repository=5, EntityRepository=1, PagingAndSortingRepository=4, CrudRepository=3}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {

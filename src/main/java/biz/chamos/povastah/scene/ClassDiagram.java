@@ -171,7 +171,7 @@ public class ClassDiagram extends Diagram {
 
 	protected String label(IPresentation presence) {
 		String label = super.label(presence);
-		if(presence.getType().equals("InstanceSpecification")) {
+		if(presence.getModel() instanceof IInstanceSpecification) {
 			IClass model = ((IInstanceSpecification)(presence.getModel())).getClassifier();
 			label += ":" + model.getName();
 		}
