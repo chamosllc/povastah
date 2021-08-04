@@ -27,7 +27,7 @@
   object { Action rotate -x*90 scale 24.0 translate <253.00, -87.76, 0.00> }
     object { Circle_Text( LabelFont, "Action", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <253.00, -87.76, 30.00> }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate <285.48, -306.46, 0.00> }
-  object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale 0.17718023255813953 translate <270.04039655960435, -283.0462209302325, -29.23> }
+  object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale 0.21281424581005587 translate <259.27, -270.68, -7.66>}
     text { ttf LabelFont, "CallBehaviorAction", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <251.98, -357.51, 31.00> }
   object { ActivityFinal rotate -x*90 scale 24.0 translate <629.33, -309.09, 0.00> }
     object { Circle_Text( LabelFont, "ActivityFinal", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <629.33, -309.09, 30.00> }

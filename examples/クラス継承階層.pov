@@ -11,7 +11,7 @@
 
 #include "povastah.inc"
 
-// hierachy depth: {JpaRepository=2, Repository=5, CrudRepository=3, PagingAndSortingRepository=4, EntityRepository=1}
+// hierachy depth: {Repository=5, CrudRepository=3, JpaRepository=2, PagingAndSortingRepository=4, EntityRepository=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {

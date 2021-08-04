@@ -83,10 +83,6 @@ public class ActivityDiagram extends Diagram {
 		return parent.getType().equals("CallBehaviorAction");
 	}
 	
-	protected double subHeight(int hierarchy) {
-		return -28.0 - Math.pow(1.23, hierarchy);
-	}
-	
 	/**
 	 * 振る舞い呼び出しアクション、サブマシン状態にサブダイアグラムを配置する
 	 * ※pending : とりあえず、サブダイアグラムのPOVRayオブジェクトを呼び出すテンプレートをコメント出力する
@@ -99,19 +95,18 @@ public class ActivityDiagram extends Diagram {
 	protected boolean writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
-			double expand = 0.0;
-			Rectangle2D r = subDiagram.getBoundRect(); 
-			Rectangle2D p = node.getRectangle();
-			r.setRect(r.getMinX() - expand, r.getMinY() - expand, r.getWidth() + expand*2, r.getHeight() + expand*2);
-			double scale = Math.min(node.getWidth()/r.getWidth(), node.getHeight()/r.getHeight());
-			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + " translate <"
-			+ (p.getCenterX() - scale * r.getCenterX()) + ", " + (-p.getCenterY() + scale * r.getCenterY()) + ", " + subHeight(hierarchy) + "> }" + CR);
-			writeLabelOnStage(node, p);
+			Rectangle2D bound = node.getRectangle();
+			Rectangle2D subBound = subDiagram.getBoundRect(); 
+			double scale = Math.min(bound.getWidth()/(subBound.getWidth() - 36), bound.getHeight()/(subBound.getHeight() - 36));
+			double posz = nodePositionZ(node) - 36*scale;
+			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + 36)*scale, bound.getCenterY() - (subBound.getCenterY() + 36)*scale);
+			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
+			writeLabelOnStage(node, bound);
 			return true;
 		}
 		return false;
 	}
-
+	
 	protected String label(IPresentation presence) {
 		String label = super.label(presence);
 		if(presence.getModel() instanceof IObjectNode) {

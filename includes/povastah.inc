@@ -61,7 +61,7 @@
   scale 0.8
 }
 
-#declare CallBehaviorAction = object { Activity scale 2 translate y*1 }
+#declare CallBehaviorAction = object { Activity scale 2 }
 
 #declare Process = union {
         object{ ProcessShape scale x*9/10 translate x*0.4 }

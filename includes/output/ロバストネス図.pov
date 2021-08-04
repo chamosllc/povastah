@@ -26,7 +26,7 @@
     object { Circle_Text( LabelFont, "ControlInstance:Control", 0.9, 0, 2, 1.7000000000000002, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <480.00, -205.55, 30.00> }
 }
 object { ClassDiagram_2rn48e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <293.40, -332.67, -358.06>;
+#declare EYE = <293.40, -392.67, -398.06>;
 #declare FOCUS = <293.40, -152.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

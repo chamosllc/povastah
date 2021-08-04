@@ -64,10 +64,6 @@ public class StateMachineDiagram extends Diagram {
 		return parent.getType().equals("SubmachineState");
 	}
 
-	protected double subHeight(int hierarchy) {
-		return -7.0 - Math.pow(1.23, hierarchy);
-	}
-	
 	/**
 	 * ノードが出力対象ではない
 	 * @param ノード

@@ -68,7 +68,6 @@
     text { ttf LabelFont, "entityEntry.html", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <408.81, 19.64, -0.01> }
   object { ChoicePseudostate rotate -x*90 scale 24.0 translate <168.00, -130.67, 0.00> }
     object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <168.00, -130.67, 30.00> }
-// node: 183.664384765625 x 74.28125 sub: 487.0 x 276.0
   object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale 0.22926311728395063 translate <325.47, -163.82, -11.00> }
   object { SubmachineState scale <183.66, 74.28, 16.00> translate <412.02, -192.18, 0.00> }
     text { ttf LabelFont, "entity list", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <332.19, -171.04, -0.01> }
@@ -98,7 +97,6 @@
     object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <169.11, -133.81, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <298.87, -133.81, 0.00> }
     object { Circle_Text( LabelFont, "受付", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <298.87, -133.81, 30.00> }
-// node: 175.621865234375 x 74.28125 sub: 584.0 x 305.0
   object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 scale 0.2104284702549575 translate <457.20, -120.58, -10.10> }
   object { SubmachineState scale <175.62, 74.28, 16.00> translate <538.14, -133.81, 0.00> }
     text { ttf LabelFont, "Entity", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <462.33, -112.67, -0.01> }

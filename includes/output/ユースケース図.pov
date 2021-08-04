@@ -21,7 +21,7 @@
   } scale 64  translate <274.00, -110.00, 0.00>}
 }
 object { UseCaseDiagram_77u48e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <204.83, -289.67, -226.50>;
+#declare EYE = <204.83, -349.67, -266.50>;
 #declare FOCUS = <204.83, -109.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

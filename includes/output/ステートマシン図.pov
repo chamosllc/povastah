@@ -16,9 +16,9 @@
     object { Circle_Text( LabelFont, "State", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <180.83, -68.71, 30.00> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <107.33, -68.71, 0.00> }
     object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <107.33, -68.71, 30.00> }
-  object { FinalState rotate -x*90 scale 24.0 translate <253.33, -125.38, 0.00> }
-    object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <253.33, -125.38, 30.00> }
-    sphere_sweep { linear_spline, 2, <180.83, -68.71, 4.00>, 3.0 <253.33, -125.38, 4.00>, 3.0 texture { TransitionTexture }}
+  object { FinalState rotate -x*90 scale 24.0 translate <254.00, -68.71, 0.00> }
+    object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <254.00, -68.71, 30.00> }
+    sphere_sweep { linear_spline, 2, <180.83, -68.71, 4.00>, 3.0 <254.00, -68.71, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <107.33, -68.71, 4.00>, 3.0 <180.83, -68.71, 4.00>, 3.0 texture { TransitionTexture }}
 }
 #declare StateMachineDiagram_98248e854451c4ee75ae849d72474c5eb8f = union {
@@ -26,8 +26,7 @@
     object { Circle_Text( LabelFont, "InitialPseudostate", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <80.67, -105.33, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <180.83, -105.38, 0.00> }
     object { Circle_Text( LabelFont, "State", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <180.83, -105.38, 30.00> }
-// node: 167.0 x 59.1875 sub: 186.0 x 105.0
-  object { StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f scale 0.3868464052287582 translate <576.08, -205.96, -18.57> }
+  object { StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f scale 0.5691105769230769 translate <538.55, -207.29, -27.32> }
   object { SubmachineState scale <167.00, 59.19, 16.00> translate <655.12, -232.71, 0.00> }
     text { ttf LabelFont, "SubmachineState", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <583.62, -219.12, -0.01> }
   difference { object { StateInternal scale<267.33, 153.43, 16.00> translate <181.67, -251.29, 0.00> }
@@ -66,7 +65,7 @@
     sphere_sweep { linear_spline, 2, <156.83, -232.71, 4.00>, 3.0 <220.67, -232.67, 4.00>, 3.0 texture { TransitionTexture }}
 }
 object { StateMachineDiagram_98248e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <393.50, -388.67, -514.17>;
+#declare EYE = <393.50, -448.67, -554.17>;
 #declare FOCUS = <393.50, -208.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }
