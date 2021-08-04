@@ -25,6 +25,64 @@
 #declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
 
 /*
+ * Activity Diagram
+ */ 
+#declare InitialNode = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
+#declare ActivityFinal = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
+
+#declare Action = object { Round_Cone(<0, -0.6, 0>, 1.2, <0, 0.8, 0>, 0.6, 0.15, 0)
+  texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> }}
+  scale 1/3}  
+} 
+/*  
+#declare Action = object { Round_Cone(<0, -0.6, 0>, 1.4, <0, 0.8, 0>, 0.8, 0.15, 0)
+  texture{ pigment{ radial frequency 10 color_map{[0.0 color rgbf<0.8,1,0.8, 0.8>][0.6 color rgbf<141/255, 45/255, 45/255, 0.3>]} }
+   normal { radial sine_wave frequency 10} finish{ ambient 0.3 }}  
+} 
+#declare Action = union{
+	box{<-0.7,-0.5,-0.6>,<0.7,0.3,0.6>}
+	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
+	texture{checker texture{T_Stone8} texture{T_Stone21} rotate z*90 scale 0.3 }
+}
+*/
+#declare ForkNode = union {
+    cylinder {<0, 0, -0.3>, <0, 0, 0.2>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
+    cylinder {<0, 0,  0.2>, <0, 0, 0.3>, 1 texture {T_Copper_4A}}
+}
+
+#declare JoinNode = union {
+    cylinder {<0, 0, -0.3>, <0, 0, -0.2>, 1 texture {T_Copper_4A}}
+    cylinder {<0, 0, -0.2>, <0, 0,  0.3>, 1 material { texture { pigment { color rgbf<1, 1, 1, 0.8> } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }} 
+}
+
+#declare Activity=union{
+  object{ Fence }
+  box{<-1,-0.25,-1>, <1, 0, 1> texture{checker texture{T_Stone8} texture{T_Stone5} scale 1/4}}
+  scale 0.8
+}
+
+#declare CallBehaviorAction = object { Activity scale 2 translate y*1 }
+
+#declare Process = union {
+        object{ ProcessShape scale x*9/10 translate x*0.4 }
+        texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> } } scale 1/4 } }
+#declare SendSignalAction = difference {
+    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_01 } } }
+    box { <-2, -1, -1>, <-0.5, 1, 1> } translate -x*0.3 }
+#declare DecisionNodeMergeNode  = object { Wheel }
+#declare AcceptEventAction = difference {
+    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } } }
+    box { <0.5, -1, -1>, <2, 1, 1> } }
+#declare AcceptTimeEventAction = intersection{
+    box {<-2.5,-1.25, -2.5>,<2.5, 1.25, 2.5>}
+    object{ Hyperboloid_Y }
+    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } }
+    scale 0.5
+}
+  
+#declare ObjectNode = object { InstanceSpecification }
+
+/*
  * State Transition Diagram
  */
 
@@ -62,67 +120,14 @@
      texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10, 0.7>][0.6 color rgb<0.9,0.95,1, 0.4>*1.2]}}
               finish{ Metal } scale 0.05 } scale z*0.8 }
 */
-#declare InitialPseudostate = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
+#declare InitialPseudostate = object { InitialNode }
 #declare ChoicePseudostate = object { Wheel }
-#declare FinalState  = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
-                 
-/*
- * Activity Diagram
- */ 
-#declare InitialNode = object { InitialPseudostate }
-#declare ActivityFinal = object { FinalState }
-
-#declare Action = object { Round_Cone(<0, -0.6, 0>, 1.4, <0, 0.8, 0>, 0.8, 0.15, 0)
-  texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> }}
-  scale 1/3}  
-} 
-/*  
-#declare Action = object { Round_Cone(<0, -0.6, 0>, 1.4, <0, 0.8, 0>, 0.8, 0.15, 0)
-  texture{ pigment{ radial frequency 10 color_map{[0.0 color rgbf<0.8,1,0.8, 0.8>][0.6 color rgbf<141/255, 45/255, 45/255, 0.3>]} }
-   normal { radial sine_wave frequency 10} finish{ ambient 0.3 }}  
-} 
-#declare Action = union{
-	box{<-0.7,-0.5,-0.6>,<0.7,0.3,0.6>}
-	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
-	texture{checker texture{T_Stone8} texture{T_Stone21} rotate z*90 scale 0.3 }
-}
-*/
-#declare ForkNode = union {
-    cylinder {<0, 0, -0.3>, <0, 0, 0.2>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
-    cylinder {<0, 0,  0.2>, <0, 0, 0.3>, 1 texture {T_Copper_4A}}
-}
-
-#declare JoinNode = union {
-    cylinder {<0, 0, -0.3>, <0, 0, -0.2>, 1 texture {T_Copper_4A}}
-    cylinder {<0, 0, -0.2>, <0, 0,  0.3>, 1 material { texture { pigment { color rgbf<1, 1, 1, 0.8> } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }} 
-}
-
-#declare Activity=union{
-  object{ Fence }
-  box{<-1,-0.25,-1>, <1, 0, 1> texture{checker texture{T_Stone8} texture{T_Stone5} scale 1/4}}
-  scale 0.8
-}
-
-#declare CallBehaviorAction = object { Activity scale 2 translate y*1 }
-
-#declare Process = union {
-        object{ ProcessShape }
-        texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> } } scale 1/4 } }
-#declare SendSignalAction = difference {
-    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_01 } } }
-    box { <-2, -1, -1>, <-0.5, 1, 1> } translate -x*0.4 }
-#declare DecisionNodeMergeNode  = object { Wheel }
-#declare AcceptEventAction = difference {
-    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } } }
-    box { <0.5, -1, -1>, <2, 1, 1> } translate x*0.4 }
-#declare AcceptTimeEventAction = intersection{
-    box {<-2.5,-1.25, -2.5>,<2.5, 1.25, 2.5>}
-    object{ Hyperboloid_Y }
-    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } }
-    scale 0.5
-}
-  
-#declare ObjectNode = object { InstanceSpecification }
+#declare FinalState  = object { ActivityFinal }
+#declare JoinPseudostate = object { JoinNode }
+#declare ForkPseudostate = object { ForkNode }
+#declare DeepHistoryPseudostate = object { AcceptTimeEventAction scale 0.8 }          
+#declare ShallowHistoryPseudostate = object { AcceptTimeEventAction material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_03 } } scale 0.8}     
+#declare JunctionPseudostate = object { Wheel scale 0.8 }
 
 /*
  * Robustness Diagram
