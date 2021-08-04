@@ -68,11 +68,12 @@
     text { ttf LabelFont, "entityEntry.html", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <408.81, 19.64, -0.01> }
   object { ChoicePseudostate rotate -x*90 scale 24.0 translate <168.00, -130.67, 0.00> }
     object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <168.00, -130.67, 30.00> }
-  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale 0.26913496376811596 translate <316.88, -152.43, -12.92> }
-  object { SubmachineState scale<183.66, 74.28, 16.00> translate <412.02, -192.18, 0.00> }
+// node: 183.664384765625 x 74.28125 sub: 487.0 x 276.0
+  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale 0.22926311728395063 translate <325.47, -163.82, -11.00> }
+  object { SubmachineState scale <183.66, 74.28, 16.00> translate <412.02, -192.18, 0.00> }
     text { ttf LabelFont, "entity list", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <332.19, -171.04, -0.01> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <422.67, -27.69, 0.00> }
-    object { Circle_Text( LabelFont, "開始擬似状態0", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <422.67, -27.69, 30.00> }
+    object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <422.67, -27.69, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <495.24, -28.18, 0.00> }
     object { Circle_Text( LabelFont, "edit", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <495.24, -28.18, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <584.57, -72.18, 0.00> }
@@ -93,7 +94,7 @@
     sphere_sweep { cubic_spline, 5, <584.57, -72.18, 4.00>, 3.0 <584.57, -72.18, 4.00>, 3.0 <494.00, -63.69, 4.00>, 3.0 <495.24, -28.18, 4.00>, 3.0 <495.24, -28.18, 4.00>, 3.0 texture { TransitionTexture }}
 }
 object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 }
-#declare EYE = <360.67, -266.86, -359.53>;
+#declare EYE = <360.67, -326.86, -399.53>;
 #declare FOCUS = <360.67, -86.86, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

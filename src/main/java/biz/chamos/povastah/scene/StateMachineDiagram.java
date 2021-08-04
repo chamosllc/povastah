@@ -151,14 +151,13 @@ public class StateMachineDiagram extends Diagram {
 		double scale = 1.0;
 		if(subDiagram != null) {
 			Rectangle2D subBound = subDiagram.getBoundRect();
-			scale = Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight());
+			scale = Math.min(bound.getWidth()/(subBound.getWidth()+48.0), bound.getHeight()/(subBound.getHeight()+48)); // povray object scale 24
 			double posz = nodePositionZ(node) - 48*scale;
-			Point2D point = new Point2D.Double(bound.getCenterX() - subBound.getCenterX()*scale, bound.getCenterY() - subBound.getCenterY()*scale);
+			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + 24)*scale, bound.getCenterY() - (subBound.getCenterY() - 24)*scale);
 			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
 			writeSubDiagram(hierarchy + 1, node);
-			scale = subBound.getWidth()/subBound.getHeight();
 		}
-		sceneWriter.write("  object { " + povrayObjectType(node) + " scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+		sceneWriter.write("  object { " + povrayObjectType(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
 			+ translate(nodePosition(node), nodePositionZ(node)) + " }" + CR);
 		if(subDiagram != null) {
 			writeLabelOnStage(node, bound);

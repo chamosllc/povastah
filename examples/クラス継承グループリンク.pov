@@ -11,7 +11,7 @@
 
 #include "povastah.inc"
 
-// hierachy depth: {クラス0=2, クラス1=1, クラス2=1}
+// hierachy depth: {クラス0=2, クラス2=1, クラス1=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {
@@ -25,7 +25,7 @@
     sphere_sweep { linear_spline, 2, <310.83, -239.49, -28.00>, 3.0 <216.17, -82.15, -60.00>, 3.0 texture { GeneralizationTexture }}
 }
 object { ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 }
-#declare EYE = <219.00, -340.83, -387.83>;
+#declare EYE = <219.00, -400.83, -427.83>;
 #declare FOCUS = <219.00, -160.83, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

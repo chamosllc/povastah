@@ -58,7 +58,7 @@
     sphere_sweep { linear_spline, 2, <460.57, -235.82, 4.00>, 3.0 <549.33, -235.82, 4.00>, 3.0 texture { TransitionTexture }}
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <353.50, -327.69, -413.19>;
+#declare EYE = <353.50, -387.69, -453.19>;
 #declare FOCUS = <353.50, -147.69, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

@@ -30,7 +30,7 @@
     sphere_sweep { linear_spline, 2, <180.11, -446.64, 4.00>, 3.0 <350.11, -446.64, 4.00>, 3.0 texture { LinkTexture }}
 }
 object { ClassDiagram_bj3d6ceec00a507a2b70caaa0df577508a }
-#declare EYE = <186.23, -494.49, -412.71>;
+#declare EYE = <186.23, -554.49, -452.71>;
 #declare FOCUS = <186.23, -314.49, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

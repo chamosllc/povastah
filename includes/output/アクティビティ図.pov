@@ -49,9 +49,8 @@
     object { Circle_Text( LabelFont, "JoinNode", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <644.33, -87.76, 30.00> }
 }
 object { ActivityDiagram_o9o48e854451c4ee75ae849d72474c5eb8f }
-box { <0, 0, 0>, <1, 1, 1> pigment { image_map { jpeg  "./povastah-Lineup/activity.jpg" map_type 0 } rotate x*180 } scale <848, -358, 1> translate <0, 350, 31> }
-#declare EYE = <418.67, -130.71, -701.38>;
-#declare FOCUS = <418.67,-32.0, 0.00>;
+#declare EYE = <418.67, -380.71, -531.38>;
+#declare FOCUS = <418.67, -200.71, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }
 plane { z, 32.0 texture { ActivityDiagramTexture }}

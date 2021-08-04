@@ -44,7 +44,7 @@
     sphere_sweep { cubic_spline, 5, <340.54, -236.15, 4.00>, 3.0 <340.54, -236.15, 4.00>, 3.0 <312.00, -326.00, 4.00>, 3.0 <192.54, -341.33, 4.00>, 3.0 <192.54, -341.33, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
 }
 object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <261.50, -386.17, -379.67>;
+#declare EYE = <261.50, -446.17, -419.67>;
 #declare FOCUS = <261.50, -206.17, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

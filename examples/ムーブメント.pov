@@ -30,7 +30,7 @@
   torus { 36.0, 3.0 translate <188.54, -147.32, -32.00>texture { ControlFlow_ObjectFlowTexture }}
 }
 object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e }
-#declare EYE = <229.17, -370.67, -331.83>;
+#declare EYE = <229.17, -430.67, -371.83>;
 #declare FOCUS = <229.17, -190.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }

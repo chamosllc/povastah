@@ -250,7 +250,7 @@ public class Diagram {
 		double stageX = stage.getCenterX();
 		double stageY = -stage.getCenterY();
 		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
-		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 180, stageZ + 120));
+		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 80));
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
 		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
 		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));

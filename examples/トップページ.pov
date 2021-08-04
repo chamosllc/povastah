@@ -68,11 +68,12 @@
     text { ttf LabelFont, "entityEntry.html", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <408.81, 19.64, -0.01> }
   object { ChoicePseudostate rotate -x*90 scale 24.0 translate <168.00, -130.67, 0.00> }
     object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <168.00, -130.67, 30.00> }
-  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale 0.26913496376811596 translate <316.88, -152.43, -12.92> }
-  object { SubmachineState scale<183.66, 74.28, 16.00> translate <412.02, -192.18, 0.00> }
+// node: 183.664384765625 x 74.28125 sub: 487.0 x 276.0
+  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale 0.22926311728395063 translate <325.47, -163.82, -11.00> }
+  object { SubmachineState scale <183.66, 74.28, 16.00> translate <412.02, -192.18, 0.00> }
     text { ttf LabelFont, "entity list", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <332.19, -171.04, -0.01> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <422.67, -27.69, 0.00> }
-    object { Circle_Text( LabelFont, "開始擬似状態0", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <422.67, -27.69, 30.00> }
+    object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <422.67, -27.69, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <495.24, -28.18, 0.00> }
     object { Circle_Text( LabelFont, "edit", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <495.24, -28.18, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <584.57, -72.18, 0.00> }
@@ -97,14 +98,15 @@
     object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <169.11, -133.81, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <298.87, -133.81, 0.00> }
     object { Circle_Text( LabelFont, "受付", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <298.87, -133.81, 30.00> }
-  object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 scale 0.2435450819672131 translate <450.31, -112.65, -11.69> }
-  object { SubmachineState scale<175.62, 74.28, 16.00> translate <538.14, -133.81, 0.00> }
+// node: 175.621865234375 x 74.28125 sub: 584.0 x 305.0
+  object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 scale 0.2104284702549575 translate <457.20, -120.58, -10.10> }
+  object { SubmachineState scale <175.62, 74.28, 16.00> translate <538.14, -133.81, 0.00> }
     text { ttf LabelFont, "Entity", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <462.33, -112.67, -0.01> }
     sphere_sweep { linear_spline, 2, <298.87, -133.81, 4.00>, 3.0 <538.14, -133.81, 4.00>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <169.11, -133.81, 4.00>, 3.0 <298.87, -133.81, 4.00>, 3.0 texture { TransitionTexture }}
 }
 object { StateMachineDiagram_1u2y6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <392.61, -313.67, -438.28>;
+#declare EYE = <392.61, -373.67, -478.28>;
 #declare FOCUS = <392.61, -133.67, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }
