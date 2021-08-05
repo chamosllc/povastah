@@ -146,10 +146,11 @@ public class StateMachineDiagram extends Diagram {
 		Rectangle2D bound = node.getRectangle();
 		double scale = 1.0;
 		if(subDiagram != null) {
+			double deltaZ= 48.0;
 			Rectangle2D subBound = subDiagram.getBoundRect();
-			scale = Math.min(bound.getWidth()/(subBound.getWidth()+48.0), bound.getHeight()/(subBound.getHeight()+48)); // povray object scale 24
-			double posz = nodePositionZ(node) - 48*scale;
-			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + 24)*scale, bound.getCenterY() - (subBound.getCenterY() - 24)*scale);
+			scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ)); // povray object scale 24
+			double posz = nodePositionZ(node) - deltaZ*scale;
+			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() - (deltaZ/2))*scale);
 			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
 			writeSubDiagram(hierarchy + 1, node);
 		}

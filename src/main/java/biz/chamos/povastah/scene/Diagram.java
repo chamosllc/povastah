@@ -47,7 +47,13 @@ public class Diagram {
 	/**
 	 * 3D座標系フォーマット
 	 */
-	static final String COORDINATE = "<%.2f, %.2f, %.2f>"; // 座標系フォーマット
+	static final String COORDINATE = "<%.3f, %.3f, %.3f>";
+	/**
+	 * POVRayオブジェクトフォーマット
+	 */
+	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture }%s }";
+	static final String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
+	static final String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale <16, 16, 2> texture { LabelTecture }%s }";
 
 	/**
 	 * astahプロジェクト名
@@ -365,8 +371,7 @@ public class Diagram {
 					scale -= (label.getBytes().length - 20)/30.0;
 					radius += (label.getBytes().length - 20)/30.0;
 				}
-				sceneWriter.write("    object { Circle_Text( LabelFont, \"" + label + "\", " + scale + ", 0, 2, " + radius + ", 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture }"
-					+ translate(point, 30.0) + " }" + CR);
+				sceneWriter.write(String.format(CIRCLE_TEXT, label, scale, radius, translate(point, 30.0)) + CR);
 				radius += step;
 			}
 		}
@@ -379,13 +384,9 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void writeLabelOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
-		/*
-		 * writeLabel
-		 */
 		String label = label(node);
 		if(!label.isEmpty()) {
-			sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0 scale <16, 16, 2> texture { LabelTecture }"
-					+ translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), nodePositionZ(node) - 0.01) + " }" + CR);
+			sceneWriter.write(String.format(TEXT16, label, translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), nodePositionZ(node) - 0.01)) + CR);
 		}
 	}
 	

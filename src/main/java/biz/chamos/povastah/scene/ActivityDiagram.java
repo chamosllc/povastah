@@ -95,11 +95,12 @@ public class ActivityDiagram extends Diagram {
 	protected boolean writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
+			double deltaZ = 36.0;
 			Rectangle2D bound = node.getRectangle();
 			Rectangle2D subBound = subDiagram.getBoundRect(); 
-			double scale = Math.min(bound.getWidth()/(subBound.getWidth() - 36), bound.getHeight()/(subBound.getHeight() - 36));
-			double posz = nodePositionZ(node) - 36*scale;
-			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + 36)*scale, bound.getCenterY() - (subBound.getCenterY() + 36)*scale);
+			double scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ));
+			double posz = nodePositionZ(node) - deltaZ*scale;
+			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() + (deltaZ/2))*scale);
 			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
 			writeLabelOnStage(node, bound);
 			return true;
@@ -110,7 +111,7 @@ public class ActivityDiagram extends Diagram {
 	protected String label(IPresentation presence) {
 		String label = super.label(presence);
 		if(presence.getModel() instanceof IObjectNode) {
-			label = label.replace(" ", "");
+			label = label.replace(" : ", ":"); // "インスタンス名 : クラス名"を空白文字を抜いて"インスタンス名:クラス名"にする
 		}
 		return label;
 	}

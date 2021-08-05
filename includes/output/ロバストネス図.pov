@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah-Lineup ロバストネス図
- * created at 2021/08/04
+ * created at 2021/08/05
  * presented by povastah
  **/
 
@@ -12,22 +12,22 @@
 #include "povastah.inc"
 
 #declare ClassDiagram_2rn48e854451c4ee75ae849d72474c5eb8f = union {
-  object { Boundary rotate -x*90 scale 24.0 translate <287.33, -100.21, 0.00> }
-    object { Circle_Text( LabelFont, "Boundary", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <287.33, -100.21, 30.00> }
-  object { Entity rotate -x*90 scale 24.0 translate <96.67, -100.21, 0.00> }
-    object { Circle_Text( LabelFont, "Entity", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <96.67, -100.21, 30.00> }
-  object { Control rotate -x*90 scale 24.0 translate <480.00, -100.21, 0.00> }
-    object { Circle_Text( LabelFont, "Control", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <480.00, -100.21, 30.00> }
-  object { EntityInstance rotate -x*90 scale 24.0 translate <96.67, -205.55, 0.00> }
-    object { Circle_Text( LabelFont, "EntityInstance:Entity", 0.9666666666666667, 0, 2, 1.6333333333333335, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <96.67, -205.55, 30.00> }
-  object { BoundaryInstance rotate -x*90 scale 24.0 translate <288.00, -205.55, 0.00> }
-    object { Circle_Text( LabelFont, "BoundaryInstance:Boundary", 0.8333333333333334, 0, 2, 1.7666666666666668, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <288.00, -205.55, 30.00> }
-  object { ControlInstance rotate -x*90 scale 24.0 translate <480.00, -205.55, 0.00> }
-    object { Circle_Text( LabelFont, "ControlInstance:Control", 0.9, 0, 2, 1.7000000000000002, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <480.00, -205.55, 30.00> }
+  object { Boundary rotate -x*90 scale 24.0 translate <287.333, -100.214, 0.000> }
+    object { Circle_Text( LabelFont, "Boundary",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <287.333, -100.214, 30.000> }
+  object { Entity rotate -x*90 scale 24.0 translate <96.667, -100.214, 0.000> }
+    object { Circle_Text( LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <96.667, -100.214, 30.000> }
+  object { Control rotate -x*90 scale 24.0 translate <480.000, -100.214, 0.000> }
+    object { Circle_Text( LabelFont, "Control",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <480.000, -100.214, 30.000> }
+  object { EntityInstance rotate -x*90 scale 24.0 translate <96.667, -205.547, 0.000> }
+    object { Circle_Text( LabelFont, "EntityInstance:Entity",  0.967, 0, 2, 1.633, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <96.667, -205.547, 30.000> }
+  object { BoundaryInstance rotate -x*90 scale 24.0 translate <288.000, -205.547, 0.000> }
+    object { Circle_Text( LabelFont, "BoundaryInstance:Boundary",  0.833, 0, 2, 1.767, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <288.000, -205.547, 30.000> }
+  object { ControlInstance rotate -x*90 scale 24.0 translate <480.000, -205.547, 0.000> }
+    object { Circle_Text( LabelFont, "ControlInstance:Control",  0.900, 0, 2, 1.700, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <480.000, -205.547, 30.000> }
 }
 object { ClassDiagram_2rn48e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <293.40, -392.67, -398.06>;
-#declare FOCUS = <293.40, -152.67, 0.00>;
+#declare EYE = <293.395, -392.667, -398.062>;
+#declare FOCUS = <293.395, -152.667, 0.000>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.00, -1000.00, -3000.00> color White }
+light_source { <-1000.000, -1000.000, -3000.000> color White }
 plane { z, 32.0 texture { ClassDiagramTexture }}

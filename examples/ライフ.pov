@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフ
- * created at 2021/08/04
+ * created at 2021/08/05
  * presented by povastah
  **/
 
@@ -37,7 +37,7 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate <192.54, -341.33, 0.00> }
     object { Circle_Text( LabelFont, "終了", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.54, -341.33, 30.00> }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate <340.54, -236.15, 0.00> }
-  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.16779641544117646 translate <296.05, -198.12, -6.04>}
+  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628 translate <307.75, -208.47, -4.78>}
     text { ttf LabelFont, "物を取り扱う", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <304.00, -290.97, 31.00> }
     sphere_sweep { linear_spline, 2, <192.54, -70.67, 4.00>, 3.0 <192.54, -148.65, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
     sphere_sweep { b_spline, 6, <192.54, -148.65, 4.00>, 3.0 <192.54, -148.65, 4.00>, 3.0 <303.33, -138.00, 4.00>, 3.0 <336.00, -156.67, 4.00>, 3.0 <340.54, -236.15, 4.00>, 3.0 <340.54, -236.15, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}

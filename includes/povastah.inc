@@ -125,9 +125,11 @@
 #declare FinalState  = object { ActivityFinal }
 #declare JoinPseudostate = object { JoinNode }
 #declare ForkPseudostate = object { ForkNode }
-#declare DeepHistoryPseudostate = object { AcceptTimeEventAction scale 0.8 }          
-#declare ShallowHistoryPseudostate = object { AcceptTimeEventAction material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_03 } } scale 0.8}     
-#declare JunctionPseudostate = object { Wheel scale 0.8 }
+#declare DeepHistoryPseudostate = object { AcceptTimeEventAction scale 0.8 }
+          
+#declare ShallowHistoryPseudostate = object{ AcceptTimeEventAction material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_03 } } scale 0.8}     
+#declare JunctionPseudostate = object{ Round_Pyramid_N_out(9, <0, -0.5, 0>, 1.0, <0, 0.3, 0>, 0.7, 0.1, 0, 0) material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_04 } }  }
+
 
 /*
  * Robustness Diagram
