@@ -16,7 +16,9 @@
  */
 #declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
 
-#declare Interface = object { Class texture { T_Old_Glass } scale 0.8 }
+#declare Interface = object{ Ring_Sphere ( 1.05, 1.05, 0.06, 0.06 , 5, 5)  
+    material { texture { pigment { color Clear } finish { F_Glass2 } } interior { I_Glass1 fade_color Col_Azurite_02 } } 
+}
 #declare InstanceSpecification = object { Class texture { T_Wood23 }} 
 
 /*
@@ -40,7 +42,7 @@
 	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
 	texture{checker texture{T_Stone8} texture{T_Stone21} rotate z*90 scale 0.3 }
 }
-*/
+
 #declare ForkNode = union {
     cylinder {<0, 0, -0.3>, <0, 0, 0.2>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
     cylinder {<0, 0,  0.2>, <0, 0, 0.3>, 1 texture {T_Copper_4A}}
