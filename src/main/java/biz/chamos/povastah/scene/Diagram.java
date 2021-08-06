@@ -135,10 +135,9 @@ public class Diagram {
 	protected boolean excludeIPresentation(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
-		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval"
-		 *  | 画像 : "Image" | 直線 : "Line" | フリーハンド : "FreeHand" | 
+		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval" | 画像 : "Image"
 		 */	
-		final String[] excludes = {"Frame", "Note", "Text", "Rectangle", "Oval", "Image", "Line", "FreeHand", "Highlighter"};
+		final String[] excludes = {"Frame", "Note", "Text", "Rectangle", "Oval", "Image"};
 		String type = presentation.getType();
 		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
@@ -157,7 +156,18 @@ public class Diagram {
 	 * @return 除外リンクである
 	 */
 	protected boolean excludeIPresentation(ILinkPresentation presentation) {
-		return excludeIPresentation(presentation.getSource()) || excludeIPresentation(presentation.getTarget());
+		/**
+		 * 除外対象要素(なぜだか、リンクでないオブジェクトがこちらに寄せられている)
+		 * ノートアンカー : "NoteAnchor" | 直線 : "Line" | フリーハンド : "FreeHand" | 蛍光ペン : "Highlighter"
+		 */	
+		final String[] excludes = {"NoteAnchor", "Line", "FreeHand", "Highlighter"};
+		String type =  presentation.getType();
+		for(String exclude: excludes) {
+			if(type.equals(exclude)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
