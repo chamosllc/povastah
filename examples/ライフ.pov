@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフ
- * created at 2021/08/05
+ * created at 2021/08/06
  * presented by povastah
  **/
 
@@ -12,40 +12,40 @@
 #include "povastah.inc"
 
 #declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
-  object { InitialNode rotate -x*90 scale 24.0 translate <188.54, -61.33, 0.00> }
-    object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.54, -61.33, 30.00> }
-  object { Action rotate -x*90 scale 24.0 translate <188.54, -147.32, 0.00> }
-    object { Circle_Text( LabelFont, "物を見る", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.54, -147.32, 30.00> }
-  object { Action rotate -x*90 scale 24.0 translate <426.54, -147.32, 0.00> }
-    object { Circle_Text( LabelFont, "物を変える", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <426.54, -147.32, 30.00> }
-  object { Action rotate -x*90 scale 24.0 translate <188.54, -246.65, 0.00> }
-    object { Circle_Text( LabelFont, "物を消す", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.54, -246.65, 30.00> }
-  object { ActivityFinal rotate -x*90 scale 24.0 translate <188.54, -324.67, 0.00> }
-    object { Circle_Text( LabelFont, " ", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.54, -324.67, 30.00> }
-    sphere_sweep { linear_spline, 2, <188.54, -61.33, 4.00>, 3.0 <188.54, -147.32, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { cubic_spline, 5, <188.54, -147.32, 4.00>, 3.0 <188.54, -147.32, 4.00>, 3.0 <294.67, -190.00, 4.00>, 3.0 <426.54, -147.32, 4.00>, 3.0 <426.54, -147.32, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { cubic_spline, 5, <426.54, -147.32, 4.00>, 3.0 <426.54, -147.32, 4.00>, 3.0 <305.33, -90.67, 4.00>, 3.0 <188.54, -147.32, 4.00>, 3.0 <188.54, -147.32, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { linear_spline, 2, <188.54, -147.32, 4.00>, 3.0 <188.54, -246.65, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { linear_spline, 2, <188.54, -246.65, 4.00>, 3.0 <188.54, -324.67, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-  torus { 36.0, 3.0 translate <188.54, -147.32, -32.00>texture { ControlFlow_ObjectFlowTexture }}
+  object { InitialNode rotate -x*90 scale 24.0 translate <188.540, -61.333, 0.000> }
+    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.540, -61.333, 30.000> }
+  object { Action rotate -x*90 scale 24.0 translate <188.540, -147.320, 0.000> }
+    object { Circle_Text( LabelFont, "物を見る",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.540, -147.320, 30.000> }
+  object { Action rotate -x*90 scale 24.0 translate <426.540, -147.320, 0.000> }
+    object { Circle_Text( LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <426.540, -147.320, 30.000> }
+  object { Action rotate -x*90 scale 24.0 translate <188.540, -246.654, 0.000> }
+    object { Circle_Text( LabelFont, "物を消す",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.540, -246.654, 30.000> }
+  object { ActivityFinal rotate -x*90 scale 24.0 translate <188.540, -324.667, 0.000> }
+    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <188.540, -324.667, 30.000> }
+    sphere_sweep { linear_spline, 2, <188.540, -61.333, 4.000>, 3.0 <188.540, -147.320, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { cubic_spline, 5, <188.540, -147.320, 4.000>, 3.0 <188.540, -147.320, 4.000>, 3.0 <294.667, -190.000, 4.000>, 3.0 <426.540, -147.320, 4.000>, 3.0 <426.540, -147.320, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { cubic_spline, 5, <426.540, -147.320, 4.000>, 3.0 <426.540, -147.320, 4.000>, 3.0 <305.333, -90.667, 4.000>, 3.0 <188.540, -147.320, 4.000>, 3.0 <188.540, -147.320, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { linear_spline, 2, <188.540, -147.320, 4.000>, 3.0 <188.540, -246.654, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { linear_spline, 2, <188.540, -246.654, 4.000>, 3.0 <188.540, -324.667, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+  torus { 36.0, 3.0 translate <188.540, -147.320, -32.000>texture { ControlFlow_ObjectFlowTexture }}
 }
 #declare ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f = union {
-  object { InitialNode rotate -x*90 scale 24.0 translate <192.54, -70.67, 0.00> }
-    object { Circle_Text( LabelFont, "開始", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.54, -70.67, 30.00> }
-  object { Action rotate -x*90 scale 24.0 translate <192.54, -148.65, 0.00> }
-    object { Circle_Text( LabelFont, "物を作る", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.54, -148.65, 30.00> }
-  object { ActivityFinal rotate -x*90 scale 24.0 translate <192.54, -341.33, 0.00> }
-    object { Circle_Text( LabelFont, "終了", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.54, -341.33, 30.00> }
-  object { CallBehaviorAction rotate -x*90 scale 24.0 translate <340.54, -236.15, 0.00> }
-  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628 translate <307.75, -208.47, -4.78>}
-    text { ttf LabelFont, "物を取り扱う", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <304.00, -290.97, 31.00> }
-    sphere_sweep { linear_spline, 2, <192.54, -70.67, 4.00>, 3.0 <192.54, -148.65, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { b_spline, 6, <192.54, -148.65, 4.00>, 3.0 <192.54, -148.65, 4.00>, 3.0 <303.33, -138.00, 4.00>, 3.0 <336.00, -156.67, 4.00>, 3.0 <340.54, -236.15, 4.00>, 3.0 <340.54, -236.15, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { cubic_spline, 5, <340.54, -236.15, 4.00>, 3.0 <340.54, -236.15, 4.00>, 3.0 <312.00, -326.00, 4.00>, 3.0 <192.54, -341.33, 4.00>, 3.0 <192.54, -341.33, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+  object { InitialNode rotate -x*90 scale 24.0 translate <192.540, -70.667, 0.000> }
+    object { Circle_Text( LabelFont, "開始",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.540, -70.667, 30.000> }
+  object { Action rotate -x*90 scale 24.0 translate <192.540, -148.654, 0.000> }
+    object { Circle_Text( LabelFont, "物を作る",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.540, -148.654, 30.000> }
+  object { ActivityFinal rotate -x*90 scale 24.0 translate <192.540, -341.333, 0.000> }
+    object { Circle_Text( LabelFont, "終了",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <192.540, -341.333, 30.000> }
+  object { CallBehaviorAction rotate -x*90 scale 24.0 translate <340.540, -236.154, 0.000> }
+  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628 translate <307.747, -208.469, -4.776>}
+    text { ttf LabelFont, "物を取り扱う", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <304.000, -290.974, 31.000> }
+    sphere_sweep { linear_spline, 2, <192.540, -70.667, 4.000>, 3.0 <192.540, -148.654, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { b_spline, 6, <192.540, -148.654, 4.000>, 3.0 <192.540, -148.654, 4.000>, 3.0 <303.333, -138.000, 4.000>, 3.0 <336.000, -156.667, 4.000>, 3.0 <340.540, -236.154, 4.000>, 3.0 <340.540, -236.154, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { cubic_spline, 5, <340.540, -236.154, 4.000>, 3.0 <340.540, -236.154, 4.000>, 3.0 <312.000, -326.000, 4.000>, 3.0 <192.540, -341.333, 4.000>, 3.0 <192.540, -341.333, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
 }
 object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <261.50, -446.17, -419.67>;
-#declare FOCUS = <261.50, -206.17, 0.00>;
+#declare EYE = <261.500, -446.167, -419.667>;
+#declare FOCUS = <261.500, -206.167, 0.000>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.00, -1000.00, -3000.00> color White }
+light_source { <-1000.000, -1000.000, -3000.000> color White }
 plane { z, 32.0 texture { ActivityDiagramTexture }}

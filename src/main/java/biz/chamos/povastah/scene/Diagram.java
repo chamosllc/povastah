@@ -401,7 +401,6 @@ public class Diagram {
 	 */
 	protected void writeLabel(ILinkPresentation link) throws IOException {
 		final double scale = 16.0;
-		final String SCALE = " scale" + String.format(COORDINATE, scale , scale, 2);
 		double labelShift = 36.0;
 		String linkLabel = "";
 		if(!(linkLabel = label(link)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
@@ -413,8 +412,7 @@ public class Diagram {
 					merginX = label.getBytes().length*3;
 				}
 				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0" + SCALE + "texture { LinkLabelTecture }"
-					+ translate(point, 32.0 - 2.0) + " }" + CR);
+				sceneWriter.write(String.format(TEXT16, label, translate(point, 32.0 - 2.0)) + CR);
 				labelY+= scale;
 			}
 		}

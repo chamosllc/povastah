@@ -32,8 +32,9 @@
     object { Circle_Text( LabelFont, "ControlInstance:Control", 0.9, 0, 2, 1.7000000000000002, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <539.18, -267.55, 30.00> }
 }
 object { ClassDiagram_l48e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <308.85, -414.79, -435.64>;
-#declare FOCUS = <308.85, -174.79, 0.00>;
+box { <0, 0, 0>, <1, 1, 1> pigment { image_map { jpeg  "./povastah-Lineup/class.jpg" map_type 0 } rotate x*180 } scale <822, -248, 1> scale 0.77 translate <0, 150, 31> }
+#declare EYE = <308.85, -80, -480>;
+#declare FOCUS = <308.85, -80, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.00, -1000.00, -3000.00> color White }
 plane { z, 32.0 texture { ClassDiagramTexture }}

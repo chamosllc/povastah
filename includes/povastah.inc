@@ -34,11 +34,7 @@
   texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> }}
   scale 1/3}  
 } 
-/*  
-#declare Action = object { Round_Cone(<0, -0.6, 0>, 1.4, <0, 0.8, 0>, 0.8, 0.15, 0)
-  texture{ pigment{ radial frequency 10 color_map{[0.0 color rgbf<0.8,1,0.8, 0.8>][0.6 color rgbf<141/255, 45/255, 45/255, 0.3>]} }
-   normal { radial sine_wave frequency 10} finish{ ambient 0.3 }}  
-} 
+ 
 #declare Action = union{
 	box{<-0.7,-0.5,-0.6>,<0.7,0.3,0.6>}
 	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
@@ -89,11 +85,7 @@
 #declare State = object { Round_Cylinder (-0.2*y, 0.2*y, 1.0, 0.1, 0)
      texture{ pigment{ spiral1 1 color_map{[0.0 color rgb <0.85, 0.85, 0.10>][0.7 color rgb<1,1,1, 0.98>]}}
               finish{ Metal } scale 0.2 rotate x*90 } }   
-/*
-#declare State = cylinder {-0.1*y, 0.1*y, 1.0
-     texture{ pigment{ spiral1 1 color_map{[0.0 color rgb <0.85, 0.85, 0.10>][1.6 color rgb<0.9,0.9,0.95, 0.7>]}}
-              finish{ Metal } scale 0.2 rotate x*90 } }   
-*/
+
 /*
 #declare StateInternal = difference {
     object { Round_Box_Union(<-0.5, -0.5, -0.5>, <0.5, 0.5, 0.5>, 0.002)}
@@ -103,23 +95,13 @@
 */    
 #declare StateInternal = difference {
     box { <-0.5, -0.5, -0.5>, <0.5, 0.5, 1>}
-//    box { <-0.48, -0.47, -0.45>, <0.48, 0.47, 0.95> }
-    box { <-0.51, -0.51, -1>, <0.51, 0.51, 0> }
-//  texture { Yellow_Pine }}    
+    box { <-0.51, -0.51, -1>, <0.51, 0.51, 0> }   
  material { InternalTransitionTexture }}  
-/*
-#declare SubmachineState = cylinder { -0.2*y, 0.0*y, 2.6
-     texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10, 0.7>][0.6 color rgb<0.9,0.95,1, 0.4>*1.2]}}
-              finish{ Metal } scale 0.15 } scale z*0.8 } 
-*/
+
 #declare SubmachineState = superellipsoid { <0.2, 0.2>
  texture{ pigment{ ripples color_map{[0.0 color rgb <0.75, 1.0, 0.8, 0.3>][0.95 color rgb<1, 1, 1, 0.9>]}}
   finish{ ambient 0.3 } scale 0.05 } scale <0.5, 0.6, 0.36> translate z*0.36 }
-/*
-#declare SubmachineState = object { Round_Box_Union(<-0.6, -0.6, 0.8>, <0.6, 0.6, 0.0>, 0.05) 
-     texture{ pigment{ ripples color_map{[0.0 color rgb <0.85, 0.85, 0.10, 0.7>][0.6 color rgb<0.9,0.95,1, 0.4>*1.2]}}
-              finish{ Metal } scale 0.05 } scale z*0.8 }
-*/
+
 #declare InitialPseudostate = object { InitialNode }
 #declare ChoicePseudostate = object { Wheel }
 #declare FinalState  = object { ActivityFinal }

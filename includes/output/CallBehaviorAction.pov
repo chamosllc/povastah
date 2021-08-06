@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah-Lineup CallBehaviorAction
- * created at 2021/08/05
+ * created at 2021/08/06
  * presented by povastah
  **/
 
@@ -12,18 +12,18 @@
 #include "povastah.inc"
 
 #declare ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f = union {
-  object { InitialNode rotate -x*90 scale 24.0 translate <87.004, -44.667, 0.000> }
-    object { Circle_Text( LabelFont, "開始ノード3",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <87.004, -44.667, 30.000> }
-  object { Action rotate -x*90 scale 24.0 translate <87.004, -131.547, 0.000> }
-    object { Circle_Text( LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <87.004, -131.547, 30.000> }
-  object { ActivityFinal rotate -x*90 scale 24.0 translate <87.004, -220.000, 0.000> }
-    object { Circle_Text( LabelFont, "アクティビティ終了3",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <87.004, -220.000, 30.000> }
-    sphere_sweep { linear_spline, 2, <87.004, -44.667, 4.000>, 3.0 <87.004, -131.547, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
-    sphere_sweep { linear_spline, 2, <87.004, -131.547, 4.000>, 3.0 <87.004, -220.000, 4.000>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+  object { InitialNode rotate -x*90 scale 24.0 translate <87.00, -44.67, 0.00> }
+    object { Circle_Text( LabelFont, "開始ノード3", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <87.00, -44.67, 30.00> }
+  object { Action rotate -x*90 scale 24.0 translate <87.00, -131.55, 0.00> }
+    object { Circle_Text( LabelFont, "Action", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <87.00, -131.55, 30.00> }
+  object { ActivityFinal rotate -x*90 scale 24.0 translate <87.00, -220.00, 0.00> }
+    object { Circle_Text( LabelFont, "アクティビティ終了3", 1.0, 0, 2, 1.6, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <87.00, -220.00, 30.00> }
+    sphere_sweep { linear_spline, 2, <87.00, -44.67, 4.00>, 3.0 <87.00, -131.55, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
+    sphere_sweep { linear_spline, 2, <87.00, -131.55, 4.00>, 3.0 <87.00, -220.00, 4.00>, 3.0 texture { ControlFlow_ObjectFlowTexture }}
 }
 object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <87.161, -372.167, -176.000>;
-#declare FOCUS = <87.161, -132.167, 0.000>;
+#declare EYE = <87.16, -372.17, -176.00>;
+#declare FOCUS = <87.16, -132.17, 0.00>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.000, -1000.000, -3000.000> color White }
+light_source { <-1000.00, -1000.00, -3000.00> color White }
 plane { z, 32.0 texture { ActivityDiagramTexture }}
