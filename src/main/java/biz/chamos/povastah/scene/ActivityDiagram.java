@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import com.change_vision.jude.api.inf.model.IAction;
+import com.change_vision.jude.api.inf.model.IActivity;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IObjectNode;
@@ -70,10 +71,12 @@ public class ActivityDiagram extends Diagram {
 	 */
 	protected IActivityDiagram subDiagram(INodePresentation parent) {
 		if(hasSubDiagram(parent)) {
-			return ((IAction) parent.getModel()).getCallingActivity().getActivityDiagram(); // null場合がある
-		}else {
-			return null;
+			IActivity activity = ((IAction) parent.getModel()).getCallingActivity(); // nullの場合がある
+			if(activity != null) {
+				return activity.getActivityDiagram();
+			}
 		}
+		return null;
 	}
 
 	/**

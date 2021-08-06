@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IState;
+import com.change_vision.jude.api.inf.model.IStateMachine;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
 import com.change_vision.jude.api.inf.model.IVertex;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
@@ -51,10 +52,12 @@ public class StateMachineDiagram extends Diagram {
 	 */
 	protected IStateMachineDiagram subDiagram(INodePresentation parent) {
 		if(hasSubDiagram(parent)) {
-			return ((IState) parent.getModel()).getSubmachine().getStateMachineDiagram(); // null場合がある
-		}else {
-			return null;
+			IStateMachine machine = ((IState) parent.getModel()).getSubmachine(); // nullの場合がある
+			if(machine != null) {
+				return machine.getStateMachineDiagram(); 
+			}
 		}
+		return null;
 	}
 	
 	/**
@@ -156,11 +159,7 @@ public class StateMachineDiagram extends Diagram {
 		}
 		sceneWriter.write("  object { " + povrayObjectType(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
 			+ translate(nodePosition(node), nodePositionZ(node)) + " }" + CR);
-		if(subDiagram != null) {
-			writeLabelOnStage(node, bound);
-		}else {
-			writeLabel(node);
-		}
+		writeLabelOnStage(node, bound);
 	}
 	
 	/**

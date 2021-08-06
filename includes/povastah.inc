@@ -31,6 +31,12 @@
  */ 
 #declare InitialNode = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_5B} }
 #declare ActivityFinal = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
+#declare FlowFinalNode = difference {
+    sphere {<0, 0, 0>, 0.6 }
+    box{<-1, -0.1, -1>, <1, 0.1, 1>}
+    box{<-0.1, -1, -1>, <0.1, 1, 1>}
+    box{<-1, -1, -0.1>, <1, 1, 0.1>}
+     texture {T_Chrome_1B} }
 
 #declare Action = object { Round_Cone(<0, -0.6, 0>, 1.2, <0, 0.8, 0>, 0.6, 0.15, 0)
   texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> }}
@@ -65,7 +71,12 @@
 #declare AcceptEventAction = difference {
     object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } } }
     box { <0.5, -1, -1>, <2, 1, 1> } }
-#declare AcceptTimeEventAction = intersection{
+
+#declare AcceptTimeEventAction = box { <-0.6, -0.6, -0.6>, <0.6, 0.6, 0.6>  rotate y*45
+    material { texture { pigment { color Clear } finish { F_Glass2 } } interior { I_Glass1 fade_color Col_Azurite_02 } }
+}
+
+#declare Connector = intersection{
     box {<-2.5,-1.25, -2.5>,<2.5, 1.25, 2.5>}
     object{ Hyperboloid_Y }
     material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } }
@@ -81,14 +92,7 @@
 #declare State = object { Round_Cylinder (-0.2*y, 0.2*y, 1.0, 0.1, 0)
      texture{ pigment{ spiral1 1 color_map{[0.0 color rgb <0.85, 0.85, 0.10>][0.7 color rgb<1,1,1, 0.98>]}}
               finish{ Metal } scale 0.2 rotate x*90 } }   
-
-/*
-#declare StateInternal = difference {
-    object { Round_Box_Union(<-0.5, -0.5, -0.5>, <0.5, 0.5, 0.5>, 0.002)}
-    object { Round_Box_Union(<-0.45, -0.45, -0.45>, <0.45, 0.45, 0.45>, 0.002)}
-    box { <-0.6, -0.6, -1>, <0.6, 0.6, 0> }
-  material { InternalTransitionTexture }}    
-*/    
+   
 #declare StateInternal = difference {
     box { <-0.5, -0.5, -0.5>, <0.5, 0.5, 1>}
     box { <-0.51, -0.51, -1>, <0.51, 0.51, 0> }   

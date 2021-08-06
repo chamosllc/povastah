@@ -157,8 +157,8 @@ public class Diagram {
 	 */
 	protected boolean excludeIPresentation(ILinkPresentation presentation) {
 		/**
-		 * 除外対象要素(なぜだか、リンクでないオブジェクトがこちらに寄せられている)
-		 * ノートアンカー : "NoteAnchor" | 直線 : "Line" | フリーハンド : "FreeHand" | 蛍光ペン : "Highlighter"
+		 * 除外対象要素
+		 * 直線 : "Line" | フリーハンド : "FreeHand" | 
 		 */	
 		final String[] excludes = {"NoteAnchor", "Line", "FreeHand", "Highlighter"};
 		String type =  presentation.getType();
@@ -167,7 +167,7 @@ public class Diagram {
 				return true;
 			}
 		}
-		return false;
+		return excludeIPresentation(presentation.getSource()) || excludeIPresentation(presentation.getTarget());
 	}
 	
 	/**
