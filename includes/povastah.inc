@@ -35,12 +35,6 @@
 #declare Action = object { Round_Cone(<0, -0.6, 0>, 1.2, <0, 0.8, 0>, 0.6, 0.15, 0)
   texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> }}
   scale 1/3}  
-} 
- 
-#declare Action = union{
-	box{<-0.7,-0.5,-0.6>,<0.7,0.3,0.6>}
-	cylinder{<-0.7,0.3,0>,<0.7,0.3,0>,0.6}
-	texture{checker texture{T_Stone8} texture{T_Stone21} rotate z*90 scale 0.3 }
 }
 
 #declare ForkNode = union {
