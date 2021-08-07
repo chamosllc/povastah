@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah-Lineup ステートマシン図
- * created at 2021/08/06
+ * created at 2021/08/08
  * presented by povastah
  **/
 
@@ -15,9 +15,7 @@
   object { State rotate -x*90 scale 24.0 translate <180.833, -68.714, 0.000> }
     object { Circle_Text( LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <180.833, -68.714, 30.000> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <107.333, -68.714, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <107.333, -68.714, 30.000> }
   object { FinalState rotate -x*90 scale 24.0 translate <254.000, -68.714, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <254.000, -68.714, 30.000> }
     sphere_sweep { linear_spline, 2, <180.833, -68.714, 4.000>, 3.0 <254.000, -68.714, 4.000>, 3.0 texture { TransitionTexture }}
     sphere_sweep { linear_spline, 2, <107.333, -68.714, 4.000>, 3.0 <180.833, -68.714, 4.000>, 3.0 texture { TransitionTexture }}
 }
@@ -41,9 +39,7 @@
   object { FinalState rotate -x*90 scale 24.0 translate <581.333, -318.000, 0.000> }
     object { Circle_Text( LabelFont, "FinalState",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <581.333, -318.000, 30.000> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <140.667, -224.667, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <140.667, -224.667, 30.000> }
   object { FinalState rotate -x*90 scale 24.0 translate <260.667, -276.667, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <260.667, -276.667, 30.000> }
   object { ForkPseudostate rotate -x*90 scale 24.0 translate <382.333, -89.833, 0.000> }
     object { Circle_Text( LabelFont, "ForkPseudostate",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <382.333, -89.833, 30.000> }
   object { ForkPseudostate rotate -x*90 scale 24.0 translate <479.833, -94.333, 0.000> }
