@@ -172,8 +172,10 @@ public class ClassDiagram extends Diagram {
 	protected String label(IPresentation presence) {
 		String label = super.label(presence);
 		if(presence.getModel() instanceof IInstanceSpecification) {
-			IClass model = ((IInstanceSpecification)(presence.getModel())).getClassifier();
-			label += ":" + model.getName();
+			IClass objectNodeClass = ((IInstanceSpecification)(presence.getModel())).getClassifier();
+			if(objectNodeClass != null) {
+				label += ":" + objectNodeClass.getName();
+			}
 		}
 		return label;
 	}
@@ -256,21 +258,22 @@ public class ClassDiagram extends Diagram {
 					return "Interface";
 				}
 			}else if(node.getType().equals("InstanceSpecification")){
-				model = ((IInstanceSpecification)(node.getModel())).getClassifier();
-				types = Arrays.asList(model.getStereotypes());
-				if(!types.isEmpty()) {
-					 if(types.contains("actor")) {
-						return "Actor";
-					}else if(types.contains("boundary")) {
-						return "BoundaryInstance";
-					}else if(types.contains("control")) {
-						return "ControlInstance";
-					}else if(types.contains("entity")) {
-						return "EntityInstance";
-					}else if(types.contains("interface")) {
-						return "Interface";
+				IClass objectNodeClass = ((IInstanceSpecification)(node.getModel())).getClassifier();
+				if(objectNodeClass != null) {
+					types = Arrays.asList(objectNodeClass.getStereotypes());
+					if(!types.isEmpty()) {
+						 if(types.contains("actor")) {
+							return "Actor";
+						}else if(types.contains("boundary")) {
+							return "BoundaryInstance";
+						}else if(types.contains("control")) {
+							return "ControlInstance";
+						}else if(types.contains("entity")) {
+							return "EntityInstance";
+						}else if(types.contains("interface")) {
+							return "Interface";
+						}
 					}
-				}else {
 					return "InstanceSpecification";
 				}
 			}

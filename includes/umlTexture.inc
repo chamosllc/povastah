@@ -23,9 +23,10 @@
 #declare DependencyTexture = texture { Peel }
 #declare AssociationClassTexture = texture { Peel }
 #declare IncludeTexture = texture { Yellow_Pine } 
-
+#declare TemplateBindingTexture = texture { Vicks_Bottle_Glass }
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkLabelTecture = texture { Peel }
+#declare UsageTexture = texture { Peel }
 
 #declare HierachyTecture = texture { T_Chrome_4A }
 

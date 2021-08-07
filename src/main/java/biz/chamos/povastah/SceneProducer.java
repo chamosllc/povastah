@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IClassDiagram;
+import com.change_vision.jude.api.inf.model.ICommunicationDiagram;
 import com.change_vision.jude.api.inf.model.INamedElement;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
 import com.change_vision.jude.api.inf.model.IUseCaseDiagram;
@@ -62,6 +63,15 @@ public class SceneProducer {
 		for(INamedElement diagram: accessor.findElements(IClassDiagram.class)){
 			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
 				(new ClassDiagram(projectName, (IClassDiagram)diagram, writer)).produce();
+			}
+		}
+		/*
+		 * プロジェクト中のすべてのコミュニケーション図を出力する
+		 * ICommunicationDiagram
+		 */
+		for(INamedElement diagram: accessor.findElements(ICommunicationDiagram.class)){
+			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
+				(new CommunicationDiagram(projectName, (ICommunicationDiagram)diagram, writer)).produce();
 			}
 		}
 		/*
