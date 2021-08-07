@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ユースケース
- * created at 2021/08/06
+ * created at 2021/08/08
  * presented by povastah
  **/
 
@@ -22,8 +22,8 @@
     sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.000>, 3.0 <348.560, -233.667, 4.000>, 3.0 texture { AssociationTexture }}
 }
 object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <250.833, -578.833, -341.667>;
+#declare EYE = <250.833, -478.833, -441.667>;
 #declare FOCUS = <250.833, -238.833, 0.000>;
-camera { location EYE direction 1.4*z look_at FOCUS }
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.000, -1000.000, -3000.000> color White }
 plane { z, 32.0 texture { UseCaseDiagramTexture }}

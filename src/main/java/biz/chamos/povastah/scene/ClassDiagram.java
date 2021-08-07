@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.change_vision.jude.api.inf.model.IAssociationClass;
 import com.change_vision.jude.api.inf.model.IClass;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IElement;
@@ -190,16 +191,36 @@ public class ClassDiagram extends Diagram {
 		 * 除外対象要素
 		 * パッケージ : "Package" | サブシステム : "Subsystem" | 構造化クラス : "StructuredClass" | 汎化共有表記 : "GeneralizationGroup"
 		 */	
-		final String[] excludes = {"AssociationClass", "Package", "Subsystem", "StructuredClass", "GeneralizationGroup"};
+		final String[] excludes = { "Package", "Subsystem", "StructuredClass", "GeneralizationGroup"};
 		String type = presentation.getType();
 		for(String exclude: excludes) {
-			if(type.startsWith(exclude)) {
+			if(type.equals(exclude)) {
 				return true;
 			}
-		}	 
+		}
 		return super.excludeIPresentation(presentation);
 	}
 	
+	/**
+	 * リンクが出力対象ではない
+	 * @param リンク
+	 * @return 除外リンクである
+	 */
+//	protected boolean excludeIPresentation(ILinkPresentation presentation) {
+//		/**
+//		 * 除外対象要素
+//		 * 関連クラス : "AssociationClass"
+//		 */	
+//		final String[] excludes = {"AssociationClass"};
+//		String type =  presentation.getType();
+//		for(String exclude: excludes) {
+//			if(type.equals(exclude)) {
+//				return true;
+//			}
+//		}
+//		return super.excludeIPresentation(presentation);
+//	}
+
 	/**
 	 * リンクオブジェクトを描く
 	 * @param link
@@ -220,18 +241,41 @@ public class ClassDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void writeSpline(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		if(link.getType().equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
+		String type = link.getType();
+		double lineRadius = 3.0;
+		if(type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
 			Point2D sourcep = nodePosition(link.getSource());
 			Point2D targetp = nodePosition(link.getTarget());
-			double lineRadius = 3.0;
-
 			sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
 			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
 			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
 			sceneWriter.write(linkTextureName(link));
-		}else {
+		}else if(type.equals("AssociationClass")){
+			Point2D sourcep = nodePosition(link.getSource());
+			Point2D targetp = nodePosition(link.getTarget());
+			String start = coordinate(sourcep, sourcez) + ", " + lineRadius + " ";
+			String end = coordinate(targetp, targetz) + ", " + lineRadius + " ";
+			INodePresentation assocNode = find((IAssociationClass)(link.getModel()));
+			sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start + start
+					+ coordinate(nodePosition(assocNode), nodePositionZ(assocNode)) + ", " + lineRadius + " "
+					+end + end + linkTextureName(link));
+		}else{
 			super.writeSpline(link, sourcez, targetz);
 		}	
+	}
+
+	/**
+	 * リンクモデルIAssociationClassと同じノードモデルを探し、ノードを返す
+	 * @param assoc
+	 * @return
+	 */
+	protected INodePresentation find(IAssociationClass assoc) {
+		for(INodePresentation node: nodes) {
+			if(node.getModel()==assoc) {
+				return node;
+			}
+		}
+		return null;
 	}
 	
 	/**

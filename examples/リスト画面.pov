@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah リスト画面
- * created at 2021/08/06
+ * created at 2021/08/08
  * presented by povastah
  **/
 
@@ -13,7 +13,6 @@
 
 #declare StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 = union {
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <130.000, -89.333, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <130.000, -89.333, 30.000> }
   object { State rotate -x*90 scale 24.0 translate <232.569, -89.154, 0.000> }
     object { Circle_Text( LabelFont, "find",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <232.569, -89.154, 30.000> }
   difference { object { StateInternal scale<252.000, 180.307, 16.000> translate <460.667, -185.846, 0.000> }
@@ -24,19 +23,14 @@
   object { State rotate -x*90 scale 24.0 translate <241.902, -222.487, 0.000> }
     object { Circle_Text( LabelFont, "select",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <241.902, -222.487, 30.000> }
   object { FinalState rotate -x*90 scale 24.0 translate <130.000, -250.667, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <130.000, -250.667, 30.000> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <360.000, -167.154, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <360.000, -167.154, 30.000> }
   object { State rotate -x*90 scale 24.0 translate <460.569, -167.154, 0.000> }
     object { Circle_Text( LabelFont, "entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <460.569, -167.154, 30.000> }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate <360.000, -235.820, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <360.000, -235.820, 30.000> }
   object { State rotate -x*90 scale 24.0 translate <460.569, -235.820, 0.000> }
     object { Circle_Text( LabelFont, "type",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <460.569, -235.820, 30.000> }
   object { FinalState rotate -x*90 scale 24.0 translate <551.333, -167.154, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <551.333, -167.154, 30.000> }
   object { FinalState rotate -x*90 scale 24.0 translate <549.333, -235.820, 0.000> }
-    object { Circle_Text( LabelFont, " ",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <549.333, -235.820, 30.000> }
     sphere_sweep { linear_spline, 2, <130.000, -89.333, 4.000>, 3.0 <232.569, -89.154, 4.000>, 3.0 texture { TransitionTexture }}
   torus { 36.0, 3.0 translate <232.569, -89.154, -32.000>texture { TransitionTexture }}
   difference {

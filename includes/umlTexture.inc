@@ -21,7 +21,7 @@
 #declare GeneralizationTexture = texture { Orange_Glass }
 #declare RealizationTexture = texture { Vicks_Bottle_Glass }
 #declare DependencyTexture = texture { Peel }
-#declare AssociationClassTexture = texture { Peel }
+#declare AssociationClassTexture = texture { T_Yellow_Glass }
 #declare IncludeTexture = texture { Yellow_Pine } 
 #declare TemplateBindingTexture = texture { Vicks_Bottle_Glass }
 #declare LabelTecture = texture { T_Grnt15 }

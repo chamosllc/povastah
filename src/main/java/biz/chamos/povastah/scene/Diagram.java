@@ -370,8 +370,8 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void writeLabel(INodePresentation node) throws IOException {
-		String nodeLabel = "";
-		if(!(nodeLabel = label(node)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+		String nodeLabel = label(node);
+		if(!nodeLabel.replace(" ", "").isEmpty()) { // 名前がないか空白だけの名前は表示しない
 			double step = 0.8;
 			Point2D point = (Point2D)nodePosition(node);
 			for(String label: nodeLabel.split("\n")) {
@@ -468,28 +468,36 @@ public class Diagram {
 			Point2D[] points = link.getPoints();
 			/*
 			 * 折れ線 sphere_sweep { linear_spline, points.length, ... } 始点・経由点N・終点のN+2点
-			 * 曲線   sphere_sweep { cubic_spline,  points.length+2, ... } 始点・始点・経由点・終点・終点の5点
-			 * 曲線   sphere_sweep { b_spline,  points.length+2, ... } 始点・始点・経由点N・終点・終点のN+4点
 			 * 
-			 * 経由点があるときは曲線(cubic_spline, N+4)、ないときは直線(linear_spline, 2)
+			 * 曲線   sphere_sweep { cubic_spline,  points.length+2, ... } 始点・始点・経由点(points[1])・終点・終点の5点
+			 * 曲線   sphere_sweep { b_spline,  points.length+2, ... } 始点・始点・経由点N(points[1]...points[length-2]・終点・終点のN+4点
+			 * 
 			 */
+			String start = coordinate(sourcep, sourcez) + ", " + lineRadius + " ";
+			String end = coordinate(targetp, targetz) + ", " + lineRadius + " ";
 			int length = points.length; // 2 or 5以上
-			if(length == 2) { // 直線
-				sceneWriter.write("    sphere_sweep { linear_spline, 2, ");
-			}else if(length == 3) { // 1点経由 曲線
-				sceneWriter.write("    sphere_sweep { cubic_spline, 5, ");
-			}else{ // 2点以上経由 曲線
-				sceneWriter.write("    sphere_sweep { b_spline, " + (length + 2) + ", ");
+			boolean isCurve = link.getProperty("line.shape").equals("curve");
+			if(!isCurve || length == 2) {
+				sceneWriter.write("    sphere_sweep { linear_spline, " + length + ", ");			
+			}else {
+				if(length == 3) { // 1点経由 曲線
+					sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start);
+				}else{ // 2点以上経由 曲線
+					sceneWriter.write("    sphere_sweep { b_spline, " + (length + 2) + ", " + start);
+				}
 			}
-			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
+			sceneWriter.write(start); // 始点
 			if(length > 2) { // 経由点を曲線で結ぶ
-				double deltaz = (targetz - sourcez)/(length + 1);
-				for(int i=0; i < length; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+				double deltaz = (targetz - sourcez)/(length - 1);
+				for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
 					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + " "); // 始点→経由点→終点
 					deltaz += deltaz;
 				}
+				if(isCurve) {
+					sceneWriter.write(end); // 終点
+				}
 			}
-			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
+			sceneWriter.write(end); // 終点
 		}
 		sceneWriter.write(linkTextureName(link));	
 	}

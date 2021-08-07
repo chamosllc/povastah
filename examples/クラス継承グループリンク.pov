@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah クラス継承グループリンク
- * created at 2021/08/06
+ * created at 2021/08/08
  * presented by povastah
  **/
 
@@ -11,7 +11,7 @@
 
 #include "povastah.inc"
 
-// hierachy depth: {クラス1=1, クラス0=2, クラス2=1}
+// hierachy depth: {クラス0=2, クラス1=1, クラス2=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {
@@ -27,6 +27,6 @@
 object { ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 }
 #declare EYE = <219.000, -400.833, -427.833>;
 #declare FOCUS = <219.000, -160.833, 0.000>;
-camera { location EYE direction 1.6*z look_at FOCUS }
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.000, -1000.000, -3000.000> color White }
 plane { z, 32.0 texture { ClassDiagramTexture }}

@@ -119,7 +119,7 @@
  
 #declare RobustnessTexture = texture { T_Chrome_4B }
 
-#declare AssociationClass = sphere { 0, 1 texture { T_Yellow_Glass }}
+#declare AssociationClass = sphere { 0, 0.9 texture { T_Yellow_Glass }}
 
 #declare Boundary=union {
     union { 

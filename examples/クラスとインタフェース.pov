@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah クラスとインタフェース
- * created at 2021/08/06
+ * created at 2021/08/08
  * presented by povastah
  **/
 
@@ -21,6 +21,6 @@
 object { ClassDiagram_zm36174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <139.491, -460.154, -311.645>;
 #declare FOCUS = <139.491, -220.154, 0.000>;
-camera { location EYE direction 2*z look_at FOCUS }
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000.000, -1000.000, -3000.000> color White }
 plane { z, 32.0 texture { ClassDiagramTexture }}
