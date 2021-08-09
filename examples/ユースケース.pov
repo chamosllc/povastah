@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ユースケース
- * created at 2021/08/08
+ * created at 2021/08/09
  * presented by povastah
  **/
 
@@ -19,11 +19,11 @@
   } scale 64  translate <348.560, -233.667, 0.000>}
   object { Actor rotate -x*90 scale 24.0 translate <89.333, -240.714, 0.000> }
     object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <89.333, -240.714, 30.000> }
-    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.000>, 3.0 <348.560, -233.667, 4.000>, 3.0 texture { AssociationTexture }}
+    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.000>, 3.0 <348.560, -233.667, 4.000>, 3.0 material { AssociationMaterial }}
 }
 object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <250.833, -478.833, -441.667>;
 #declare FOCUS = <250.833, -238.833, 0.000>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.000, -1000.000, -3000.000> color White }
+light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32.0 texture { UseCaseDiagramTexture }}

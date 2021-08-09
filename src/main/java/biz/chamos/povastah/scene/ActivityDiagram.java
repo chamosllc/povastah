@@ -102,10 +102,10 @@ public class ActivityDiagram extends Diagram {
 			Rectangle2D bound = node.getRectangle();
 			Rectangle2D subBound = subDiagram.getBoundRect(); 
 			double scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ));
-			double posz = nodePositionZ(node) - deltaZ*scale;
+			double posz = zposition(node) - deltaZ*scale;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() + (deltaZ/2))*scale);
 			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
-			writeLabelOnStage(node, bound);
+			textOnStage(node, bound);
 			return true;
 		}
 		return false;
@@ -125,14 +125,14 @@ public class ActivityDiagram extends Diagram {
 	 * @param bound
 	 * @throws IOException
 	 */
-	protected void writeLabelOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
+	protected void textOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
 		/*
 		 * writeLabel
 		 */
 		String label = label(node);
 		if(!label.isEmpty()) {
 			sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0 scale <16, 16, 2> texture { LabelTecture }"
-					+ translate(new Point2D.Double(bound.getMinX() + 28.0, bound.getMaxY() + 32), nodePositionZ(node) + 31) + " }" + CR);
+					+ translate(new Point2D.Double(bound.getMinX() + 28.0, bound.getMaxY() + 32), zposition(node) + 31) + " }" + CR);
 		}
 	}
 }

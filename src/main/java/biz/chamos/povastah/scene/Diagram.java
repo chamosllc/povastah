@@ -44,6 +44,12 @@ public class Diagram {
 	 */
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR;
+	
+	/**
+	 * POVRay撮影環境記述
+	 */
+	static final protected String CAMERA = "camera { location EYE direction 1*z look_at FOCUS }" + CR;
+	static final protected String LIGHT = "light_source { <-1000, -1000, -3000>   color White }" + CR;
 	/**
 	 * 3D座標系フォーマット
 	 */
@@ -97,7 +103,7 @@ public class Diagram {
 			try {
 				writeHeader();
 				writeDiagram(new Point2D.Double(), 0.0);
-				writeStage();
+				stage();
 			}catch(IOException | InvalidUsingException e) {}
 		}
 	}
@@ -198,7 +204,7 @@ public class Diagram {
 		String name = povrayName();
 		sceneWriter.write("#declare " + name + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
-		writeLinks();
+		drawLinks();
 		sceneWriter.write("}" + CR);
 		return name;
 	}
@@ -260,7 +266,7 @@ public class Diagram {
 	 * カメラ、光源、平面等のベースシーン環境を出力する
 	 * @throws IOException
 	 */
-	protected void writeStage() throws IOException {
+	protected void stage() throws IOException {
 		final String DEFVAR = "#declare %s = " + COORDINATE + ";" + CR;
 		// フレームの矩形の中心をカメラ焦点にする
 		double stageX = stage.getCenterX();
@@ -268,10 +274,19 @@ public class Diagram {
 		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
 		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 80));
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
-		sceneWriter.write("camera { location EYE direction 1*z look_at FOCUS }" + CR);
-		sceneWriter.write(String.format("light_source { " + COORDINATE + " color White }" + CR, -1000.0, -1000.0, -3000.0));
+		sceneWriter.write(CAMERA);
+		sceneWriter.write(LIGHT);
 		sceneWriter.write("plane { z, 32.0 texture { " + stageTexture() + " }}" + CR);
 		sceneWriter.flush();
+	}
+
+	/**
+	 * ダイアグラムのステージ(POVRayオブジェクトplaneのテクスチャ宣言名を返す
+	 * 
+	 * @return Texture
+	 */
+	protected String stageTexture() {
+		return getClass().getSimpleName() + "Texture";
 	}
 
 	/**
@@ -282,15 +297,6 @@ public class Diagram {
 	 */
 	protected double cameraDistance(double z) {
 		return (z > -256)?-256:z;
-	}
-
-	/**
-	 * ダイアグラムのステージ(POVRayオブジェクトplaneのテクスチャ宣言名を返す
-	 * 
-	 * @return
-	 */
-	protected String stageTexture() {
-		return getClass().getSimpleName() + "Texture";
 	}
 
 	/**
@@ -312,14 +318,14 @@ public class Diagram {
 	 */
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		final double scale = 24.0;
-		Point2D point = nodePosition(node);	
-		sceneWriter.write("  object { " + povrayObjectType(node) + " rotate -x*90 scale " + scale + translate(point, nodePositionZ(node)) + " }" + CR);
+		Point2D point = center(node);	
+		sceneWriter.write("  object { " + type(node) + " rotate -x*90 scale " + scale + translate(point, zposition(node)) + " }" + CR);
 		if(!writeSubDiagram(hierarchy + 1, node)) {
-			writeLabel(node);
+			text(node);
 		}
 	}
 
-	protected double nodePositionZ(INodePresentation node) {
+	protected double zposition(INodePresentation node) {
 		return 0.0;
 	}
 	
@@ -328,7 +334,7 @@ public class Diagram {
 	 * @param node
 	 * @return Point2D 中心座標
 	 */
-	protected Point2D nodePosition(INodePresentation node) {
+	protected Point2D center(INodePresentation node) {
 		return new Point2D.Double(node.getRectangle().getCenterX(), node.getRectangle().getCenterY());
 	}
 
@@ -337,7 +343,7 @@ public class Diagram {
 	 * @param node
 	 * @return Point2D 中心座標
 	 */
-	protected Point2D nodePosition(ILinkPresentation link) {
+	protected Point2D center(ILinkPresentation link) {
 		Rectangle2D bound = link.getSource().getRectangle();
 		bound.add(link.getTarget().getRectangle());
 		return new Point2D.Double(bound.getCenterX(), bound.getCenterY());
@@ -349,7 +355,7 @@ public class Diagram {
 	 * @param node
 	 * @return
 	 */
-	protected String povrayObjectType(INodePresentation node) {
+	protected String type(INodePresentation node) {
 		return node.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
 	}
 
@@ -369,11 +375,11 @@ public class Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void writeLabel(INodePresentation node) throws IOException {
+	protected void text(INodePresentation node) throws IOException {
 		String nodeLabel = label(node);
 		if(!nodeLabel.replace(" ", "").isEmpty()) { // 名前がないか空白だけの名前は表示しない
 			double step = 0.8;
-			Point2D point = (Point2D)nodePosition(node);
+			Point2D point = (Point2D)center(node);
 			for(String label: nodeLabel.split("\n")) {
 				double radius = 1.6;
 				double scale = 1.0;
@@ -393,10 +399,10 @@ public class Diagram {
 	 * @param bound
 	 * @throws IOException
 	 */
-	protected void writeLabelOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
+	protected void textOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
 		String label = label(node);
 		if(!label.isEmpty()) {
-			sceneWriter.write(String.format(TEXT16, label, translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), nodePositionZ(node) - 0.01)) + CR);
+			sceneWriter.write(String.format(TEXT16, label, translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), zposition(node) - 0.01)) + CR);
 		}
 	}
 	
@@ -409,7 +415,7 @@ public class Diagram {
 	 * @param link
 	 * @throws IOException
 	 */
-	protected void writeLabel(ILinkPresentation link) throws IOException {
+	protected void text(ILinkPresentation link) throws IOException {
 		final double scale = 16.0;
 		double labelShift = 36.0;
 		String linkLabel = "";
@@ -417,7 +423,7 @@ public class Diagram {
 			double labelY = 0.0;
 			int merginX = 0;
 			for(String label: linkLabel.split("\n")) {
-				Point2D point = (Point2D)nodePosition(link).clone();
+				Point2D point = (Point2D)center(link).clone();
 				if(merginX == 0) {
 					merginX = label.getBytes().length*3;
 				}
@@ -429,14 +435,14 @@ public class Diagram {
 	}
 	
 	/**
-	 * リンクをPOVRayで記述する
+	 * リンクをPOVRayで描く
 	 * 
 	 * astahダイアグラムのLinkのNodeへの端点は使わない 
 	 * @throws IOException
 	 */
-	protected void writeLinks() throws IOException {
+	protected void drawLinks() throws IOException {
 		for (ILinkPresentation link : links) {
-				writeLink(link);
+				draw(link);
 		}
 	}
 
@@ -445,8 +451,8 @@ public class Diagram {
 	 * @param link
 	 * @throws IOException
 	 */
-	protected void writeLink(ILinkPresentation link) throws IOException {
-		writeSpline(link, OFFSET_Z, OFFSET_Z);	
+	protected void draw(ILinkPresentation link) throws IOException {
+		draw(link, OFFSET_Z, OFFSET_Z);	
 	}
 
 	/**
@@ -456,9 +462,9 @@ public class Diagram {
 	 * @param targetz ターゲットノードの高さ
 	 * @throws IOException
 	 */
-	protected void writeSpline(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		Point2D sourcep = nodePosition(link.getSource());
-		Point2D targetp = nodePosition(link.getTarget());
+	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+		Point2D sourcep = center(link.getSource());
+		Point2D targetp = center(link.getTarget());
 		double lineRadius = 3.0;
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 36.0;
@@ -499,11 +505,11 @@ public class Diagram {
 			}
 			sceneWriter.write(end); // 終点
 		}
-		sceneWriter.write(linkTextureName(link));	
+		sceneWriter.write(material(link));	
 	}
 
-	protected String linkTextureName(ILinkPresentation link) {
-		return "texture { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Texture }}" + CR;
+	protected String material(ILinkPresentation link) {
+		return "material { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Material }}" + CR;
 	}
 	
 	/**

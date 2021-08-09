@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah-Lineup ユースケース図
- * created at 2021/08/08
+ * created at 2021/08/09
  * presented by povastah
  **/
 
@@ -35,5 +35,5 @@ object { UseCaseDiagram_77u48e854451c4ee75ae849d72474c5eb8f }
 #declare EYE = <268.833, -445.167, -426.000>;
 #declare FOCUS = <268.833, -205.167, 0.000>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.000, -1000.000, -3000.000> color White }
+light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32.0 texture { UseCaseDiagramTexture }}

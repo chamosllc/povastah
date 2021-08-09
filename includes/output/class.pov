@@ -32,7 +32,7 @@
     object { Circle_Text( LabelFont, "ControlInstance:Control",  0.900, 0, 2, 1.700, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <562.517, -267.547, 30.000> }
   object { AssociationClass rotate -x*90 scale 24.0 translate <186.857, -159.857, 0.000> }
     object { Circle_Text( LabelFont, "AssociationClas",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <186.857, -159.857, 30.000> }
-    sphere_sweep { cubic_spline, 5, <99.701, -75.333, 4.000>, 3.0 <99.701, -75.333, 4.000>, 3.0 <186.857, -159.857, 0.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 texture { AssociationClassTexture }}
+    sphere_sweep { cubic_spline, 5, <99.701, -75.333, 4.000>, 3.0 <99.701, -75.333, 4.000>, 3.0 <186.857, -159.857, 0.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 material { AssociationClassMaterial }}
 }
 object { ClassDiagram_l48e854451c4ee75ae849d72474c5eb8f }
 box { <0, 0, 0>, <1, 1, 1> pigment { image_map { jpeg  "./povastah-Lineup/class.jpg" map_type 0 } rotate x*180 } scale <822, -354, 1> scale 0.79 translate <-10, 240, 31> }

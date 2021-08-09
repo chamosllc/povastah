@@ -41,7 +41,7 @@ public class UseCaseDiagram extends ClassDiagram {
 			for(String label: labels) {
 				max = Integer.max(label.getBytes().length, max);
 			}
-			Point2D point = nodePosition(node);
+			Point2D point = center(node);
 			sceneWriter.write("  cylinder {-z, z 1 texture { T_Wood10 } scale <" + (max*0.1+0.2) + ", " + height
 					+ ", 0.05> texture { pigment { object { union { " + CR);
 			for(int i=0; i < labels.length;  i++) {

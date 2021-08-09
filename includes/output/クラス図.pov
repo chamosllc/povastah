@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah-Lineup クラス図
- * created at 2021/08/08
+ * created at 2021/08/09
  * presented by povastah
  **/
 
@@ -32,11 +32,11 @@
     object { Circle_Text( LabelFont, "ControlInstance:Control",  0.900, 0, 2, 1.700, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <562.517, -267.547, 30.000> }
   object { AssociationClass rotate -x*90 scale 24.0 translate <186.857, -159.857, 0.000> }
     object { Circle_Text( LabelFont, "AssociationClas",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <186.857, -159.857, 30.000> }
-    sphere_sweep { cubic_spline, 5, <99.701, -75.333, 4.000>, 3.0 <99.701, -75.333, 4.000>, 3.0 <186.857, -159.857, 0.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 texture { AssociationClassTexture }}
+    sphere_sweep { cubic_spline, 5, <99.701, -75.333, 4.000>, 3.0 <99.701, -75.333, 4.000>, 3.0 <186.857, -159.857, 0.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 <268.184, -82.880, 4.000>, 3.0 material { AssociationClassMaterial }}
 }
 object { ClassDiagram_l48e854451c4ee75ae849d72474c5eb8f }
 #declare EYE = <320.350, -411.980, -444.330>;
 #declare FOCUS = <320.350, -171.980, 0.000>;
 camera { location EYE direction 1*z look_at FOCUS }
-light_source { <-1000.000, -1000.000, -3000.000> color White }
+light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32.0 texture { ClassDiagramTexture }}

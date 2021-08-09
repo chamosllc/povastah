@@ -16,9 +16,8 @@
  */
 #declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
 
-#declare Interface = object{ Ring_Sphere ( 1.05, 1.05, 0.06, 0.06 , 5, 5)  
-    material { texture { pigment { color Clear } finish { F_Glass2 } } interior { I_Glass1 fade_color Col_Azurite_02 } } 
-}
+#declare Interface = object{ Ring_Sphere (1.05, 1.05, 0.06, 0.06 , 5, 5) material{ InterfaceMaterial } }
+
 #declare InstanceSpecification = object { Class texture { T_Wood23 }} 
 
 /*
@@ -96,7 +95,7 @@
 #declare StateInternal = difference {
     box { <-0.5, -0.5, -0.5>, <0.5, 0.5, 1>}
     box { <-0.51, -0.51, -1>, <0.51, 0.51, 0> }   
- material { InternalTransitionTexture }}  
+ material { InternalTransitionMaterial }}  
 
 #declare SubmachineState = superellipsoid { <0.2, 0.2>
  texture{ pigment{ ripples color_map{[0.0 color rgb <0.75, 1.0, 0.8, 0.3>][0.95 color rgb<1, 1, 1, 0.9>]}}
@@ -119,7 +118,7 @@
  
 #declare RobustnessTexture = texture { T_Chrome_4B }
 
-#declare AssociationClass = sphere { 0, 0.9 texture { T_Yellow_Glass }}
+#declare AssociationClass = sphere { 0, 0.9 material{ AssociationClassMaterial }}
 
 #declare Boundary=union {
     union { 
