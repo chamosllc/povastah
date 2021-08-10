@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah-Lineup ユースケース図
- * created at 2021/08/09
+ * created at 2021/08/11
  * presented by povastah
  **/
 
@@ -11,9 +11,12 @@
 
 #include "povastah.inc"
 
+#declare TextScale = <16, 16, 2>;
+#declare LRd = 3.2;
+
 #declare UseCaseDiagram_77u48e854451c4ee75ae849d72474c5eb8f = union {
   object { Actor rotate -x*90 scale 24.0 translate <91.333, -109.714, 0.000> }
-    object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <91.333, -109.714, 30.000> }
+    object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <91.333, -109.714, 30.000> }
   cylinder {-z, z 1 texture { T_Wood10 } scale <1.4000000000000001, 0.6000000000000001, 0.05> texture { pigment { object { union { 
     text { ttf LabelFont, "ユースケース", 1, 0 texture { LabelTecture } translate<-0.7999999999999996, -0, 0> }
      scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}

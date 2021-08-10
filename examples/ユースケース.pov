@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ユースケース
- * created at 2021/08/09
+ * created at 2021/08/10
  * presented by povastah
  **/
 
@@ -11,6 +11,9 @@
 
 #include "povastah.inc"
 
+#declare TextScale = <16, 16, 2>;
+#declare LRd = 3.2;
+
 #declare UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 = union {
   cylinder {-z, z 1 texture { T_Wood10 } scale <1.4000000000000001, 0.6000000000000001, 0.05> texture { pigment { object { union { 
     text { ttf LabelFont, "ユースケース", 1, 0 texture { LabelTecture } translate<-0.7999999999999996, -0, 0> }
@@ -18,8 +21,8 @@
     finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-0.375, -0.5, -2>
   } scale 64  translate <348.560, -233.667, 0.000>}
   object { Actor rotate -x*90 scale 24.0 translate <89.333, -240.714, 0.000> }
-    object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture } translate <89.333, -240.714, 30.000> }
-    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.000>, 3.0 <348.560, -233.667, 4.000>, 3.0 material { AssociationMaterial }}
+    object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <89.333, -240.714, 30.000> }
+    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.000>, LRd <348.560, -233.667, 4.000>, LRd material { AssociationMaterial }}
 }
 object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <250.833, -478.833, -441.667>;

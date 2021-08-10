@@ -43,7 +43,9 @@ public class Diagram {
 	 * POVRayシーン記述のglobal_settings部
 	 */
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
-			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR;
+			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR
+			+ "#declare TextScale = <16, 16, 2>;" + CR
+			+ "#declare LRd = 3.2;" + CR + CR;
 	
 	/**
 	 * POVRay撮影環境記述
@@ -57,9 +59,9 @@ public class Diagram {
 	/**
 	 * POVRayオブジェクトフォーマット
 	 */
-	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale <16, 16, 2> texture { LabelTecture }%s }";
+	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale texture { LabelTecture }%s }";
 	static final String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
-	static final String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale <16, 16, 2> texture { LabelTecture }%s }";
+	static final String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale TextScale texture { LabelTecture }%s }";
 
 	/**
 	 * astahプロジェクト名
@@ -463,15 +465,16 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+		String arrow = "";
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
-		double lineRadius = 3.0;
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
 			double torusRadius = 36.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("  torus { " + torusRadius + ", " + lineRadius + translate(sourcep, -torusRadius + sourcez));
+			sceneWriter.write("  torus { " + torusRadius + ", LRd " + translate(sourcep, -torusRadius + sourcez));
 		}else {
 			Point2D[] points = link.getPoints();
+
 			/*
 			 * 折れ線 sphere_sweep { linear_spline, points.length, ... } 始点・経由点N・終点のN+2点
 			 * 
@@ -479,12 +482,12 @@ public class Diagram {
 			 * 曲線   sphere_sweep { b_spline,  points.length+2, ... } 始点・始点・経由点N(points[1]...points[length-2]・終点・終点のN+4点
 			 * 
 			 */
-			String start = coordinate(sourcep, sourcez) + ", " + lineRadius + " ";
-			String end = coordinate(targetp, targetz) + ", " + lineRadius + " ";
+			String start = coordinate(sourcep, sourcez) + ", LRd ";
+			String end = coordinate(targetp, targetz) + ", LRd ";
 			int length = points.length; // 2 or 5以上
 			boolean isCurve = link.getProperty("line.shape").equals("curve");
 			if(!isCurve || length == 2) {
-				sceneWriter.write("    sphere_sweep { linear_spline, " + length + ", ");			
+				sceneWriter.write("    sphere_sweep { linear_spline, " + length + ", ");
 			}else {
 				if(length == 3) { // 1点経由 曲線
 					sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start);
@@ -492,11 +495,11 @@ public class Diagram {
 					sceneWriter.write("    sphere_sweep { b_spline, " + (length + 2) + ", " + start);
 				}
 			}
-			sceneWriter.write(start); // 始点
+			sceneWriter.write(start); // 始点			
 			if(length > 2) { // 経由点を曲線で結ぶ
 				double deltaz = (targetz - sourcez)/(length - 1);
 				for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", " + lineRadius + " "); // 始点→経由点→終点
+					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", LRd "); // 始点→経由点→終点
 					deltaz += deltaz;
 				}
 				if(isCurve) {
@@ -504,9 +507,52 @@ public class Diagram {
 				}
 			}
 			sceneWriter.write(end); // 終点
+//			arrow = arrow(link, sourcep, targetp, sourcez, targetz);
 		}
-		sceneWriter.write(material(link));	
+		sceneWriter.write(material(link));
+		sceneWriter.write(arrow);
 	}
+
+	/**
+	 * リンクの矢印を描く
+	 * @param points
+	 * @return
+	 */
+//	private String arrow(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz) {
+//		String description;
+//		Point2D[] points = link.getPoints();
+//		String start = coordinate(sourcep, sourcez) + ", LRd*0.9 ";
+//		String end;
+//		int length = points.length; // 2 or 5以上
+//		boolean isCurve = link.getProperty("line.shape").equals("curve");
+//		if(!isCurve || length == 2) {
+//			description = "    sphere_sweep { linear_spline, " + length + ", ";
+//			Point2D point = new Point2D.Double();
+//			point.setLocation(sourcep.getX() + ((targetp.getX() - sourcep.getX())/2.0), sourcep.getY() + (( targetp.getY() - sourcep.getY())/2.0));
+//			end =  coordinate(point, targetz) + ", 0.0 ";
+//		}else {
+//			end = coordinate(targetp, targetz) + ", 0.0 ";
+//			if(length == 3) { // 1点経由 曲線
+//				description = "    sphere_sweep { cubic_spline, 5, " + start;
+//			}else{ // 2点以上経由 曲線
+//				description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
+//			}
+//		}
+//		description += start; // 始点			
+//		if(length > 2) { // 経由点を曲線で結ぶ
+//			double deltaz = (targetz - sourcez)/(length - 1);
+//			for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+//				description += coordinate(points[i], sourcez+deltaz) + ", 0.0 "; // 始点→経由点→終点
+//				deltaz += deltaz;
+//			}
+//			if(isCurve) {
+//				description += end; // 終点
+//			}
+//		}
+//		description += end; // 終点
+//		description += " texture { ArrowTexture }}" + CR;
+//		return description;
+//	}
 
 	protected String material(ILinkPresentation link) {
 		return "material { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Material }}" + CR;

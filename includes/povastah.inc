@@ -37,10 +37,7 @@
     box{<-1, -1, -0.1>, <1, 1, 0.1>}
      texture {T_Chrome_1B} }
 
-#declare Action = object { Round_Cone(<0, -0.6, 0>, 1.2, <0, 0.8, 0>, 0.6, 0.15, 0)
-  texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> }}
-  scale 1/3}  
-}
+#declare Action = object { Round_Cylinder(<0, -0.6, 0>, <0, 0.8, 0>, 1.0, 0.15, 0) texture{ ActivityTexture scale 1/2 }}
 
 #declare ForkNode = union {
     cylinder {<0, 0, -0.3>, <0, 0, 0.2>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
@@ -54,7 +51,7 @@
 
 #declare Activity=union{
   object{ Fence }
-  box{<-1,-0.25,-1>, <1, 0, 1> texture{checker texture{T_Stone8} texture{T_Stone5} scale 1/4}}
+  box{<-1,-0.25,-1>, <1, 0, 1> texture{ ActivityTexture scale 1/4 }}
   scale 0.8
 }
 
@@ -62,7 +59,7 @@
 
 #declare Process = union {
         object{ ProcessShape scale x*9/10 translate x*0.4 }
-        texture{ checker texture{T_Stone8} texture{ pigment { color rgbf<141/255, 45/255, 45/255, 0.7> } } scale 1/4 } }
+        texture{ ActivityTexture scale 1/4 } }
 #declare SendSignalAction = difference {
     object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_01 } } }
     box { <-2, -1, -1>, <-0.5, 1, 1> } translate -x*0.3 }
@@ -169,4 +166,6 @@ union{
     object { Spiral scale 1.15 }     
     object { InstanceSpecification }
 }
+
+#declare Arrow = union { cylinder {-x*4, x*1, 1}  cone {x*1, 3.0 x*3, 0} scale 4 texture { ArrowTexture } no_shadow }
 

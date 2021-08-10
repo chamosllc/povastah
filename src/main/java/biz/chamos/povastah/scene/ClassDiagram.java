@@ -242,22 +242,21 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
-		double lineRadius = 3.0;
 		if(type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
 			sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
-			sceneWriter.write(coordinate(sourcep, sourcez) + ", " + lineRadius + " "); // 始点
-			sceneWriter.write(coordinate(targetp, targetz) + ", " + lineRadius + " "); // 終点
+			sceneWriter.write(coordinate(sourcep, sourcez) + ", LRd "); // 始点
+			sceneWriter.write(coordinate(targetp, targetz) + ", LRd "); // 終点
 			sceneWriter.write(material(link));
 		}else if(type.equals("AssociationClass")){
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
-			String start = coordinate(sourcep, sourcez) + ", " + lineRadius + " ";
-			String end = coordinate(targetp, targetz) + ", " + lineRadius + " ";
+			String start = coordinate(sourcep, sourcez) + ", LRd ";
+			String end = coordinate(targetp, targetz) + ", LRd ";
 			INodePresentation assocNode = find((IAssociationClass)(link.getModel()));
 			sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start + start
-					+ coordinate(center(assocNode), zposition(assocNode)) + ", " + lineRadius + " "
+					+ coordinate(center(assocNode), zposition(assocNode)) + ", LRd "
 					+end + end + material(link));
 		}else{
 			super.draw(link, sourcez, targetz);
