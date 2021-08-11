@@ -167,5 +167,3 @@ union{
     object { InstanceSpecification }
 }
 
-#declare Arrow = union { cylinder {-x*4, x*1, 1}  cone {x*1, 3.0 x*3, 0} scale 4 texture { ArrowTexture } no_shadow }
-
