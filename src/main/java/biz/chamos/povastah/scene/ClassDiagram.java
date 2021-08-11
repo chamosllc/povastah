@@ -136,7 +136,7 @@ public class ClassDiagram extends Diagram {
 	/**
 	 * 階層の深さに応じてカメラを離す
 	 */
-	protected double cameraDistance(double z) {
+	protected int cameraDistance(int z) {
 		if(classHierachyOrder.isEmpty()) {
 			return super.cameraDistance(z);
 		}else {
@@ -144,7 +144,7 @@ public class ClassDiagram extends Diagram {
 			for(Integer depth: classHierachyOrder.values()) {
 				distance = Math.max(distance, depth);
 			}
-			return super.cameraDistance(z - (distance + 1) * 32.0);
+			return super.cameraDistance(z - (distance + 1) * 48);
 		}
 	}
 	
@@ -248,7 +248,7 @@ public class ClassDiagram extends Diagram {
 			sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
 			sceneWriter.write(coordinate(sourcep, sourcez) + ", LRd "); // 始点
 			sceneWriter.write(coordinate(targetp, targetz) + ", LRd "); // 終点
-			sceneWriter.write(material(link));
+			sceneWriter.write(material(link) + "no_shadow }" + CR);
 		}else if(type.equals("AssociationClass")){
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
@@ -257,7 +257,7 @@ public class ClassDiagram extends Diagram {
 			INodePresentation assocNode = find((IAssociationClass)(link.getModel()));
 			sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start + start
 					+ coordinate(center(assocNode), zposition(assocNode)) + ", LRd "
-					+end + end + material(link));
+					+end + end + material(link) + "no_shadow }" + CR);
 		}else{
 			super.draw(link, sourcez, targetz);
 		}	

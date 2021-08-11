@@ -9,6 +9,7 @@
 #declare RobustnessTexture = texture { T_Chrome_4B }
 
 #declare InterfaceMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Blue_02 } }
+#declare ArrowInterfaceMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Blue_02 } }
 
 #declare ActivityTexture = texture{checker texture{T_Stone8} texture{T_Stone5}}
 
@@ -26,7 +27,6 @@
 #declare ControlFlow_ObjectFlowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Beerbottle } }
 // among states
 #declare TransitionMaterial = material { texture { pigment { Col_Glass_Green } finish{ F_Glass1 } } interior { ior 1.5 } }
- 
 
 // class hierarchies
 #declare GeneralizationMaterial  = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Ruby } }
@@ -40,18 +40,6 @@
 #declare IncludeMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Blue_04 } }
 // template bindings
 #declare TemplateBindingMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_02  }}
-
-// arrow pattern
-//#declare ArrowTexture = texture { pigment{ color Red } finish{ phong 0.3 }}
-
-#declare ArrowTexture = texture{ pigment { gradient x+y color_map {
-        [0.25 rgbf <1.0, 0.2, 0.2, 0.2>]
-        [0.25 rgbf <1.0, 1.0, 1.0, 1.0>]
-        [0.75 rgbf <1.0, 1.0, 1.0, 1.0>]
-        [0.75 rgbf <1.0, 0.2, 0.2, 0.2>] } scale 5 }  finish{ phong 0.3 }}
-
-
-//#declare HierachyTecture = texture { T_Chrome_4A }
 
 /** Stage Texture for Diagram **/
 #declare DiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }

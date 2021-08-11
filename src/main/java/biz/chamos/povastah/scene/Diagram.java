@@ -44,8 +44,10 @@ public class Diagram {
 	 */
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR
-			+ "#declare TextScale = <16, 16, 2>;" + CR
-			+ "#declare LRd = 3.2;" + CR + CR;
+			+ "#declare LRd = 3.2;" + CR							// リンクsphere_sweepオブジェクトの半径
+			+ "#declare LOOPRd = 36.0;" + CR					// 自己遷移リンクtorusオブジェクトの半径
+			+ "#declare TextScale = <16, 16, 2>;" + CR  + CR;	// Circle_Text, textオブジェクトのスケーリング
+
 	
 	/**
 	 * POVRay撮影環境記述
@@ -55,7 +57,8 @@ public class Diagram {
 	/**
 	 * 3D座標系フォーマット
 	 */
-	static final String COORDINATE = "<%.3f, %.3f, %.3f>";
+	static final String COORDINATE = "<%.3f, %.3f, %.1f>";
+	static final String ICOORDINATE = "<%d, %d, %d>";
 	/**
 	 * POVRayオブジェクトフォーマット
 	 */
@@ -269,16 +272,16 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void stage() throws IOException {
-		final String DEFVAR = "#declare %s = " + COORDINATE + ";" + CR;
+		final String DEFVAR = "#declare %s = " + ICOORDINATE + ";" + CR;
 		// フレームの矩形の中心をカメラ焦点にする
-		double stageX = stage.getCenterX();
-		double stageY = -stage.getCenterY();
-		double stageZ = cameraDistance(stageY - Math.abs(stageX) - 32.0);
-		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 80));
-		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0.0));
+		int stageX = (int)stage.getCenterX();
+		int stageY = (int)-stage.getCenterY();
+		int stageZ = cameraDistance(stageY - Math.abs(stageX) - 32);
+		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 120));
+		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0));
 		sceneWriter.write(CAMERA);
 		sceneWriter.write(LIGHT);
-		sceneWriter.write("plane { z, 32.0 texture { " + stageTexture() + " }}" + CR);
+		sceneWriter.write("plane { z, 32 texture { " + stageTexture() + " }}" + CR);
 		sceneWriter.flush();
 	}
 
@@ -297,7 +300,7 @@ public class Diagram {
 	 * @param z
 	 * @return
 	 */
-	protected double cameraDistance(double z) {
+	protected int cameraDistance(int z) {
 		return (z > -256)?-256:z;
 	}
 
@@ -469,9 +472,8 @@ public class Diagram {
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
-			double torusRadius = 36.0;
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("  torus { " + torusRadius + ", LRd " + translate(sourcep, -torusRadius + sourcez));
+			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> ");
 		}else {
 			Point2D[] points = link.getPoints();
 
@@ -507,9 +509,9 @@ public class Diagram {
 				}
 			}
 			sceneWriter.write(end); // 終点
-//			arrow = arrow(link, sourcep, targetp, sourcez, targetz);
+			arrow = arrow(link, sourcep, targetp, sourcez, targetz);
 		}
-		sceneWriter.write(material(link));
+		sceneWriter.write(material(link) + "no_shadow }" + CR);
 		sceneWriter.write(arrow);
 	}
 
@@ -518,44 +520,46 @@ public class Diagram {
 	 * @param points
 	 * @return
 	 */
-//	private String arrow(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz) {
-//		String description;
-//		Point2D[] points = link.getPoints();
-//		String start = coordinate(sourcep, sourcez) + ", LRd*0.9 ";
-//		String end;
-//		int length = points.length; // 2 or 5以上
-//		boolean isCurve = link.getProperty("line.shape").equals("curve");
-//		if(!isCurve || length == 2) {
-//			description = "    sphere_sweep { linear_spline, " + length + ", ";
-//			Point2D point = new Point2D.Double();
-//			point.setLocation(sourcep.getX() + ((targetp.getX() - sourcep.getX())/2.0), sourcep.getY() + (( targetp.getY() - sourcep.getY())/2.0));
-//			end =  coordinate(point, targetz) + ", 0.0 ";
-//		}else {
-//			end = coordinate(targetp, targetz) + ", 0.0 ";
-//			if(length == 3) { // 1点経由 曲線
-//				description = "    sphere_sweep { cubic_spline, 5, " + start;
-//			}else{ // 2点以上経由 曲線
-//				description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
-//			}
-//		}
-//		description += start; // 始点			
-//		if(length > 2) { // 経由点を曲線で結ぶ
-//			double deltaz = (targetz - sourcez)/(length - 1);
-//			for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-//				description += coordinate(points[i], sourcez+deltaz) + ", 0.0 "; // 始点→経由点→終点
-//				deltaz += deltaz;
-//			}
-//			if(isCurve) {
-//				description += end; // 終点
-//			}
-//		}
-//		description += end; // 終点
-//		description += " texture { ArrowTexture }}" + CR;
-//		return description;
-//	}
+	protected String arrow(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz) {
+		String description;
+		Point2D[] points = link.getPoints();
+		String start = coordinate(sourcep, sourcez) + ", LRd ";
+		String end = coordinate(targetp, targetz) + ", 0.0 ";
+		int length = points.length; // 2 or 5以上
+		boolean isCurve = link.getProperty("line.shape").equals("curve");
+		if(!isCurve || length == 2) {
+			description = "    sphere_sweep { linear_spline, " + length + ", ";
+		}else {
+			if(length == 3) { // 1点経由 曲線
+				description = "    sphere_sweep { cubic_spline, 5, " + start;
+			}else{ // 2点以上経由 曲線
+				description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
+			}
+		}
+		description += start; // 始点			
+		if(length > 2) { // 経由点を曲線で結ぶ
+			double deltaz = (targetz - sourcez)/(length - 1);
+			for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+				description += coordinate(points[i], sourcez+deltaz) + ", LRd/" + Math.pow(2.0, (double)i) + " "; // 始点→経由点→終点
+				deltaz += deltaz;
+			}
+			if(isCurve) {
+				description += end; // 終点
+			}
+		}
+		description += end; // 終点
+		description += material(link) + "no_image }" + CR;
+		return description;
+	}
 
+	/**
+	 * リンクに関係するmaterialを返す
+	 * @param link
+	 * @param prefix
+	 * @return
+	 */
 	protected String material(ILinkPresentation link) {
-		return "material { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Material }}" + CR;
+		return "material { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Material } ";
 	}
 	
 	/**
