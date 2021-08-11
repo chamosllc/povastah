@@ -120,7 +120,7 @@
 #declare Boundary=union {
     union { 
         intersection{
-        	difference{	sphere{ 0, 1.2 } sphere{ 0, 1 }}
+        	difference{	sphere{ 0, 1.2 } sphere{ 0, 1.01 }}
             box{<-1.21, -1.21, -1.21>,<0.1, 1.21, 1.21>}
         }
         cylinder {<-1.7, 0, 0>, <-1.2, 0, 0>, 0.15 }
