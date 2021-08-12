@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah リスト画面
- * created at 2021/08/11
+ * created at 2021/08/12
  * presented by povastah
  **/
 
@@ -65,8 +65,8 @@
     sphere_sweep { linear_spline, 2, <460.569, -235.820, 4.0>, LRd <549.333, -235.820, 4.0>, 0.0 material { TransitionMaterial } no_image }
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <353, -387, -412>;
-#declare FOCUS = <353, -147, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <353, -500, -360>;
+#declare FOCUS = <353, -200, 0>;
+camera { location EYE direction 1.15*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

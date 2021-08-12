@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフ
- * created at 2021/08/11
+ * created at 2021/08/12
  * presented by povastah
  **/
 
@@ -54,8 +54,8 @@
     sphere_sweep { cubic_spline, 5, <340.540, -236.154, 4.0>, LRd <340.540, -236.154, 4.0>, LRd <312.000, -326.000, 4.0>, LRd/2.0 <192.540, -341.333, 4.0>, 0.0 <192.540, -341.333, 4.0>, 0.0 material { ControlFlow_ObjectFlowMaterial } no_image }
 }
 object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <261, -446, -379>;
-#declare FOCUS = <261, -206, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <280, -640, -300>;
+#declare FOCUS = <280, -280, 0>;
+camera { location EYE direction 2*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}

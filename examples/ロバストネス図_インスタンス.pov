@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ロバストネス図_インスタンス
- * created at 2021/08/11
+ * created at 2021/08/12
  * presented by povastah
  **/
 
@@ -38,8 +38,8 @@
     sphere_sweep { linear_spline, 2, <180.109, -446.641, 4.0>, LRd <350.109, -446.641, 4.0>, 0.0 material { LinkMaterial } no_image }
 }
 object { ClassDiagram_bj3d6ceec00a507a2b70caaa0df577508a }
-#declare EYE = <186, -554, -412>;
-#declare FOCUS = <186, -314, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <200, -654, -312>;
+#declare FOCUS = <200, -400, 0>;
+camera { location EYE direction 1.2*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

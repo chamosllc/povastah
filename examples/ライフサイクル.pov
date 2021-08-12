@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ライフサイクル
- * created at 2021/08/11
+ * created at 2021/08/12
  * presented by povastah
  **/
 
@@ -53,8 +53,8 @@
     sphere_sweep { linear_spline, 2, <377.450, -77.320, 4.0>, LRd <471.000, -1.333, 4.0>, 0.0 material { ControlFlow_ObjectFlowMaterial } no_image }
 }
 object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <471, -341, -484>;
-#declare FOCUS = <471, -101, 0>;
+#declare EYE = <480, -480, -360>;
+#declare FOCUS = <480, -100, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}

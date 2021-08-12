@@ -457,7 +457,7 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link) throws IOException {
-		draw(link, OFFSET_Z, OFFSET_Z);	
+		draw(link, OFFSET_Z, OFFSET_Z);
 	}
 
 	/**
@@ -465,53 +465,23 @@ public class Diagram {
 	 * @param link
 	 * @param sourcez ソースノードの高さ
 	 * @param targetz ターゲットノードの高さ
+	 * @param attenuation 先細り率
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+		String shape;
+		String material = material(link) + "no_shadow }" + CR;
 		String arrow = "";
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
-		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは真円にする
+		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは円環を描く
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> ");
+			shape = "    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material;
 		}else {
-			Point2D[] points = link.getPoints();
-
-			/*
-			 * 折れ線 sphere_sweep { linear_spline, points.length, ... } 始点・経由点N・終点のN+2点
-			 * 
-			 * 曲線   sphere_sweep { cubic_spline,  points.length+2, ... } 始点・始点・経由点(points[1])・終点・終点の5点
-			 * 曲線   sphere_sweep { b_spline,  points.length+2, ... } 始点・始点・経由点N(points[1]...points[length-2]・終点・終点のN+4点
-			 * 
-			 */
-			String start = coordinate(sourcep, sourcez) + ", LRd ";
-			String end = coordinate(targetp, targetz) + ", LRd ";
-			int length = points.length; // 2 or 5以上
-			boolean isCurve = link.getProperty("line.shape").equals("curve");
-			if(!isCurve || length == 2) {
-				sceneWriter.write("    sphere_sweep { linear_spline, " + length + ", ");
-			}else {
-				if(length == 3) { // 1点経由 曲線
-					sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start);
-				}else{ // 2点以上経由 曲線
-					sceneWriter.write("    sphere_sweep { b_spline, " + (length + 2) + ", " + start);
-				}
-			}
-			sceneWriter.write(start); // 始点			
-			if(length > 2) { // 経由点を曲線で結ぶ
-				double deltaz = (targetz - sourcez)/(length - 1);
-				for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-					sceneWriter.write(coordinate(points[i], sourcez+deltaz) + ", LRd "); // 始点→経由点→終点
-					deltaz += deltaz;
-				}
-				if(isCurve) {
-					sceneWriter.write(end); // 終点
-				}
-			}
-			sceneWriter.write(end); // 終点
-			arrow = arrow(link, sourcep, targetp, sourcez, targetz);
+			shape = draw(link, sourcep, targetp, sourcez, targetz, true) + material;
+			arrow = draw(link, sourcep, targetp, sourcez, targetz, false) + material(link) + "no_image }" + CR;
 		}
-		sceneWriter.write(material(link) + "no_shadow }" + CR);
+		sceneWriter.write(shape);
 		sceneWriter.write(arrow);
 	}
 
@@ -520,11 +490,11 @@ public class Diagram {
 	 * @param points
 	 * @return
 	 */
-	protected String arrow(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz) {
+	protected String draw(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz, boolean isShape) {
 		String description;
 		Point2D[] points = link.getPoints();
 		String start = coordinate(sourcep, sourcez) + ", LRd ";
-		String end = coordinate(targetp, targetz) + ", 0.0 ";
+		String end = coordinate(targetp, targetz) + ((isShape)?", LRd ":", 0.0 ");
 		int length = points.length; // 2 or 5以上
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
 		if(!isCurve || length == 2) {
@@ -540,7 +510,8 @@ public class Diagram {
 		if(length > 2) { // 経由点を曲線で結ぶ
 			double deltaz = (targetz - sourcez)/(length - 1);
 			for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-				description += coordinate(points[i], sourcez+deltaz) + ", LRd/" + Math.pow(2.0, (double)i) + " "; // 始点→経由点→終点
+				description += coordinate(points[i], sourcez+deltaz) + ", LRd"
+						+ ((isShape)?"":("/" + (Math.pow(2.0, (double)i)))) + " "; // 始点→経由点→終点
 				deltaz += deltaz;
 			}
 			if(isCurve) {
@@ -548,7 +519,6 @@ public class Diagram {
 			}
 		}
 		description += end; // 終点
-		description += material(link) + "no_image }" + CR;
 		return description;
 	}
 

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * povastah ムーブメント
- * created at 2021/08/11
+ * created at 2021/08/12
  * presented by povastah
  **/
 
@@ -37,8 +37,8 @@
     torus { LOOPRd, LRd translate<188.54000000000002, -147.3203125, 4.0 - LOOPRd> material { ControlFlow_ObjectFlowMaterial } no_shadow }
 }
 object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e }
-#declare EYE = <229, -430, -331>;
-#declare FOCUS = <229, -190, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <280, -480, -300>;
+#declare FOCUS = <280, -240, 0>;
+camera { location EYE direction 1.5*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}
