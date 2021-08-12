@@ -24,7 +24,7 @@
 // among classes
 #declare AssociationMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_06 } }
 // among actions
-#declare ControlFlow_ObjectFlowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Beerbottle } }
+#declare ControlFlowObjectFlowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Beerbottle } }
 // among states
 #declare TransitionMaterial = material { texture { pigment { Col_Glass_Green } finish{ F_Glass1 } } interior { ior 1.5 } }
 
