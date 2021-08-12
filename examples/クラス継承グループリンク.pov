@@ -15,7 +15,7 @@
 #declare LOOPRd = 36.0;
 #declare TextScale = <16, 16, 2>;
 
-// hierachy depth: {クラス1=1, クラス2=1, クラス0=2}
+// hierachy depth: {クラス2=1, クラス0=2, クラス1=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {

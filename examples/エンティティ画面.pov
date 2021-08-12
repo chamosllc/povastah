@@ -147,6 +147,6 @@
 object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 }
 #declare EYE = <360, -326, -358>;
 #declare FOCUS = <360, -86, 0>;
-camera { location EYE direction 0.93*z look_at FOCUS }
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

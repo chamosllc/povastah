@@ -21,7 +21,7 @@
      scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}
     finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-0.375, -0.5, -2>
   } scale 64  translate <348.560, -233.667, 0.0>}
-  object { Actor rotate -x*90 scale 24.0 translate <89.333, -240.714, 0.0> }
+  object { Class rotate -x*90 scale 24.0 translate <89.333, -240.714, 0.0> }
     object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <89.333, -240.714, 30.0> }
     union{
     sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.0>, LRd <348.560, -233.667, 4.0>, LRd material { AssociationMaterial } no_shadow }

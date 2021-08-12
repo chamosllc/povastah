@@ -28,6 +28,7 @@ public class Diagram {
 	 * POVRayオブジェクトのz値のオフセット
 	 */
 	static final protected double OFFSET_Z = 4.0;
+	static final protected double TEXT_OFFSET_Z = 30.0;
 	/**
 	 * 改行文字列
 	 */
@@ -360,7 +361,7 @@ public class Diagram {
 	 * @param node
 	 * @return
 	 */
-	protected String type(INodePresentation node) {
+	protected String type(IPresentation node) {
 		return node.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
 	}
 
@@ -392,7 +393,7 @@ public class Diagram {
 					scale -= (label.getBytes().length - 20)/30.0;
 					radius += (label.getBytes().length - 20)/30.0;
 				}
-				sceneWriter.write(String.format(CIRCLE_TEXT, label, scale, radius, translate(point, 30.0)) + CR);
+				sceneWriter.write(String.format(CIRCLE_TEXT, label, scale, radius, translate(point, TEXT_OFFSET_Z)) + CR);
 				radius += step;
 			}
 		}
@@ -411,33 +412,38 @@ public class Diagram {
 		}
 	}
 	
+	/**
+	 * ノード、リンクのラベル名を返す
+	 * @param presence
+	 * @return
+	 */
 	protected String label(IPresentation presence) {
 		return presence.getLabel();
 	}
 	
 	/**
-	 * ノードのラベルを描く
+	 * リンクのラベルを描く
 	 * @param link
 	 * @throws IOException
 	 */
-	protected void text(ILinkPresentation link) throws IOException {
-		final double scale = 16.0;
-		double labelShift = 36.0;
-		String linkLabel = "";
-		if(!(linkLabel = label(link)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
-			double labelY = 0.0;
-			int merginX = 0;
-			for(String label: linkLabel.split("\n")) {
-				Point2D point = (Point2D)center(link).clone();
-				if(merginX == 0) {
-					merginX = label.getBytes().length*3;
-				}
-				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-				sceneWriter.write(String.format(TEXT16, label, translate(point, 32.0 - 2.0)) + CR);
-				labelY+= scale;
-			}
-		}
-	}
+//	protected void text(ILinkPresentation link) throws IOException {
+//		final double scale = 16.0;
+//		double labelShift = 36.0;
+//		String linkLabel = "";
+//		if(!(linkLabel = label(link)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
+//			double labelY = 0.0;
+//			int merginX = 0;
+//			for(String label: linkLabel.split("\n")) {
+//				Point2D point = (Point2D)center(link).clone();
+//				if(merginX == 0) {
+//					merginX = label.getBytes().length*3;
+//				}
+//				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
+//				sceneWriter.write(String.format(TEXT16, label, translate(point, TEXT_OFFSET_Z)) + CR);
+//				labelY+= scale;
+//			}
+//		}
+//	}
 	
 	/**
 	 * リンクをPOVRayで描く
@@ -529,7 +535,7 @@ public class Diagram {
 	 * @return
 	 */
 	protected String material(ILinkPresentation link) {
-		return "material { " + link.getType().replace('/', '_').replace(' ', '_').replace('&', '_').replace('-', '_')	+ "Material } ";
+		return "material { " + type(link) + "Material } ";
 	}
 	
 	/**
