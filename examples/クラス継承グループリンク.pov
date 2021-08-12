@@ -15,7 +15,7 @@
 #declare LOOPRd = 36.0;
 #declare TextScale = <16, 16, 2>;
 
-// hierachy depth: {クラス0=2, クラス2=1, クラス1=1}
+// hierachy depth: {クラス1=1, クラス2=1, クラス0=2}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {
@@ -31,6 +31,6 @@
 object { ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 }
 #declare EYE = <219, -400, -435>;
 #declare FOCUS = <219, -160, 0>;
-camera { location EYE direction 1.5*z look_at FOCUS }
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

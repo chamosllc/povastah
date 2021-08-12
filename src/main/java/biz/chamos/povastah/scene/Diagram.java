@@ -476,13 +476,13 @@ public class Diagram {
 		Point2D targetp = center(link.getTarget());
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは円環を描く
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			shape = "    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material;
+			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material);
 		}else {
-			shape = draw(link, sourcep, targetp, sourcez, targetz, true) + material;
-			arrow = draw(link, sourcep, targetp, sourcez, targetz, false) + material(link) + "no_image }" + CR;
+			sceneWriter.write("    union{" + CR);
+			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material);
+			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, false) + material(link) + "no_image }" + CR);
+			sceneWriter.write("    }" + CR);
 		}
-		sceneWriter.write(shape);
-		sceneWriter.write(arrow);
 	}
 
 	/**

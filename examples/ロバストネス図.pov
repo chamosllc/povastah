@@ -22,14 +22,18 @@
     object { Circle_Text( LabelFont, "EntityController",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <61.333, -182.307, 30.0> }
   object { Entity rotate -x*90 scale 24.0 translate <350.357, -265.307, 0.0> }
     object { Circle_Text( LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <350.357, -265.307, 30.0> }
+    union{
     sphere_sweep { linear_spline, 2, <61.333, -182.307, 4.0>, LRd <179.917, -265.391, 4.0>, LRd material { AssociationMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <61.333, -182.307, 4.0>, LRd <179.917, -265.391, 4.0>, 0.0 material { AssociationMaterial } no_image }
+    }
+    union{
     sphere_sweep { linear_spline, 2, <179.917, -265.391, 4.0>, LRd <350.357, -265.307, 4.0>, LRd material { AssociationMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <179.917, -265.391, 4.0>, LRd <350.357, -265.307, 4.0>, 0.0 material { AssociationMaterial } no_image }
+    }
 }
 object { ClassDiagram_1ppa6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <200, -500, -240>;
-#declare FOCUS = <200, -240, 0>;
-camera { location EYE direction 1.2*z look_at FOCUS }
+#declare EYE = <184, -463, -319>;
+#declare FOCUS = <184, -223, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

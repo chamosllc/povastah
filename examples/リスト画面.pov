@@ -35,38 +35,56 @@
     object { Circle_Text( LabelFont, "type",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <460.569, -235.820, 30.0> }
   object { FinalState rotate -x*90 scale 24.0 translate <551.333, -167.154, 0.0> }
   object { FinalState rotate -x*90 scale 24.0 translate <549.333, -235.820, 0.0> }
+    union{
     sphere_sweep { linear_spline, 2, <130.000, -89.333, 4.0>, LRd <232.569, -89.154, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <130.000, -89.333, 4.0>, LRd <232.569, -89.154, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
     torus { LOOPRd, LRd translate<232.56875813802083, -89.15364583333333, 4.0 - LOOPRd> material { TransitionMaterial } no_shadow }
   difference {
+    union{
     sphere_sweep { cubic_spline, 5, <232.569, -89.154, 4.0>, LRd <232.569, -89.154, 4.0>, LRd <300.000, -55.333, 4.0>, LRd <460.667, -185.846, 4.0>, LRd <460.667, -185.846, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { cubic_spline, 5, <232.569, -89.154, 4.0>, LRd <232.569, -89.154, 4.0>, LRd <300.000, -55.333, 4.0>, LRd/2.0 <460.667, -185.846, 4.0>, 0.0 <460.667, -185.846, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
     object { StateInternal scale<252.000, 180.307, 16.0> translate <460.667, -185.846, 0.0> }
   }
   difference {
+    union{
     sphere_sweep { linear_spline, 2, <460.667, -185.846, 4.0>, LRd <241.902, -222.487, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <460.667, -185.846, 4.0>, LRd <241.902, -222.487, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
     object { StateInternal scale<252.000, 180.307, 16.0> translate <460.667, -185.846, 0.0> }
   }
+    union{
     sphere_sweep { linear_spline, 2, <241.902, -222.487, 4.0>, LRd <130.000, -250.667, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <241.902, -222.487, 4.0>, LRd <130.000, -250.667, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
   difference {
+    union{
     sphere_sweep { linear_spline, 2, <460.667, -185.846, 4.0>, LRd <232.569, -89.154, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <460.667, -185.846, 4.0>, LRd <232.569, -89.154, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
     object { StateInternal scale<252.000, 180.307, 16.0> translate <460.667, -185.846, 0.0> }
   }
+    union{
     sphere_sweep { linear_spline, 2, <360.000, -167.154, 4.0>, LRd <460.569, -167.154, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <360.000, -167.154, 4.0>, LRd <460.569, -167.154, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
+    union{
     sphere_sweep { linear_spline, 2, <360.000, -235.820, 4.0>, LRd <460.569, -235.820, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <360.000, -235.820, 4.0>, LRd <460.569, -235.820, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
+    union{
     sphere_sweep { linear_spline, 2, <460.569, -167.154, 4.0>, LRd <551.333, -167.154, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <460.569, -167.154, 4.0>, LRd <551.333, -167.154, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
+    union{
     sphere_sweep { linear_spline, 2, <460.569, -235.820, 4.0>, LRd <549.333, -235.820, 4.0>, LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <460.569, -235.820, 4.0>, LRd <549.333, -235.820, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    }
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <353, -500, -360>;
-#declare FOCUS = <353, -200, 0>;
-camera { location EYE direction 1.15*z look_at FOCUS }
+#declare EYE = <353, -387, -412>;
+#declare FOCUS = <353, -147, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}
