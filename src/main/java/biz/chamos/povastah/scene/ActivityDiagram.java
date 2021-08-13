@@ -26,8 +26,8 @@ public class ActivityDiagram extends Diagram {
 	/**
 	 * コンストラクタ
 	 */
-	public ActivityDiagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
-		super(projectName, diagram, sceneWriter);
+	public ActivityDiagram(IDiagram diagram, OutputStreamWriter sceneWriter){
+		super(diagram, sceneWriter);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class ActivityDiagram extends Diagram {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				ActivityDiagram nestDiagram = new ActivityDiagram(projectName, subDiagram, sceneWriter);
+				ActivityDiagram nestDiagram = new ActivityDiagram(subDiagram, sceneWriter);
 				nestDiagram.existsTragetPresence();
 				nestDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}

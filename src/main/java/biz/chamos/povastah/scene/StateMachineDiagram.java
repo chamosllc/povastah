@@ -27,8 +27,8 @@ public class StateMachineDiagram extends Diagram {
 	/**
 	 * コンストラクタ
 	 */
-	public StateMachineDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
-		super(projectName, diagram, writer);
+	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter writer){
+		super(diagram, writer);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class StateMachineDiagram extends Diagram {
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				StateMachineDiagram nestDiagram = new StateMachineDiagram(projectName, subDiagram, sceneWriter);
+				StateMachineDiagram nestDiagram = new StateMachineDiagram(subDiagram, sceneWriter);
 				nestDiagram.existsTragetPresence();
 				nestDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
@@ -99,7 +99,10 @@ public class StateMachineDiagram extends Diagram {
 	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
 		if(hasSubDiagram(node)) {
 			writeSubmachineState(hierarchy, node);
-		}else if(!writeVertex(node)) {
+			drawSource(node);
+		}else if(writeVertex(node)) {
+			drawSource(node);
+		}else {
 			super.writeNode(hierarchy, node);
 		}
 	}
@@ -117,8 +120,10 @@ public class StateMachineDiagram extends Diagram {
 				IVertex[] vertex = state.getSubvertexes();
 				Rectangle2D bound = node.getRectangle();
 				Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-				sceneWriter.write("  difference { object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
-					+ translate(point, zposition(node)) + " }" + CR);
+				String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+					+ translate(point, zposition(node)) + " }";
+				// vertexをstageの凹にする
+				sceneWriter.write("  difference {" + stage + CR);
 				for(int i=0; i < vertex.length; i++) {
 					try {
 						bound = state.getRegionRectangle(i);
@@ -170,36 +175,38 @@ public class StateMachineDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		INodePresentation difference[] = new INodePresentation[2];
+		INodePresentation region[] = new INodePresentation[2];
 		if(link.getSource().getModel() instanceof IState) {
 			IState state = (IState)link.getSource().getModel();
 			if(state.getRegionSize() > 0){
-				difference[0] = link.getSource();
+				region[0] = link.getSource();
 			}
 		}
 		if(link.getTarget().getModel() instanceof IState) {
 			IState state = (IState)link.getTarget().getModel();
 			if(state.getRegionSize() > 0) {
-				difference[0] = link.getTarget();
+				region[1] = link.getTarget();
 			}
 		}
-		boolean connectVertex = !(difference[0] == null && difference[1] == null);
-		if(connectVertex) {
-			sceneWriter.write("  difference {" +CR);
-		}
-		//
-		super.draw(link, sourcez, targetz);
-		//
-		for(int i=0; i < difference.length; i++) {
-			if(difference[i] != null) {
-				Rectangle2D bound = (i==0)?difference[i].getRectangle():difference[i].getRectangle();
-				Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-				sceneWriter.write("    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
-					+ translate(point, zposition(difference[i])) + " }" + CR);
+		if(region[0] == null && region[1] == null) {
+			super.draw(link, sourcez, targetz);
+		}else {
+			String difference = ""; // difference StateInternals
+			for(int i=0; i < region.length; i++) {
+				if(region[i] != null) {
+					Rectangle2D bound = (i==0)?region[i].getRectangle():region[i].getRectangle();
+					Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
+					difference += "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+						+ translate(point, zposition(region[i])) + " }" + CR;
+				}
 			}
-		}
-		if(connectVertex) {
-			sceneWriter.write("  }" +CR);
+			
+			Point2D sourcep = center(link.getSource());
+			Point2D targetp = center(link.getTarget());
+			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "}" + CR
+					+ difference + " no_shadow }" + CR);
+			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + material(link) + "}" + CR
+					+ difference + " no_image }" + CR);		
 		}
 	}
 }

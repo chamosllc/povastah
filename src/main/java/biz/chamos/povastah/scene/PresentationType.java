@@ -8,8 +8,8 @@ public enum PresentationType {
 	Rectangle("長方形", Diagram.class, true, false),
 	Oval("楕円", Diagram.class, true, false),
 	Image("画像", Diagram.class, true, false),
-	Line("直線", Diagram.class, true, false),
-	FreeHand("フリーハンド", Diagram.class, true, false),
+	Line("直線", Diagram.class, false, false),
+	FreeHand("フリーハンド", Diagram.class, false, false),
 	
 	// ClassDiagram
 	Class("クラス", ClassDiagram.class, true, true),

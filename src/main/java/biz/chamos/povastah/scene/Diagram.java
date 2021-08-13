@@ -37,7 +37,7 @@ public class Diagram {
 	 * POVRayシーン記述のヘッダーコメント部
 	 */
 	static final protected String HEADER_COMMENT = "/**" + CR
-			+ " * astah* Diagram 3D Visualization\n * %s %s" + CR
+			+ " * astah* Diagram 3D Visualization\n * %s" + CR
 			+ " * created at %s" + CR
 			+ " * presented by povastah" + CR + " **/" + CR + CR;
 	/**
@@ -83,10 +83,7 @@ public class Diagram {
 	 * ダイアグラム内の対象ノード要素
 	 */
 	protected List<INodePresentation> nodes;
-	/**
-	 * ダイアグラム内の対象リンク要素
-	 */
-	protected List<ILinkPresentation> links;
+
 	/**
 	 * ダイアグラム全体の表示領域
 	 */
@@ -95,8 +92,7 @@ public class Diagram {
 	/**
 	 * コンストラクタ
 	 */
-	public Diagram(String projectName, IDiagram diagram, OutputStreamWriter sceneWriter){
-		this.projectName = projectName;
+	public Diagram(IDiagram diagram, OutputStreamWriter sceneWriter){
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
 	}
@@ -120,18 +116,12 @@ public class Diagram {
 	 */
 	protected boolean existsTragetPresence(){
 		nodes = new ArrayList<INodePresentation>();
-		links = new ArrayList<ILinkPresentation>();
 		try {
 			for(IPresentation presence: diagram.getPresentations()){ // 除外ノードでないノードを集める
 				if(presence instanceof INodePresentation) {
 					INodePresentation node = (INodePresentation)presence;
 					if(!excludeIPresentation(node)) {
 						nodes.add(node);
-					}
-				}else if(presence instanceof ILinkPresentation) {
-					ILinkPresentation link = (ILinkPresentation)presence;
-					if(!excludeIPresentation(link)){
-						links.add(link);
 					}
 				}
 			}
@@ -190,7 +180,7 @@ public class Diagram {
 	protected void writeHeader() throws IOException {
 		Calendar cl = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		sceneWriter.write(String.format(HEADER_COMMENT, projectName, diagram.getName(), sdf.format(cl.getTime())));
+		sceneWriter.write(String.format(HEADER_COMMENT, diagram.getName(), sdf.format(cl.getTime())));
 		sceneWriter.write(GLOBAL_SETTINGS);
 		sceneWriter.flush();
 	}
@@ -210,7 +200,7 @@ public class Diagram {
 		String name = povrayName();
 		sceneWriter.write("#declare " + name + " = union {" + CR);
 		writeNodes(hierarchy, dpoint, z);
-		drawLinks();
+//		drawLinks();
 		sceneWriter.write("}" + CR);
 		return name;
 	}
@@ -329,8 +319,27 @@ public class Diagram {
 		if(!writeSubDiagram(hierarchy + 1, node)) {
 			text(node);
 		}
+		drawSource(node);
 	}
 
+	/**
+	 * ノードがソースとなっているリンクを描く
+	 * @param node
+	 * @throws IOException
+	 */
+	protected void drawSource(INodePresentation node) throws IOException {
+		for(ILinkPresentation link: node.getLinks()) {
+			if(link.getSource() == node) {
+				draw(link);
+			}
+		}
+	}
+
+	/**
+	 * ノードのz座標値
+	 * @param node
+	 * @return
+	 */
 	protected double zposition(INodePresentation node) {
 		return 0.0;
 	}
@@ -420,42 +429,6 @@ public class Diagram {
 	protected String label(IPresentation presence) {
 		return presence.getLabel();
 	}
-	
-	/**
-	 * リンクのラベルを描く
-	 * @param link
-	 * @throws IOException
-	 */
-//	protected void text(ILinkPresentation link) throws IOException {
-//		final double scale = 16.0;
-//		double labelShift = 36.0;
-//		String linkLabel = "";
-//		if(!(linkLabel = label(link)).isEmpty()) { // 名前が表示されない。デフォルトでついた名前を空にできない。
-//			double labelY = 0.0;
-//			int merginX = 0;
-//			for(String label: linkLabel.split("\n")) {
-//				Point2D point = (Point2D)center(link).clone();
-//				if(merginX == 0) {
-//					merginX = label.getBytes().length*3;
-//				}
-//				point.setLocation(point.getX() - merginX, point.getY() + labelY + labelShift );
-//				sceneWriter.write(String.format(TEXT16, label, translate(point, TEXT_OFFSET_Z)) + CR);
-//				labelY+= scale;
-//			}
-//		}
-//	}
-	
-	/**
-	 * リンクをPOVRayで描く
-	 * 
-	 * astahダイアグラムのLinkのNodeへの端点は使わない 
-	 * @throws IOException
-	 */
-	protected void drawLinks() throws IOException {
-		for (ILinkPresentation link : links) {
-				draw(link);
-		}
-	}
 
 	/**
 	 * リンクオブジェクトを描く
@@ -475,9 +448,7 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		String shape;
 		String material = material(link) + "no_shadow }" + CR;
-		String arrow = "";
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは円環を描く

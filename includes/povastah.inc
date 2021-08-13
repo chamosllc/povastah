@@ -51,7 +51,7 @@
 
 #declare Activity=union{
   object{ Fence }
-  box{<-1,-0.25,-1>, <1, 0, 1> texture{ ActivityTexture scale 1/4 }}
+  box{<-1,-0.25,-1>, <1, 0, 1> texture{ ActivityTexture scale 1/2.826 translate x*0.25}}
   scale 0.8
 }
 

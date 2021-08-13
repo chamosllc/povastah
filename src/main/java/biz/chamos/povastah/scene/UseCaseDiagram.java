@@ -20,8 +20,8 @@ public class UseCaseDiagram extends ClassDiagram {
 	/**
 	 * コンストラクタ
 	 */
-	public UseCaseDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
-		super(projectName, diagram, writer);
+	public UseCaseDiagram(IDiagram diagram, OutputStreamWriter writer){
+		super(diagram, writer);
 	}
 
 	/**
@@ -49,9 +49,8 @@ public class UseCaseDiagram extends ClassDiagram {
 			}
 			sceneWriter.write("     scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}" +CR
 					+ "    finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-" + (max/32.0) +", -0.5, -2>" + CR 
-					+ "  } scale 64 " + translate(point));
-			sceneWriter.write("}" + CR);
-			sceneWriter.flush();		
+					+ "  } scale 64 " + translate(point) + "}" +CR);
+			drawSource(node);
 		}else {
 			super.writeNode(hierarchy, node);
 		}

@@ -52,8 +52,8 @@ public class SceneProducer {
 		 * IUseCaseDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IUseCaseDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
-				(new UseCaseDiagram(projectName, (IUseCaseDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter writer = createWriter(diagram)) {
+				(new UseCaseDiagram((IUseCaseDiagram)diagram, writer)).produce();
 			}
 		}
 		/**
@@ -61,8 +61,8 @@ public class SceneProducer {
 		 * IClassDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IClassDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
-				(new ClassDiagram(projectName, (IClassDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter writer = createWriter(diagram)) {
+				(new ClassDiagram((IClassDiagram)diagram, writer)).produce();
 			}
 		}
 		/*
@@ -70,8 +70,8 @@ public class SceneProducer {
 		 * ICommunicationDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(ICommunicationDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
-				(new CommunicationDiagram(projectName, (ICommunicationDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter writer = createWriter(diagram)) {
+				(new CommunicationDiagram((ICommunicationDiagram)diagram, writer)).produce();
 			}
 		}
 		/*
@@ -79,8 +79,8 @@ public class SceneProducer {
 		 * IStateMachineDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IStateMachineDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
-				(new StateMachineDiagram(projectName, (IStateMachineDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter writer = createWriter(diagram)) {
+				(new StateMachineDiagram((IStateMachineDiagram)diagram, writer)).produce();
 			}
 		}
 		/*
@@ -88,14 +88,21 @@ public class SceneProducer {
 		 * IActivityDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IActivityDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram, targetDirectory)) {
-				(new ActivityDiagram(projectName, (IActivityDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter writer = createWriter(diagram)) {
+				(new ActivityDiagram((IActivityDiagram)diagram, writer)).produce();
 			}
 		}
 	}
 
-	protected OutputStreamWriter createWriter(INamedElement diagram, File directory)
+	/**
+	 * POVRayシーン記述ファイルを作成する
+	 * @param diagram
+	 * @param directory
+	 * @return POVRayシーン記述ファイル(.pov)
+	 * @throws IOException
+	 */
+	protected OutputStreamWriter createWriter(INamedElement diagram)
 			throws IOException {
-		return new OutputStreamWriter(new FileOutputStream(directory + File.separator + diagram.getName() + FILE_EXT), "UTF-8");
+		return new OutputStreamWriter(new FileOutputStream(targetDirectory + File.separator + diagram.getName() + FILE_EXT), "UTF-8");
 	}
 }

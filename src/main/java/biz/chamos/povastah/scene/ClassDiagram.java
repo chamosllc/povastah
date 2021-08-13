@@ -43,8 +43,8 @@ public class ClassDiagram extends Diagram {
 	/*
 	 * コンストラクタ
 	 */
-	public ClassDiagram(String projectName, IDiagram diagram, OutputStreamWriter writer){
-		super(projectName, diagram, writer);
+	public ClassDiagram(IDiagram diagram, OutputStreamWriter writer){
+		super(diagram, writer);
 	}
 
 	/**
@@ -200,26 +200,6 @@ public class ClassDiagram extends Diagram {
 		}
 		return super.excludeIPresentation(presentation);
 	}
-	
-	/**
-	 * リンクが出力対象ではない
-	 * @param リンク
-	 * @return 除外リンクである
-	 */
-//	protected boolean excludeIPresentation(ILinkPresentation presentation) {
-//		/**
-//		 * 除外対象要素
-//		 * 関連クラス : "AssociationClass"
-//		 */	
-//		final String[] excludes = {"AssociationClass"};
-//		String type =  presentation.getType();
-//		for(String exclude: excludes) {
-//			if(type.equals(exclude)) {
-//				return true;
-//			}
-//		}
-//		return super.excludeIPresentation(presentation);
-//	}
 
 	/**
 	 * リンクオブジェクトを描く
@@ -284,7 +264,7 @@ public class ClassDiagram extends Diagram {
 	 * @param node
 	 * @return
 	 */
-	protected String type(INodePresentation node) {
+	protected String type(IPresentation node) {
 		IElement model = node.getModel();
 		if(model != null) {
 			List<String> types = Arrays.asList(model.getStereotypes());
