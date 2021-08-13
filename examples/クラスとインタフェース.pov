@@ -9,6 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
+#declare ShadowType = 0;
 #include "povastah.inc"
 
 #declare LRd = 3.2;
@@ -20,7 +21,7 @@
     object { Circle_Text( LabelFont, "Serializable",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <140.087, -152.974, 30.0> }
     union{
     sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.0>, LRd <139.552, -250.115, 4.0>, LRd material { RealizationMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.0>, LRd <139.552, -250.115, 4.0>, 0.0 material { RealizationMaterial } no_image }
+    sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.0>, LRd <139.552, -250.115, 4.0>, 0.0 material { ShadowRealizationMaterial } no_image }
     }
   object { Entity rotate -x*90 scale 24.0 translate <139.552, -250.115, 0.0> }
     object { Circle_Text( LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <139.552, -250.115, 30.0> }

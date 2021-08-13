@@ -20,13 +20,17 @@
 /** Link Texture **/
 
 // among instances
-#declare LinkMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } }
+#declare LinkMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } } 
+
 // among classes
 #declare AssociationMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_06 } }
+
 // among actions
 #declare ControlFlowObjectFlowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Beerbottle } }
+
 // among states
 #declare TransitionMaterial = material { texture { pigment { Col_Glass_Green } finish{ F_Glass1 } } interior { ior 1.5 } }
+
 
 // class hierarchies
 #declare GeneralizationMaterial  = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Ruby } }
@@ -34,12 +38,40 @@
 #declare RealizationMaterial = material { InterfaceMaterial }
 // 
 #declare DependencyMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Orange } }
+
 // among association classes
 #declare AssociationClassMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }
+
 // include
 #declare IncludeMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Blue_04 } }
+
 // template bindings
-#declare TemplateBindingMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_02  }}
+#declare TemplateBindingMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_02  }}  
+
+/** Shadow Link Texture **/
+
+#declare ShadowMaterial = material { M_Glass }
+//#declare ShadowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_09 } }
+
+#if(ShadowType)
+    #declare ShadowLinkMaterial = material { LinkMaterial } 
+    #declare ShadowAssociationMaterial = material { AssociationMaterial }
+    #declare ShadowControlFlowObjectFlowMaterial = material { ControlFlowObjectFlowMaterial }
+    #declare ShadowTransitionMaterial = material { TransitionMaterial }
+    #declare ShadowRealizationMaterial = material { RealizationMaterial }
+    #declare ShadowDependencyMaterial = material { DependencyMaterial }
+    #declare ShadowIncludeMaterial = material { IncludeMaterial }
+    #declare ShadowTemplateBindingMaterial = material { TemplateBindingMaterial }
+#else
+    #declare ShadowLinkMaterial = material { ShadowMaterial } 
+    #declare ShadowAssociationMaterial = material { ShadowMaterial }
+    #declare ShadowControlFlowObjectFlowMaterial = material { ShadowMaterial }
+    #declare ShadowTransitionMaterial = material { ShadowMaterial }
+    #declare ShadowRealizationMaterial = material { ShadowMaterial } 
+    #declare ShadowDependencyMaterial = material { ShadowMaterial }
+    #declare ShadowIncludeMaterial = material { ShadowMaterial }
+    #declare ShadowTemplateBindingMaterial = material { ShadowMaterial }
+#end
 
 /** Stage Texture for Diagram **/
 #declare DiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }

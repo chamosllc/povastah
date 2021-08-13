@@ -9,13 +9,14 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
+#declare ShadowType = 0;
 #include "povastah.inc"
 
 #declare LRd = 3.2;
 #declare LOOPRd = 36.0;
 #declare TextScale = <16, 16, 2>;
 
-// hierachy depth: {Diagram=2, StateMachineDiagram=1, ClassDiagram=1, ActivityDiagram=1}
+// hierachy depth: {ClassDiagram=1, StateMachineDiagram=1, Diagram=2, ActivityDiagram=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {

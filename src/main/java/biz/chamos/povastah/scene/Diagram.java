@@ -44,7 +44,9 @@ public class Diagram {
 	 * POVRayシーン記述のglobal_settings部
 	 */
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
-			+ "#global_settings { charset utf8 }" + CR + CR + "#include \"povastah.inc\"" + CR + CR
+			+ "#global_settings { charset utf8 }" + CR + CR
+			+ "#declare ShadowType = 0;" + CR
+			+ "#include \"povastah.inc\"" + CR + CR
 			+ "#declare LRd = 3.2;" + CR							// リンクsphere_sweepオブジェクトの半径
 			+ "#declare LOOPRd = 36.0;" + CR					// 自己遷移リンクtorusオブジェクトの半径
 			+ "#declare TextScale = <16, 16, 2>;" + CR  + CR;	// Circle_Text, textオブジェクトのスケーリング
@@ -457,7 +459,7 @@ public class Diagram {
 		}else {
 			sceneWriter.write("    union{" + CR);
 			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material);
-			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, false) + material(link) + "no_image }" + CR);
+			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, false) + shadowMaterial(link) + "no_image }" + CR);
 			sceneWriter.write("    }" + CR);
 		}
 	}
@@ -507,6 +509,16 @@ public class Diagram {
 	 */
 	protected String material(ILinkPresentation link) {
 		return "material { " + type(link) + "Material } ";
+	}
+	
+	/**
+	 * リンクに関係するmaterialを返す
+	 * @param link
+	 * @param prefix
+	 * @return
+	 */
+	protected String shadowMaterial(ILinkPresentation link) {
+		return "material { Shadow" + type(link) + "Material } ";
 	}
 	
 	/**

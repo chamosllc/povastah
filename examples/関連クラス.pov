@@ -9,6 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
+#declare ShadowType = 0;
 #include "povastah.inc"
 
 #declare LRd = 3.2;

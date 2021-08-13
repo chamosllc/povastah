@@ -205,7 +205,7 @@ public class StateMachineDiagram extends Diagram {
 			Point2D targetp = center(link.getTarget());
 			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "}" + CR
 					+ difference + " no_shadow }" + CR);
-			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + material(link) + "}" + CR
+			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + shadowMaterial(link) + "}" + CR
 					+ difference + " no_image }" + CR);		
 		}
 	}

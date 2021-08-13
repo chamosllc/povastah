@@ -9,13 +9,14 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
+#declare ShadowType = 0;
 #include "povastah.inc"
 
 #declare LRd = 3.2;
 #declare LOOPRd = 36.0;
 #declare TextScale = <16, 16, 2>;
 
-// hierachy depth: {PagingAndSortingRepository=4, JpaRepository=2, CrudRepository=3, Repository=5, EntityRepository=1}
+// hierachy depth: {Repository=5, CrudRepository=3, JpaRepository=2, EntityRepository=1, PagingAndSortingRepository=4}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {
@@ -23,7 +24,7 @@
     object { Circle_Text( LabelFont, "EntityRepository",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <221.484, -257.818, 30.0> }
     union{
     sphere_sweep { linear_spline, 2, <221.484, -257.818, -28.0>, LRd <477.622, -257.818, 4.0>, LRd material { AssociationMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <221.484, -257.818, -28.0>, LRd <477.622, -257.818, 4.0>, 0.0 material { AssociationMaterial } no_image }
+    sphere_sweep { linear_spline, 2, <221.484, -257.818, -28.0>, LRd <477.622, -257.818, 4.0>, 0.0 material { ShadowAssociationMaterial } no_image }
     }
     sphere_sweep { linear_spline, 2, <221.484, -257.818, -28.0>, LRd <221.484, -174.266, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
   object { Boundary rotate -x*90 scale 24.0 translate <221.484, -174.266, -64.0> }
