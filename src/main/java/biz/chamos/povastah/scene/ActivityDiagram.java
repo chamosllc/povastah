@@ -95,7 +95,7 @@ public class ActivityDiagram extends Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected boolean writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
+	protected boolean drawSubDiagram(int hierarchy, INodePresentation node) throws IOException {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
 			double deltaZ = 36.0;
@@ -104,7 +104,7 @@ public class ActivityDiagram extends Diagram {
 			double scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ));
 			double posz = zposition(node) - deltaZ*scale;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() + (deltaZ/2))*scale);
-			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
+			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
 			textOnStage(node, bound);
 			return true;
 		}

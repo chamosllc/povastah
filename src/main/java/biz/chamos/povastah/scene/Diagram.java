@@ -65,20 +65,16 @@ public class Diagram {
 	/**
 	 * POVRayオブジェクトフォーマット
 	 */
-	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale texture { LabelTecture }%s }";
+	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }";
 	static final String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
 	static final String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale TextScale texture { LabelTecture }%s }";
 
-	/**
-	 * astahプロジェクト名
-	 */
-	protected String projectName;
 	/**
 	 * POVRayシーン記述出力ファイル
 	 */
 	protected OutputStreamWriter sceneWriter;
 	/**
-	 * 出力対象astahダイアグラム
+	 * 出力対象astah*ダイアグラム
 	 */
 	protected IDiagram diagram;
 	/**
@@ -87,9 +83,9 @@ public class Diagram {
 	protected List<INodePresentation> nodes;
 
 	/**
-	 * ダイアグラム全体の表示領域
+	 * ダイアグラムオブジェクトの矩形領域
 	 */
-	protected Rectangle2D stage;
+	protected Rectangle2D stageBounds;
 	
 	/**
 	 * コンストラクタ
@@ -105,8 +101,8 @@ public class Diagram {
 	public void produce(){
 		if(existsTragetPresence()) {
 			try {
-				writeHeader();
-				writeDiagram(new Point2D.Double(), 0.0);
+				header();
+				drawDiagram(new Point2D.Double(), 0.0);
 				stage();
 			}catch(IOException | InvalidUsingException e) {}
 		}
@@ -146,32 +142,12 @@ public class Diagram {
 		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
 				if(exclude.equals("Frame")) { // フレームの矩形を保持する
-					 stage = presentation.getDiagram().getBoundRect();
+					 stageBounds = presentation.getDiagram().getBoundRect();
 				}
 				return true;
 			}
 		}	 
 		return false;
-	}
-
-	/**
-	 * リンクが出力対象ではない
-	 * @param リンク
-	 * @return 除外リンクである
-	 */
-	protected boolean excludeIPresentation(ILinkPresentation presentation) {
-		/**
-		 * 除外対象要素
-		 * 直線 : "Line" | フリーハンド : "FreeHand" | 
-		 */	
-		final String[] excludes = {"NoteAnchor", "Line", "FreeHand", "Highlighter"};
-		String type =  presentation.getType();
-		for(String exclude: excludes) {
-			if(type.equals(exclude)) {
-				return true;
-			}
-		}
-		return excludeIPresentation(presentation.getSource()) || excludeIPresentation(presentation.getTarget());
 	}
 	
 	/**
@@ -179,7 +155,7 @@ public class Diagram {
 	 * @throws IOException
 	 * @throws ProjectNotFoundException 
 	 */
-	protected void writeHeader() throws IOException {
+	protected void header() throws IOException {
 		Calendar cl = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		sceneWriter.write(String.format(HEADER_COMMENT, diagram.getName(), sdf.format(cl.getTime())));
@@ -192,16 +168,16 @@ public class Diagram {
 	 * @throws IOException
 	 * @throws InvalidUsingException 
 	 */
-	protected void writeDiagram(Point2D dpoint, double z) throws IOException, InvalidUsingException {
+	protected void drawDiagram(Point2D dpoint, double z) throws IOException, InvalidUsingException {
 		sceneWriter.write("object { " + declareDiagram(0, dpoint, z) + " }" +CR);
 		sceneWriter.flush();
 	}
 
 	protected String declareDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
 		declareSubDiagrams(hierarchy, dpoint, z);
-		String name = povrayName();
+		String name = diagramID();
 		sceneWriter.write("#declare " + name + " = union {" + CR);
-		writeNodes(hierarchy, dpoint, z);
+		drawNodes(hierarchy, dpoint, z);
 //		drawLinks();
 		sceneWriter.write("}" + CR);
 		return name;
@@ -245,8 +221,8 @@ public class Diagram {
 	 * 
 	 * @return 
 	 */
-	protected String povrayName() {
-		return povrayName(this.diagram);
+	protected String diagramID() {
+		return id(this.diagram);
 	}
 	
 	/**
@@ -256,7 +232,7 @@ public class Diagram {
 	 * @param diagram
 	 * @return
 	 */
-	protected String povrayName(IDiagram diagram) {
+	protected String id(IDiagram diagram) {
 		return this.getClass().getSimpleName() + "_" + diagram.getId().replaceAll("-", "");
 	}
 
@@ -267,8 +243,8 @@ public class Diagram {
 	protected void stage() throws IOException {
 		final String DEFVAR = "#declare %s = " + ICOORDINATE + ";" + CR;
 		// フレームの矩形の中心をカメラ焦点にする
-		int stageX = (int)stage.getCenterX();
-		int stageY = (int)-stage.getCenterY();
+		int stageX = (int)stageBounds.getCenterX();
+		int stageY = (int)-stageBounds.getCenterY();
 		int stageZ = cameraDistance(stageY - Math.abs(stageX) - 32);
 		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 120));
 		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0));
@@ -301,9 +277,9 @@ public class Diagram {
 	 * 対象ノードすべてをPOVRayオブジェクトへマッピングする
 	 * @throws IOException
 	 */
-	protected void writeNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
+	protected void drawNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
 		for (INodePresentation node : nodes) {
-			writeNode(hierarchy, node);
+			draw(node, hierarchy);
 		}
 	}
 
@@ -314,11 +290,11 @@ public class Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
+	protected void draw(INodePresentation node, int hierarchy) throws IOException {
 		final double scale = 24.0;
 		Point2D point = center(node);	
 		sceneWriter.write("  object { " + type(node) + " rotate -x*90 scale " + scale + translate(point, zposition(node)) + " }" + CR);
-		if(!writeSubDiagram(hierarchy + 1, node)) {
+		if(!drawSubDiagram(node, hierarchy + 1)) {
 			text(node);
 		}
 		drawSource(node);
@@ -369,11 +345,11 @@ public class Diagram {
 	/**
 	 * 指定ノードのPOVRayオブジェクト型をマッピングする
 	 * ※IPresentation.getType()文字列を宣言名とする。ただし、この文字列中の記号や空白文字を除去する。
-	 * @param node
+	 * @param presence
 	 * @return
 	 */
-	protected String type(IPresentation node) {
-		return node.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
+	protected String type(IPresentation presence) {
+		return presence.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
 	}
 
 	/**
@@ -383,7 +359,7 @@ public class Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected boolean writeSubDiagram(int hierarchy, INodePresentation node) throws IOException {
+	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
 		return false;
 	}
 
@@ -404,10 +380,19 @@ public class Diagram {
 					scale -= (label.getBytes().length - 20)/30.0;
 					radius += (label.getBytes().length - 20)/30.0;
 				}
-				sceneWriter.write(String.format(CIRCLE_TEXT, label, scale, radius, translate(point, TEXT_OFFSET_Z)) + CR);
+				sceneWriter.write(String.format(CIRCLE_TEXT, label, scale, radius,  labelTexture(node) + translate(point, TEXT_OFFSET_Z)) + CR);
 				radius += step;
 			}
 		}
+	}
+	
+	/**
+	 * ノードのラベルのテクスチャを返す
+	 * @param node
+	 * @return
+	 */
+	protected String labelTexture(INodePresentation node) {
+		return "texture { LabelTecture }";
 	}
 
 	/**
@@ -450,15 +435,14 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		String material = material(link) + "no_shadow }" + CR;
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは円環を描く
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material);
+			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material(link) + "no_shadow }" + CR);
 		}else {
 			sceneWriter.write("    union{" + CR);
-			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material);
+			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "no_shadow }" + CR);
 			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, false) + shadowMaterial(link) + "no_image }" + CR);
 			sceneWriter.write("    }" + CR);
 		}

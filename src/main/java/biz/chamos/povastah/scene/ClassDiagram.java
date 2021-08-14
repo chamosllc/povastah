@@ -151,8 +151,8 @@ public class ClassDiagram extends Diagram {
 	/*
 	 * debug用 スクリプトのヘッダ部を出力する
 	 */
-	protected void writeHeader() throws IOException {
-		super.writeHeader();
+	protected void header() throws IOException {
+		super.header();
 		if(classHierachyOrder.size() > 1) {
 			sceneWriter.write("// hierachy depth: " + classHierachyOrder + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
 			sceneWriter.flush();
@@ -222,13 +222,10 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
-		if(type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
+		if(type.equals("Link") || type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
-			sceneWriter.write("    sphere_sweep { linear_spline, " + 2 + ", "); // 始点、終点の2点
-			sceneWriter.write(coordinate(sourcep, sourcez) + ", LRd "); // 始点
-			sceneWriter.write(coordinate(targetp, targetz) + ", LRd "); // 終点
-			sceneWriter.write(material(link) + "no_shadow }" + CR);
+			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "no_shadow }" + CR);
 		}else if(type.equals("AssociationClass")){
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
@@ -261,11 +258,11 @@ public class ClassDiagram extends Diagram {
 	 * ロバストネス図対応
 	 * 特定のステレオタイプについてはそのステレオタイプに対するPOVRayオブジェクトの型をマッピングする
 	 * 
-	 * @param node
+	 * @param presence
 	 * @return
 	 */
-	protected String type(IPresentation node) {
-		IElement model = node.getModel();
+	protected String type(IPresentation presence) {
+		IElement model = presence.getModel();
 		if(model != null) {
 			List<String> types = Arrays.asList(model.getStereotypes());
 			if(!types.isEmpty()) {
@@ -280,8 +277,8 @@ public class ClassDiagram extends Diagram {
 				}else if(types.contains("interface")) {
 					return "Interface";
 				}
-			}else if(node.getType().equals("InstanceSpecification")){
-				IClass objectNodeClass = ((IInstanceSpecification)(node.getModel())).getClassifier();
+			}else if(presence.getType().equals("InstanceSpecification")){
+				IClass objectNodeClass = ((IInstanceSpecification)(presence.getModel())).getClassifier();
 				if(objectNodeClass != null) {
 					types = Arrays.asList(objectNodeClass.getStereotypes());
 					if(!types.isEmpty()) {
@@ -301,6 +298,6 @@ public class ClassDiagram extends Diagram {
 				}
 			}
 		}
-		return super.type(node);
+		return super.type(presence);
 	}
 }

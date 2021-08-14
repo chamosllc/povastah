@@ -18,7 +18,9 @@
 
 #declare Interface = object{ Ring_Sphere (1.05, 1.05, 0.06, 0.06 , 5, 5) material{ InterfaceMaterial } }
 
-#declare InstanceSpecification = object { Class texture { T_Wood23 }} 
+#declare InstanceSpecification = object { Class texture { T_Wood23 }}
+
+#declare Lifeline = object { InstanceSpecification }
 
 /*
  * Use Case Diagram

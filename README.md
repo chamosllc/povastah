@@ -84,9 +84,9 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 実行環境
 - [astah\* professinal, astah\* UML](https://astah.change-vision.com/ja/)
 - [The Persistence of Vision Raytracer version 3.7](http://www.povray.org/)
-- [AdaptOpenJDK jdk-8.0.292](https://adoptopenjdk.net/index.html)
 
 ビルド環境
+- [AdaptOpenJDK jdk-8.0.292](https://adoptopenjdk.net/index.html)
 - [astah-plugin-SDK-1.5](https://astah.change-vision.com/files/plugin/astah-plugin-sdk-latest.zip)
 	- [astah*プラグイン開発チュートリアル](https://astah.change-vision.com/ja/tutorial/plugin.html)
 	- conf/settings.xmlを修正しないとastah-buildコマンドがエラーになる。
@@ -109,7 +109,9 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 1. astah*ツールを起動して、3DCG視覚化するダイアグラムを含むプロジェクトを開く。
 2. プラグインツールで、POVRayスクリプトファイル(.pov)を作成する。
-3. POVRayツールで。POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
+3. リンク影のマテリアルを切り替えるときは、POVRayスクリプトファイルを編集する。
+```#declare ShadowType=1;```
+4. POVRayツールで。POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
 
 
 ※UTF-8で日本語文字を含めて出力します。POVRayエディタはUTF-8に対応していないため、povastahで出力されたファイルを編集する際は、別途、UTF-8を扱えるテキストエディタを推奨します。

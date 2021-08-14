@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス継承階層
- * created at 2021/08/13
+ * created at 2021/08/14
  * presented by povastah
  **/
 
@@ -16,7 +16,7 @@
 #declare LOOPRd = 36.0;
 #declare TextScale = <16, 16, 2>;
 
-// hierachy depth: {Repository=5, CrudRepository=3, JpaRepository=2, EntityRepository=1, PagingAndSortingRepository=4}
+// hierachy depth: {EntityRepository=1, JpaRepository=2, CrudRepository=3, PagingAndSortingRepository=4, Repository=5}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {

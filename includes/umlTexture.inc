@@ -15,12 +15,15 @@
 
 #declare LabelTecture = texture { T_Grnt15 }
 #declare LinkLabelTecture = texture { Peel }
+#declare MessageLabelTecture = texture { pigment{color Blue} finish{ phong 0.7 }}
+
 #declare UsageMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }
 
 /** Link Texture **/
 
 // among instances
 #declare LinkMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Yellow_04 } } 
+#declare LifelineLinkMaterial = material { LinkMaterial }
 
 // among classes
 #declare AssociationMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_06 } }
@@ -54,7 +57,8 @@
 //#declare ShadowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_09 } }
 
 #if(ShadowType)
-    #declare ShadowLinkMaterial = material { LinkMaterial } 
+    #declare ShadowLinkMaterial = material { LinkMaterial }
+    #declare ShadowLifelineLinkMaterial = material { LifelineLinkMaterial }
     #declare ShadowAssociationMaterial = material { AssociationMaterial }
     #declare ShadowControlFlowObjectFlowMaterial = material { ControlFlowObjectFlowMaterial }
     #declare ShadowTransitionMaterial = material { TransitionMaterial }
@@ -63,7 +67,8 @@
     #declare ShadowIncludeMaterial = material { IncludeMaterial }
     #declare ShadowTemplateBindingMaterial = material { TemplateBindingMaterial }
 #else
-    #declare ShadowLinkMaterial = material { ShadowMaterial } 
+    #declare ShadowLinkMaterial = material { ShadowMaterial }
+    #declare ShadowLifelineLinkMaterial = material { ShadowMaterial } 
     #declare ShadowAssociationMaterial = material { ShadowMaterial }
     #declare ShadowControlFlowObjectFlowMaterial = material { ShadowMaterial }
     #declare ShadowTransitionMaterial = material { ShadowMaterial }
@@ -76,6 +81,8 @@
 /** Stage Texture for Diagram **/
 #declare DiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
 #declare ClassDiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
+#declare CommunicationDiagramTexture = texture{ pigment{ bozo  color_map{[0.0 color LimeGreen][0.7 White]}  scale 64 }
+ }
 #declare ActivityDiagramTexture = texture { ActivityTexture rotate -x*90 scale 96 }
 #declare UseCaseDiagramTexture = texture { pigment{ crackle form <-0.8,0.8,0>*3 scale 3 color_map{[0.0 color rgb<1.0,0.7,0.5>][0.5 White] }} rotate -x*90 rotate z*45 scale 96 }
 #declare StateMachineDiagramTexture = texture { pigment { brick White Flesh} rotate -y*90 scale 16 }

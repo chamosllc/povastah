@@ -91,19 +91,19 @@ public class StateMachineDiagram extends Diagram {
 	 * 指定ノードのPOVRayオブジェクトを描く
 	 * 内部状態のある状態
 	 * 
-	 * @param hierarchy
 	 * @param node
+	 * @param hierarchy
 	 * @throws IOException
 	 */
 	@Override
-	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
+	protected void draw(INodePresentation node, int hierarchy) throws IOException {
 		if(hasSubDiagram(node)) {
-			writeSubmachineState(hierarchy, node);
+			drawSubmachineState(node, hierarchy);
 			drawSource(node);
-		}else if(writeVertex(node)) {
+		}else if(drawVertex(node)) {
 			drawSource(node);
 		}else {
-			super.writeNode(hierarchy, node);
+			super.draw(node, hierarchy);
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class StateMachineDiagram extends Diagram {
 	 * @return
 	 * @throws IOException
 	 */
-	protected boolean writeVertex(INodePresentation node) throws IOException {
+	protected boolean drawVertex(INodePresentation node) throws IOException {
 		if(node.getModel() instanceof IState) {
 			IState state = (IState)node.getModel();
 			if(state.getRegionSize() > 0) {
@@ -149,7 +149,7 @@ public class StateMachineDiagram extends Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void writeSubmachineState(int hierarchy, INodePresentation node) throws IOException {
+	protected void drawSubmachineState(INodePresentation node, int hierarchy) throws IOException {
 		IStateMachineDiagram subDiagram = subDiagram(node);
 		Rectangle2D bound = node.getRectangle();
 		double scale = 1.0;
@@ -159,8 +159,8 @@ public class StateMachineDiagram extends Diagram {
 			scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ)); // povray object scale 24
 			double posz = zposition(node) - deltaZ*scale;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() - (deltaZ/2))*scale);
-			sceneWriter.write("  object { " + povrayName(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
-			writeSubDiagram(hierarchy + 1, node);
+			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
+			drawSubDiagram(node, hierarchy + 1);
 		}
 		sceneWriter.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
 			+ translate(center(node), zposition(node)) + " }" + CR);

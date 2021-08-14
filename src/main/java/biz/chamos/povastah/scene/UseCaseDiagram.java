@@ -33,7 +33,7 @@ public class UseCaseDiagram extends ClassDiagram {
 	 * @throws IOException
 	 */
 	@Override
-	protected void writeNode(int hierarchy, INodePresentation node) throws IOException {
+	protected void draw(INodePresentation node, int hierarchy) throws IOException {
 		if(node.getType().equals("UseCase")){
 			String[] labels = node.getLabel().split("\n");
 			int max = 0;
@@ -52,7 +52,7 @@ public class UseCaseDiagram extends ClassDiagram {
 					+ "  } scale 64 " + translate(point) + "}" +CR);
 			drawSource(node);
 		}else {
-			super.writeNode(hierarchy, node);
+			super.draw(node, hierarchy);
 		}
 	}
 }

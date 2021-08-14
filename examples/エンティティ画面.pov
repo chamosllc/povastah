@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * エンティティ画面
- * created at 2021/08/13
+ * created at 2021/08/14
  * presented by povastah
  **/
 

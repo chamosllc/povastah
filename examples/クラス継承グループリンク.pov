@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス継承グループリンク
- * created at 2021/08/13
+ * created at 2021/08/14
  * presented by povastah
  **/
 
@@ -16,7 +16,7 @@
 #declare LOOPRd = 36.0;
 #declare TextScale = <16, 16, 2>;
 
-// hierachy depth: {ClassDiagram=1, StateMachineDiagram=1, Diagram=2, ActivityDiagram=1}
+// hierachy depth: {Diagram=2, ActivityDiagram=1, StateMachineDiagram=1, ClassDiagram=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {
@@ -24,13 +24,13 @@
     object { Circle_Text( LabelFont, "Diagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <310.833, -88.820, 30.0> }
   object { Class rotate -x*90 scale 24.0 translate <127.500, -239.487, -32.0> }
     object { Circle_Text( LabelFont, "ClassDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <127.500, -239.487, 30.0> }
-    sphere_sweep { linear_spline, 2, <127.500, -239.487, -28.0>, LRd <310.833, -88.820, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
+    sphere_sweep { linear_spline, 4, <127.500, -239.487, -28.0>, LRd <310.833, -171.487, -38.7>, LRd <127.500, -171.487, -49.3>, LRd <310.833, -88.820, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
   object { Class rotate -x*90 scale 24.0 translate <310.833, -239.487, -32.0> }
     object { Circle_Text( LabelFont, "ActivityDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <310.833, -239.487, 30.0> }
-    sphere_sweep { linear_spline, 2, <310.833, -239.487, -28.0>, LRd <310.833, -88.820, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
+    sphere_sweep { linear_spline, 4, <310.833, -239.487, -28.0>, LRd <310.833, -171.487, -38.7>, LRd <310.833, -171.487, -49.3>, LRd <310.833, -88.820, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
   object { Class rotate -x*90 scale 24.0 translate <521.500, -239.487, -32.0> }
     object { Circle_Text( LabelFont, "StateMachineDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <521.500, -239.487, 30.0> }
-    sphere_sweep { linear_spline, 2, <521.500, -239.487, -28.0>, LRd <310.833, -88.820, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
+    sphere_sweep { linear_spline, 4, <521.500, -239.487, -28.0>, LRd <310.833, -171.487, -38.7>, LRd <521.500, -171.487, -49.3>, LRd <310.833, -88.820, -60.0>, LRd material { GeneralizationMaterial } no_shadow }
 }
 object { ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 }
 #declare EYE = <341, -404, -561>;
