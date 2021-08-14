@@ -38,6 +38,16 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 </tbody>
 </table>
 
+##### コミュニケーション図
+<table>
+<thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
+<tbody>
+<tr><td>MVCコミュニケーション</td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E5%9B%B3/MVC%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/MVC%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3.png" width="320"></td></tr>
+</tbody>
+</table>
+
 ##### ユースケース図
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
