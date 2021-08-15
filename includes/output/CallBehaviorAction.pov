@@ -18,7 +18,6 @@
 
 #declare ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f = union {
   object { InitialNode rotate -x*90 scale 24.0 translate <87.004, -44.667, 0.00> }
-    object { Circle_Text( LabelFont, "開始ノード3",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <87.004, -44.667, 30.00> }
     union{
     sphere_sweep { linear_spline, 2, <87.004, -44.667, 4.00>, LRd <87.004, -131.547, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <87.004, -44.667, 4.00>, LRd <87.004, -131.547, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
@@ -30,7 +29,6 @@
     sphere_sweep { linear_spline, 2, <87.004, -131.547, 4.00>, LRd <87.004, -220.000, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
   object { ActivityFinal rotate -x*90 scale 24.0 translate <87.004, -220.000, 0.00> }
-    object { Circle_Text( LabelFont, "アクティビティ終了3",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <87.004, -220.000, 30.00> }
 }
 object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f }
 #declare EYE = <87, -372, -136>;

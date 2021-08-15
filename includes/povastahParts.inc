@@ -92,9 +92,9 @@
 }
 
 /** ProcessShape **/
-#declare ProcessShape = union {
-        object{ Rhomboid scale <1.6,0.5,1>*0.5 translate -y*0.25 }
-        object{ Rhomboid scale <1.6,0.5,1>*0.5 rotate x*180 translate y*0.25  } rotate -x*90 }
+#declare ProcessShape = merge {
+        object{ Rhomboid scale <4/5, 1/4, 1/2> translate -y/4 }
+        object{ Rhomboid scale <4/5, 1/4, 1/2> rotate x*180 translate y/4 } rotate -x*90 }
          
 /**** Child ****/
 //blob constants

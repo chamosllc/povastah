@@ -59,16 +59,17 @@
 
 #declare CallBehaviorAction = object { Activity scale 2 }
 
-#declare Process = union {
-        object{ ProcessShape scale x*9/10 translate x*0.4 }
-        texture{ ActivityTexture scale 1/4 } }
+#declare Process = union { object{ ProcessShape scale x*9/10 translate x*0.4 } texture{ ActivityTexture scale 1/4 } }
 #declare SendSignalAction = difference {
-    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_01 } } }
-    box { <-2, -1, -1>, <-0.5, 1, 1> } translate -x*0.3 }
+    object { ProcessShape } box { <-2, -1, -1>, <-0.5, 1, 1> }
+    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_01 } } translate -x*0.3 }
+
 #declare DecisionNodeMergeNode  = object { Wheel }
+
 #declare AcceptEventAction = difference {
-    object { ProcessShape material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } } }
-    box { <0.5, -1, -1>, <2, 1, 1> } }
+    object { ProcessShape }
+    box { <0.5, -1, -1>, <2, 1, 1> }
+     material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Azurite_02 } }}
 
 #declare AcceptTimeEventAction = box { <-0.6, -0.6, -0.6>, <0.6, 0.6, 0.6>  rotate y*45
     material { texture { pigment { color Clear } finish { F_Glass2 } } interior { I_Glass1 fade_color Col_Azurite_02 } }
