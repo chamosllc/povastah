@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * サブステートマシン図
- * created at 2021/08/13
+ * created at 2021/08/15
  * presented by povastah
  **/
 
@@ -9,6 +9,7 @@
 #global_settings { assumed_gamma 2.2 }
 #global_settings { charset utf8 }
 
+#declare ShadowType = 0;
 #include "povastah.inc"
 
 #declare LRd = 3.2;
@@ -16,18 +17,18 @@
 #declare TextScale = <16, 16, 2>;
 
 #declare StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f = union {
-  object { State rotate -x*90 scale 24.0 translate <180.833, -68.714, 0.0> }
-    object { Circle_Text( LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <180.833, -68.714, 30.0> }
+  object { State rotate -x*90 scale 24.0 translate <180.833, -68.714, 0.00> }
+    object { Circle_Text( LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <180.833, -68.714, 30.00> }
     union{
-    sphere_sweep { linear_spline, 2, <180.833, -68.714, 4.0>, LRd <254.000, -68.714, 4.0>, LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <180.833, -68.714, 4.0>, LRd <254.000, -68.714, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    sphere_sweep { linear_spline, 2, <180.833, -68.714, 4.00>, LRd <254.000, -68.714, 4.00>, LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2, <180.833, -68.714, 4.00>, LRd <254.000, -68.714, 4.00>, 0.0 material { ShadowTransitionMaterial } no_image }
     }
-  object { InitialPseudostate rotate -x*90 scale 24.0 translate <107.333, -68.714, 0.0> }
+  object { InitialPseudostate rotate -x*90 scale 24.0 translate <107.333, -68.714, 0.00> }
     union{
-    sphere_sweep { linear_spline, 2, <107.333, -68.714, 4.0>, LRd <180.833, -68.714, 4.0>, LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <107.333, -68.714, 4.0>, LRd <180.833, -68.714, 4.0>, 0.0 material { TransitionMaterial } no_image }
+    sphere_sweep { linear_spline, 2, <107.333, -68.714, 4.00>, LRd <180.833, -68.714, 4.00>, LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2, <107.333, -68.714, 4.00>, LRd <180.833, -68.714, 4.00>, 0.0 material { ShadowTransitionMaterial } no_image }
     }
-  object { FinalState rotate -x*90 scale 24.0 translate <254.000, -68.714, 0.0> }
+  object { FinalState rotate -x*90 scale 24.0 translate <254.000, -68.714, 0.00> }
 }
 object { StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f }
 #declare EYE = <180, -308, -160>;
