@@ -79,13 +79,13 @@
 #end
 
 /** Stage Texture for Diagram **/
-#declare DiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
-#declare ClassDiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } rotate -x*90 scale 64 }
-#declare CommunicationDiagramTexture = texture{ pigment{ bozo  color_map{[0.0 color LimeGreen][0.7 White]}  scale 64 }
- }
+#declare DiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } finish { phong 0.2 } rotate -x*90 scale 64 }
+#declare ClassDiagramTexture = texture { pigment { hexagon color Pink color White color SkyBlue } finish { phong 0.2 } rotate -x*90 scale 64 }
+#declare CommunicationDiagramTexture = texture{ pigment{ bozo  color_map{[0.0 color LimeGreen][0.7 White]}scale 64 } finish { phong 0.2 } }
 #declare ActivityDiagramTexture = texture { ActivityTexture rotate -x*90 scale 96 }
-#declare UseCaseDiagramTexture = texture { pigment{ crackle form <-0.8,0.8,0>*3 scale 3 color_map{[0.0 color rgb<1.0,0.7,0.5>][0.5 White] }} rotate -x*90 rotate z*45 scale 96 }
-#declare StateMachineDiagramTexture = texture { pigment { brick White Flesh} rotate -y*90 scale 16 }
+#declare UseCaseDiagramTexture = texture { pigment{ crackle form <-0.8,0.8,0>*3 scale 3 color_map{[0.0 color rgb<1.0,0.7,0.5>][0.5 White] }} finish { phong 0.2 } rotate -x*90 rotate z*45 scale 96 }
+#declare StateMachineDiagramTexture = texture { pigment { brick White Flesh} finish { phong 0.2 } rotate -y*90 scale 16 }
 // stateinternal
-#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amethyst_04 } } 
+#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Amethyst_04 } }
+//#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Aquamarine_06 } } 
 

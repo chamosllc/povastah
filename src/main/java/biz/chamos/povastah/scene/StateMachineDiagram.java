@@ -121,7 +121,7 @@ public class StateMachineDiagram extends Diagram {
 				Rectangle2D bound = node.getRectangle();
 				Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
 				String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
-					+ translate(point, zposition(node)) + " }";
+					+ translate(point, zposition(node) + 12.0) + " }";
 				// vertexをstageの凹にする
 				sceneWriter.write("  difference {" + stage + CR);
 				for(int i=0; i < vertex.length; i++) {
@@ -129,11 +129,11 @@ public class StateMachineDiagram extends Diagram {
 						bound = state.getRegionRectangle(i);
 						point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
 						sceneWriter.write("    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth()*0.95, bound.getHeight()*0.95, 12.0)
-							+ translate(point, zposition(node) - 6) + " }" + CR);						
+							+ translate(point, zposition(node)) + " }" + CR);						
 					} catch (InvalidUsingException e) {}
 				}
 				sceneWriter.write("  }" + CR);
-				textOnStage(node, node.getRectangle());
+				textOnStage(node, node.getRectangle(), TEXT_OFFSET_Z);
 				return true;
 			}
 		}
@@ -158,13 +158,14 @@ public class StateMachineDiagram extends Diagram {
 			Rectangle2D subBound = subDiagram.getBoundRect();
 			scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ)); // povray object scale 24
 			double posz = zposition(node) - deltaZ*scale;
-			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() - (deltaZ/2))*scale);
+			double shift = 12.0;
+			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() + shift - (subBound.getCenterY() + (deltaZ/2))*scale);
 			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
 			drawSubDiagram(node, hierarchy + 1);
 		}
 		sceneWriter.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
 			+ translate(center(node), zposition(node)) + " }" + CR);
-		textOnStage(node, bound);
+		textOnStage(node, bound, 0.0);
 	}
 	
 	/**

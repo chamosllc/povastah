@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ユースケース
- * created at 2021/08/14
+ * created at 2021/08/15
  * presented by povastah
  **/
 
@@ -21,12 +21,12 @@
     text { ttf LabelFont, "ユースケース", 1, 0 texture { LabelTecture } translate<-0.7999999999999996, -0, 0> }
      scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}
     finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-0.375, -0.5, -2>
-  } scale 64  translate <348.560, -233.667, 0.0>}
-  object { Actor rotate -x*90 scale 24.0 translate <89.333, -240.714, 0.0> }
-    object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <89.333, -240.714, 30.0> }
+  } scale 64  translate <348.560, -233.667, 0.00>}
+  object { Actor rotate -x*90 scale 24.0 translate <89.333, -240.714, 0.00> }
+    object { Circle_Text( LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <89.333, -240.714, 30.00> }
     union{
-    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.0>, LRd <348.560, -233.667, 4.0>, LRd material { AssociationMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.0>, LRd <348.560, -233.667, 4.0>, 0.0 material { ShadowAssociationMaterial } no_image }
+    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.00>, LRd <348.560, -233.667, 4.00>, LRd material { AssociationMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2, <89.333, -240.714, 4.00>, LRd <348.560, -233.667, 4.00>, 0.0 material { ShadowAssociationMaterial } no_image }
     }
 }
 object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }

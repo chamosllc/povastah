@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラスとインタフェース
- * created at 2021/08/14
+ * created at 2021/08/15
  * presented by povastah
  **/
 
@@ -17,14 +17,14 @@
 #declare TextScale = <16, 16, 2>;
 
 #declare ClassDiagram_zm36174cfd7c659288bc9badb700978b1e1 = union {
-  object { Interface rotate -x*90 scale 24.0 translate <140.087, -152.974, 0.0> }
-    object { Circle_Text( LabelFont, "Serializable",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <140.087, -152.974, 30.0> }
+  object { Interface rotate -x*90 scale 24.0 translate <140.087, -152.974, 0.00> }
+    object { Circle_Text( LabelFont, "Serializable",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <140.087, -152.974, 30.00> }
     union{
-    sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.0>, LRd <139.552, -250.115, 4.0>, LRd material { RealizationMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.0>, LRd <139.552, -250.115, 4.0>, 0.0 material { ShadowRealizationMaterial } no_image }
+    sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.00>, LRd <139.552, -250.115, 4.00>, LRd material { RealizationMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2, <140.087, -152.974, 4.00>, LRd <139.552, -250.115, 4.00>, 0.0 material { ShadowRealizationMaterial } no_image }
     }
-  object { Entity rotate -x*90 scale 24.0 translate <139.552, -250.115, 0.0> }
-    object { Circle_Text( LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <139.552, -250.115, 30.0> }
+  object { Entity rotate -x*90 scale 24.0 translate <139.552, -250.115, 0.00> }
+    object { Circle_Text( LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <139.552, -250.115, 30.00> }
 }
 object { ClassDiagram_zm36174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <139, -460, -271>;

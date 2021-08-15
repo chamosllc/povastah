@@ -60,7 +60,7 @@ public class Diagram {
 	/**
 	 * 3D座標系フォーマット
 	 */
-	static final String COORDINATE = "<%.3f, %.3f, %.1f>";
+	static final String COORDINATE = "<%.3f, %.3f, %.2f>";
 	static final String ICOORDINATE = "<%d, %d, %d>";
 	/**
 	 * POVRayオブジェクトフォーマット
@@ -401,10 +401,11 @@ public class Diagram {
 	 * @param bound
 	 * @throws IOException
 	 */
-	protected void textOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
+	protected void textOnStage(INodePresentation node, Rectangle2D bound, double offsetz) throws IOException {
 		String label = label(node);
 		if(!label.isEmpty()) {
-			sceneWriter.write(String.format(TEXT16, label, translate(new Point2D.Double(bound.getMinX() + 12.0, bound.getMinY() + 16.0), zposition(node) - 0.01)) + CR);
+			double shift = 10.0;
+			sceneWriter.write(String.format(TEXT16, label, translate(new Point2D.Double(bound.getMinX() + shift, bound.getMinY() + shift), zposition(node) + offsetz)) + CR);
 		}
 	}
 	

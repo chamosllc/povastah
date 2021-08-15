@@ -222,10 +222,8 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
-		if(type.equals("Link") || type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を直に繋げる
-			Point2D sourcep = center(link.getSource());
-			Point2D targetp = center(link.getTarget());
-			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "no_shadow }" + CR);
+		if(type.equals("Link") || type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を別途描く
+			sceneWriter.write(drawGeneralization(link, sourcez, targetz));
 		}else if(type.equals("AssociationClass")){
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
@@ -240,6 +238,25 @@ public class ClassDiagram extends Diagram {
 		}	
 	}
 
+	/*
+	 * 継承グループリンクを描く
+	 * @param points
+	 * @return
+	 */
+	protected String drawGeneralization(ILinkPresentation link, double sourcez, double targetz) {
+		String description = "    sphere_sweep { linear_spline, ";
+		Point2D sourcep = center(link.getSource());
+		Point2D targetp = center(link.getTarget());
+		Point2D[] points = link.getPoints();
+		if(points.length == 4) {
+			description += "4, " + coordinate(sourcep, sourcez) + ", LRd " + coordinate(points[2], sourcez)  + ", LRd "
+					+ coordinate(points[1], sourcez)  + ", LRd ";
+		}else {
+			description += "2, " + coordinate(sourcep, sourcez) + ", LRd "; 
+		}
+		return description + coordinate(targetp, targetz) + ", LRd " + material(link) + "no_shadow }" + CR;
+	}
+	 
 	/**
 	 * リンクモデルIAssociationClassと同じノードモデルを探し、ノードを返す
 	 * @param assoc
