@@ -95,7 +95,7 @@ public class ActivityDiagram extends Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected boolean drawSubDiagram(int hierarchy, INodePresentation node) throws IOException {
+	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(node)) != null) {
 			double deltaZ = 36.0;

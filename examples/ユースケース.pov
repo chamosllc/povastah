@@ -30,8 +30,8 @@
     }
 }
 object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <250, -600, -240>;
-#declare FOCUS = <250, -280, 0>;
-camera { location EYE direction 1.2*z look_at FOCUS }
+#declare EYE = <250, -478, -400>;
+#declare FOCUS = <250, -238, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { UseCaseDiagramTexture }}

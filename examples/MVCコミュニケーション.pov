@@ -30,8 +30,8 @@
     object { Circle_Text( LabelFont, "1: setAttribute(attribute)",  0.800, 0, 2, 1.800, 1, Align_Center, -90) scale TextScale texture { MessageLabelTecture } translate <246.266, -178.534, 30.00> }
 }
 object { CommunicationDiagram_aye91724ef1f5857cbf37de84b739c5e16 }
-#declare EYE = <353, -500, -300>;
-#declare FOCUS = <353, -200, 0>;
-camera { location EYE direction 1.4*z look_at FOCUS }
+#declare EYE = <353, -435, -460>;
+#declare FOCUS = <353, -195, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { CommunicationDiagramTexture }}

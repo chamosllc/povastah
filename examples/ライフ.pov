@@ -63,7 +63,8 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate <192.540, -341.333, 0.00> }
     object { Circle_Text( LabelFont, "終了",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <192.540, -341.333, 30.00> }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate <340.540, -236.154, 0.00> }
-    object { Circle_Text( LabelFont, "物を取り扱う",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <340.540, -236.154, 30.00> }
+  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628 translate <307.747, -208.469, -4.78>}
+    text { ttf LabelFont, "物を取り扱う", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <304.000, -290.974, 31.00> }
     union{
     sphere_sweep { cubic_spline, 5, <340.540, -236.154, 4.00>, LRd <340.540, -236.154, 4.00>, LRd <312.000, -326.000, 4.00>, LRd <192.540, -341.333, 4.00>, LRd <192.540, -341.333, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { cubic_spline, 5, <340.540, -236.154, 4.00>, LRd <340.540, -236.154, 4.00>, LRd <312.000, -326.000, 4.00>, LRd/2.0 <192.540, -341.333, 4.00>, 0.0 <192.540, -341.333, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
