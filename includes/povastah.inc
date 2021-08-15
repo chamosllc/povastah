@@ -34,10 +34,11 @@
 #declare ActivityFinal = sphere {<0, 0, 0>, 0.6 texture {T_Chrome_1A} }
 #declare FlowFinalNode = difference {
     sphere {<0, 0, 0>, 0.6 }
-    box{<-1, -0.1, -1>, <1, 0.1, 1>}
-    box{<-0.1, -1, -1>, <0.1, 1, 1>}
-    box{<-1, -1, -0.1>, <1, 1, 0.1>}
-     texture {T_Chrome_1B} }
+    sphere {<0, 0, 0>, 0.5 }
+    box{<-1, -0.06, -1>, <1, 0.06, 1>}
+    box{<-0.06, -1, -1>, <0.06, 1, 1>}
+    box{<-1, -1, -0.06>, <1, 1, 0.06>}
+     texture {T_Chrome_1B} rotate y*45 }
 
 #declare Action = object { Round_Cylinder(<0, -0.6, 0>, <0, 0.8, 0>, 1.0, 0.15, 0) texture{ ActivityTexture scale 1/2 }}
 
