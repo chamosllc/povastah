@@ -99,8 +99,8 @@
   object { FinalState rotate -x*90 scale 24.0 translate <306.667, -245.333, 0.00> }
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <393, -422, -487>;
-#declare FOCUS = <393, -182, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <393, -500, -360>;
+#declare FOCUS = <393, -200, 0>;
+camera { location EYE direction 1.07*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

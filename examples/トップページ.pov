@@ -176,8 +176,8 @@
     text { ttf LabelFont, "Entity", 1, 0 scale TextScale texture { LabelTecture } translate <460.333, -106.667, 0.00> }
 }
 object { StateMachineDiagram_1u2y6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <392, -373, -437>;
-#declare FOCUS = <392, -133, 0>;
+#declare EYE = <390, -160, -360>;
+#declare FOCUS = <390, -140, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}
