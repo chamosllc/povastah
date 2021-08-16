@@ -17,9 +17,6 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  */
 public class UseCaseDiagram extends ClassDiagram {
 
-	/**
-	 * コンストラクタ
-	 */
 	public UseCaseDiagram(IDiagram diagram, OutputStreamWriter writer){
 		super(diagram, writer);
 	}

@@ -23,19 +23,15 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  */
 public class ActivityDiagram extends Diagram {
 
-	/**
-	 * コンストラクタ
-	 */
 	public ActivityDiagram(IDiagram diagram, OutputStreamWriter sceneWriter){
 		super(diagram, sceneWriter);
 	}
 
 	/**
-	 * ノードが出力対象ではない
+	 * ノードが描画対象でない
 	 * @param ノード
-	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(INodePresentation presentation) {
+	protected boolean isExcludes(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * 入力ピン : "InputPin" | 出力ピン : "OutputPin" | アクティビティパラメタノード : "ActivityParameterNode" | パーティション : "Partition" | レーン : "Lane"
@@ -47,25 +43,25 @@ public class ActivityDiagram extends Diagram {
 				return true;
 			}
 		}
-		return super.excludeIPresentation(presentation);
+		return super.isExcludes(presentation);
 	}
 	
 	/**
-	 * サブダイアグラムがあれば、そのオブジェクトの宣言文を出力する
+	 * サブダイアグラムを宣言をする
 	 */
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				ActivityDiagram nestDiagram = new ActivityDiagram(subDiagram, sceneWriter);
-				nestDiagram.existsTragetPresence();
-				nestDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
+				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, sceneWriter);
+				hierarchyDiagram.existsScene();
+				hierarchyDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
 		}
 	}
 
 	/**
-	 * サブダイアグラムオブジェクトを返す
+	 * サブダイアグラムを返す
 	 * @param parent
 	 * @return nullの場合がある
 	 */
@@ -80,19 +76,18 @@ public class ActivityDiagram extends Diagram {
 	}
 
 	/**
-	 * サブダイアグラムを持つ性質のノードかどうか
+	 * サブダイアグラムを持つノード型である
 	 */
 	protected boolean hasSubDiagram(INodePresentation parent) {
 		return parent.getType().equals("CallBehaviorAction");
 	}
 	
 	/**
-	 * 振る舞い呼び出しアクション、サブマシン状態にサブダイアグラムを配置する
-	 * ※pending : とりあえず、サブダイアグラムのPOVRayオブジェクトを呼び出すテンプレートをコメント出力する
-	 * 				エディタで編集する
+	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるときサブダイアグラムを配置する
 	 * 
 	 * @param hierarchy
 	 * @param node
+	 * @return ダイアグラム階層がある
 	 * @throws IOException
 	 */
 	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
@@ -105,12 +100,18 @@ public class ActivityDiagram extends Diagram {
 			double posz = zposition(node) - deltaZ*scale;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() + (deltaZ/2))*scale);
 			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
+			sceneWriter.write("  object { " + type(node) + OBJECT_UNIT + translate(center(node), zposition(node)) + " }" + CR);
 			textOnStage(node, bound);
 			return true;
 		}
 		return false;
 	}
-	
+
+	/**
+	 * ノード、リンクのラベル名を返す
+	 * @param presence
+	 * @return ラベル名
+	 */
 	protected String label(IPresentation presence) {
 		String label = super.label(presence);
 		if(presence.getModel() instanceof IObjectNode) {

@@ -39,22 +39,18 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected Map<IClass, Integer> classHierachyOrder = new HashMap<>();
 
-
-	/*
-	 * コンストラクタ
-	 */
 	public ClassDiagram(IDiagram diagram, OutputStreamWriter writer){
 		super(diagram, writer);
 	}
 
 	/**
-	 * POVRay出力対象のノードとリンクを抽出し、対象の有無を返す
+	 *描画ノードを抽出し、対象の有無を返す
 	 * @return 対象の有無
 	 */
-	protected boolean existsTragetPresence(){
-		boolean exists = super.existsTragetPresence();
+	protected boolean existsScene(){
+		boolean exists = super.existsScene();
 		if(exists) {
-			setClassHierachyOrder();
+			orderClassHierachy();
 		}
 		return exists;
 	}
@@ -64,7 +60,7 @@ public class ClassDiagram extends Diagram {
 	 * 
 	 * @throws IOException 
 	 */
-	protected void setClassHierachyOrder() {
+	protected void orderClassHierachy() {
 		Collection<IClass> models = new HashSet<>();
 		for(INodePresentation node: nodes) {
 			if(node.getModel() instanceof IClass) {
@@ -132,24 +128,9 @@ public class ClassDiagram extends Diagram {
 			}
 		}
 	}
-
-	/**
-	 * 階層の深さに応じてカメラを離す
-	 */
-	protected int cameraDistance(int z) {
-		if(classHierachyOrder.isEmpty()) {
-			return super.cameraDistance(z);
-		}else {
-			int distance = 0;
-			for(Integer depth: classHierachyOrder.values()) {
-				distance = Math.max(distance, depth);
-			}
-			return super.cameraDistance(z - (distance + 1) * 48);
-		}
-	}
 	
 	/*
-	 * debug用 スクリプトのヘッダ部を出力する
+	 * クラス階層順位をコメントする
 	 */
 	protected void header() throws IOException {
 		super.header();
@@ -160,7 +141,7 @@ public class ClassDiagram extends Diagram {
 	}
 
 	/**
-	 * クラス継承関係による高さ
+	 * ノードのz座標値(クラス継承関係による高さを算出する)
 	 */
 	protected double zposition(INodePresentation node) {
 		double z = super.zposition(node);
@@ -170,6 +151,11 @@ public class ClassDiagram extends Diagram {
 		return z;
 	}
 
+	/**
+	 * ノード、リンクのラベル名を返す
+	 * @param presence
+	 * @return ラベル名
+	 */
 	protected String label(IPresentation presence) {
 		String label = super.label(presence);
 		if(presence.getModel() instanceof IInstanceSpecification) {
@@ -182,11 +168,10 @@ public class ClassDiagram extends Diagram {
 	}
 	
 	/**
-	 * ノードが出力対象ではない
+	 * ノードが描画対象でない
 	 * @param ノード
-	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(INodePresentation presentation) {
+	protected boolean isExcludes(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * パッケージ : "Package" | サブシステム : "Subsystem" | 構造化クラス : "StructuredClass" | 汎化共有表記 : "GeneralizationGroup"
@@ -198,11 +183,11 @@ public class ClassDiagram extends Diagram {
 				return true;
 			}
 		}
-		return super.excludeIPresentation(presentation);
+		return super.isExcludes(presentation);
 	}
 
 	/**
-	 * リンクオブジェクトを描く
+	 * リンクを描く
 	 * @param link
 	 * @throws IOException
 	 */
@@ -213,16 +198,15 @@ public class ClassDiagram extends Diagram {
 	/**
 	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
-	 * @param lineRadius 
-	 * @param sourcez ソースノードの高さ
-	 * @param targetz ターゲットノードの高さ
-	 * @param sourcep ソースノードの座標
-	 * @param targetp ターゲットノードの座標
+	 * @param sourcez ソースの高さ
+	 * @param targetz ターゲットの高さ
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
-		if(type.equals("Link") || type.equals("Generalization")) { // GeneralizationGroupを除外したので、クラス継承関係を別途描く
+		if(type.equals("Link")) {
+			drawNoShadow(link, sourcez, targetz);
+		}else if(type.equals("Generalization")) {
 			sceneWriter.write(drawGeneralization(link, sourcez, targetz));
 		}else if(type.equals("AssociationClass")){
 			Point2D sourcep = center(link.getSource());
@@ -239,20 +223,26 @@ public class ClassDiagram extends Diagram {
 	}
 
 	/*
-	 * 継承グループリンクを描く
-	 * @param points
+	 * 継承(Generalization)を描く
+	 * 
+	 * ※Generalizationのlinkは、sourceがサブクラスでtargetがスーパークラスであるが、points[]はtargetからsoruceへの点列となっている。
+	 * 
+	 * @param link
+	 * @param sourcez ソースの高さ
+	 * @param targetz ターゲットの高さ
 	 * @return
 	 */
-	protected String drawGeneralization(ILinkPresentation link, double sourcez, double targetz) {
+	protected String drawGeneralization(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String description = "    sphere_sweep { linear_spline, ";
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
 		Point2D[] points = link.getPoints();
-		if(points.length == 4) {
-			description += "4, " + coordinate(sourcep, sourcez) + ", LRd " + coordinate(points[2], sourcez)  + ", LRd "
-					+ coordinate(points[1], sourcez)  + ", LRd ";
-		}else {
-			description += "2, " + coordinate(sourcep, sourcez) + ", LRd "; 
+		int length = points.length;		
+		description += length + ", " + coordinate(sourcep, sourcez) + ", LRd ";
+		if(points.length > 2) {
+			for(int i = length-2; i > 0; i--) {
+				description += coordinate(points[i], sourcez)  + ", LRd ";
+			}
 		}
 		return description + coordinate(targetp, targetz) + ", LRd " + material(link) + "no_shadow }" + CR;
 	}

@@ -1,4 +1,4 @@
-package biz.chamos.povastah;
+package biz.chamos.povastah.scene;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -14,8 +14,6 @@ import com.change_vision.jude.api.inf.model.IMessage;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
-
-import biz.chamos.povastah.scene.ClassDiagram;
 
 public class CommunicationDiagram extends ClassDiagram {
 
@@ -143,10 +141,8 @@ public class CommunicationDiagram extends ClassDiagram {
 	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
 	 * @param lineRadius 
-	 * @param sourcez ソースノードの高さ
-	 * @param targetz ターゲットノードの高さ
-	 * @param sourcep ソースノードの座標
-	 * @param targetp ターゲットノードの座標
+	 * @param sourcez ソースの高さ
+	 * @param targetz ターゲットの高さ
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {

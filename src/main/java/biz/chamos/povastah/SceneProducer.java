@@ -16,6 +16,7 @@ import com.change_vision.jude.api.inf.project.ProjectAccessor;
 
 import biz.chamos.povastah.scene.ActivityDiagram;
 import biz.chamos.povastah.scene.ClassDiagram;
+import biz.chamos.povastah.scene.CommunicationDiagram;
 import biz.chamos.povastah.scene.StateMachineDiagram;
 import biz.chamos.povastah.scene.UseCaseDiagram;
 

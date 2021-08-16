@@ -23,9 +23,9 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  * @since 2021/07/01
  *
  */
-public class Diagram {
+public abstract class Diagram {
 	/**
-	 * POVRayオブジェクトのz値のオフセット
+	 * オブジェクトのz値のオフセット
 	 */
 	static final protected double OFFSET_Z = 4.0;
 	static final protected double TEXT_OFFSET_Z = 30.0;
@@ -34,14 +34,14 @@ public class Diagram {
 	 */
 	static final protected String CR = System.lineSeparator();
 	/**
-	 * POVRayシーン記述のヘッダーコメント部
+	 * シーン記述のヘッダーコメント部
 	 */
 	static final protected String HEADER_COMMENT = "/**" + CR
 			+ " * astah* Diagram 3D Visualization\n * %s" + CR
 			+ " * created at %s" + CR
 			+ " * presented by povastah" + CR + " **/" + CR + CR;
 	/**
-	 * POVRayシーン記述のglobal_settings部
+	 * シーン記述のglobal_settings部
 	 */
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 			+ "#global_settings { charset utf8 }" + CR + CR
@@ -53,7 +53,7 @@ public class Diagram {
 
 	
 	/**
-	 * POVRay撮影環境記述
+	 * 撮影環境記述
 	 */
 	static final protected String CAMERA = "camera { location EYE direction 1*z look_at FOCUS }" + CR;
 	static final protected String LIGHT = "light_source { <-1000, -1000, -3000>   color White }" + CR;
@@ -63,43 +63,41 @@ public class Diagram {
 	static final String COORDINATE = "<%.3f, %.3f, %.2f>";
 	static final String ICOORDINATE = "<%d, %d, %d>";
 	/**
-	 * POVRayオブジェクトフォーマット
+	 * オブジェクト関連フォーマット
 	 */
+	static final String OBJECT_UNIT = " rotate -x*90 scale 24.0";
 	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }";
 	static final String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
 	static final String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale TextScale texture { LabelTecture }%s }";
 
 	/**
-	 * POVRayシーン記述出力ファイル
+	 * シーン記述ファイル
 	 */
 	protected OutputStreamWriter sceneWriter;
 	/**
-	 * 出力対象astah*ダイアグラム
+	 * 描画ダイアグラム
 	 */
 	protected IDiagram diagram;
 	/**
-	 * ダイアグラム内の対象ノード要素
+	 * ダイアグラム内の描画対象ノード
 	 */
 	protected List<INodePresentation> nodes;
 
 	/**
-	 * ダイアグラムオブジェクトの矩形領域
+	 * ダイアグラムの矩形領域
 	 */
 	protected Rectangle2D stageBounds;
 	
-	/**
-	 * コンストラクタ
-	 */
 	public Diagram(IDiagram diagram, OutputStreamWriter sceneWriter){
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
 	}
 
 	/**
-	 * UMLダイアグラムのPOVRayシーン記述を出力する
+	 * ダイアグラムをシーンとして記述する
 	 */
 	public void produce(){
-		if(existsTragetPresence()) {
+		if(existsScene()) {
 			try {
 				header();
 				drawDiagram(new Point2D.Double(), 0.0);
@@ -109,16 +107,16 @@ public class Diagram {
 	}
 	
 	/**
-	 * POVRay出力対象のノードとリンクを抽出し、対象の有無を返す
+	 * 描画ノードを抽出し、対象の有無を返す
 	 * @return 対象の有無
 	 */
-	protected boolean existsTragetPresence(){
+	protected boolean existsScene(){
 		nodes = new ArrayList<INodePresentation>();
 		try {
 			for(IPresentation presence: diagram.getPresentations()){ // 除外ノードでないノードを集める
 				if(presence instanceof INodePresentation) {
 					INodePresentation node = (INodePresentation)presence;
-					if(!excludeIPresentation(node)) {
+					if(!isExcludes(node)) {
 						nodes.add(node);
 					}
 				}
@@ -128,11 +126,10 @@ public class Diagram {
 	}
 
 	/**
-	 * ノードが出力対象ではない
+	 * ノードが描画対象でない
 	 * @param ノード
-	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(INodePresentation presentation) {
+	protected boolean isExcludes(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * フレーム : "Frame" | ノート : "Note" | テキスト : "Text" | 長方形 : "Rectangle" | 楕円 : "Oval" | 画像 : "Image"
@@ -164,21 +161,45 @@ public class Diagram {
 	}
 	
 	/**
-	 * ダイアグラムオブジェクトを宣言し、ダイアグラムを描く
+	 * カメラ、光源、平面等のベースシーン環境を出力する
+	 * @throws IOException
+	 */
+	protected void stage() throws IOException {
+		final String DEFVAR = "#declare %s = " + ICOORDINATE + ";" + CR;
+		// フレームの矩形の中心をカメラ焦点にする
+		int stageX = (int)stageBounds.getCenterX();
+		int stageY = (int)-stageBounds.getCenterY();
+		int stageZ = stageY - Math.abs(stageX) - 32;
+		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 120));
+		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0));
+		sceneWriter.write(CAMERA);
+		sceneWriter.write(LIGHT);
+		sceneWriter.write("plane { z, 32 texture { " + stageTexture() + " }}" + CR);
+		sceneWriter.flush();
+	}
+
+	/**
+	 * ダイアグラムを描く
 	 * @throws IOException
 	 * @throws InvalidUsingException 
 	 */
 	protected void drawDiagram(Point2D dpoint, double z) throws IOException, InvalidUsingException {
 		sceneWriter.write("object { " + declareDiagram(0, dpoint, z) + " }" +CR);
-		sceneWriter.flush();
 	}
 
+	/**
+	 * ダイアグラムを宣言し、ダイアグラム宣言名を返す
+	 * @param hierarchy
+	 * @param dpoint
+	 * @param z
+	 * @return ダイアグラム名
+	 * @throws IOException
+	 */
 	protected String declareDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
 		declareSubDiagrams(hierarchy, dpoint, z);
 		String name = diagramID();
 		sceneWriter.write("#declare " + name + " = union {" + CR);
 		drawNodes(hierarchy, dpoint, z);
-//		drawLinks();
 		sceneWriter.write("}" + CR);
 		return name;
 	}
@@ -197,7 +218,7 @@ public class Diagram {
 	}
 
 	/**
-	 * 指定されたノードのサブダイアグラムを宣言する
+	 * サブダイアグラムを宣言をする
 	 * 
 	 * @param parent
 	 * @param hierarchy
@@ -207,70 +228,41 @@ public class Diagram {
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z) {}
 
 	/**
-	 * ノードがサブダイアグラムを持つ
+	 * サブダイアグラムを持つノード型である
 	 * 
 	 * @param parent
-	 * @return
 	 */
 	protected boolean hasSubDiagram(INodePresentation parent) {
 		return false;
 	}
 	
 	/**
-	 * ダイアグラムの宣言名を返す
+	 * ダイアグラム宣言名を返す
 	 * 
-	 * @return 
+	 * @return ダイアグラム宣言名
 	 */
 	protected String diagramID() {
 		return id(this.diagram);
 	}
 	
 	/**
-	 * 指定 ダイアグラムの宣言名を返す
+	 * 指定ダイアグラムの宣言名を返す
 	 * ※ユニークな名前が必要なので、IPresentaion.getID()文字列を利用する。ただし、ハイフォンを除去する
 	 * 
-	 * @param diagram
-	 * @return
+	 * @param diagram 指定ダイアグラム
+	 * @return　ダイアグラム宣言名
 	 */
 	protected String id(IDiagram diagram) {
 		return this.getClass().getSimpleName() + "_" + diagram.getId().replaceAll("-", "");
 	}
 
 	/**
-	 * カメラ、光源、平面等のベースシーン環境を出力する
-	 * @throws IOException
-	 */
-	protected void stage() throws IOException {
-		final String DEFVAR = "#declare %s = " + ICOORDINATE + ";" + CR;
-		// フレームの矩形の中心をカメラ焦点にする
-		int stageX = (int)stageBounds.getCenterX();
-		int stageY = (int)-stageBounds.getCenterY();
-		int stageZ = cameraDistance(stageY - Math.abs(stageX) - 32);
-		sceneWriter.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 120));
-		sceneWriter.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0));
-		sceneWriter.write(CAMERA);
-		sceneWriter.write(LIGHT);
-		sceneWriter.write("plane { z, 32 texture { " + stageTexture() + " }}" + CR);
-		sceneWriter.flush();
-	}
-
-	/**
-	 * ダイアグラムのステージ(POVRayオブジェクトplaneのテクスチャ宣言名を返す
+	 * ダイアグラムのステージ(plane)のテクスチャ宣言名を返す
 	 * 
-	 * @return Texture
+	 * @return ダイアグラム型Texture
 	 */
 	protected String stageTexture() {
 		return getClass().getSimpleName() + "Texture";
-	}
-
-	/**
-	 * 焦点からのカメラの距離を算出する
-	 * 
-	 * @param z
-	 * @return
-	 */
-	protected int cameraDistance(int z) {
-		return (z > -256)?-256:z;
 	}
 
 	/**
@@ -291,10 +283,9 @@ public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(INodePresentation node, int hierarchy) throws IOException {
-		final double scale = 24.0;
-		Point2D point = center(node);	
-		sceneWriter.write("  object { " + type(node) + " rotate -x*90 scale " + scale + translate(point, zposition(node)) + " }" + CR);
 		if(!drawSubDiagram(node, hierarchy + 1)) {
+			Point2D point = center(node);	
+			sceneWriter.write("  object { " + type(node) + OBJECT_UNIT + translate(point, zposition(node)) + " }" + CR);
 			text(node);
 		}
 		drawSource(node);
@@ -353,10 +344,11 @@ public class Diagram {
 	}
 
 	/**
-	 * 振る舞い呼び出しアクション、サブマシン状態にサブダイアグラムを配置する
+	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
 	 * 
 	 * @param hierarchy
 	 * @param node
+	 * @return ダイアグラム階層がある
 	 * @throws IOException
 	 */
 	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
@@ -412,14 +404,14 @@ public class Diagram {
 	/**
 	 * ノード、リンクのラベル名を返す
 	 * @param presence
-	 * @return
+	 * @return ラベル名
 	 */
 	protected String label(IPresentation presence) {
 		return presence.getLabel();
 	}
 
 	/**
-	 * リンクオブジェクトを描く
+	 * リンクを描く
 	 * @param link
 	 * @throws IOException
 	 */
@@ -428,11 +420,11 @@ public class Diagram {
 	}
 
 	/**
-	 * torus | sphere_sweep{ linear_spline | cubic_spline }を描く
+	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
-	 * @param sourcez ソースノードの高さ
-	 * @param targetz ターゲットノードの高さ
-	 * @param attenuation 先細り率
+	 * @param lineRadius 
+	 * @param sourcez ソースの高さ
+	 * @param targetz ターゲットの高さ
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
@@ -440,7 +432,7 @@ public class Diagram {
 		Point2D targetp = center(link.getTarget());
 		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは円環を描く
 			sourcep.setLocation(sourcep.getX(), sourcep.getY());
-			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material(link) + "no_shadow }" + CR);
+			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material(link) + " }" + CR);
 		}else {
 			sceneWriter.write("    union{" + CR);
 			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "no_shadow }" + CR);
@@ -450,7 +442,7 @@ public class Diagram {
 	}
 
 	/**
-	 * リンクの矢印を描く
+	 * 影の無い線と矢印を描く
 	 * @param points
 	 * @return
 	 */
@@ -486,6 +478,25 @@ public class Diagram {
 		return description;
 	}
 
+	/**
+	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * @param link
+	 * @param lineRadius 
+	 * @param sourcez ソースの高さ
+	 * @param targetz ターゲットの高さ
+	 * @throws IOException
+	 */
+	protected void drawNoShadow(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+		Point2D sourcep = center(link.getSource());
+		Point2D targetp = center(link.getTarget());
+		if(sourcep.equals(targetp)) { // 始点と終点が同じであればリレーションは円環を描く
+			sourcep.setLocation(sourcep.getX(), sourcep.getY());
+			sceneWriter.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + material(link) + "no_shadow }" + CR);
+		}else {
+			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "no_shadow }" + CR);
+		}
+	}
+	
 	/**
 	 * リンクに関係するmaterialを返す
 	 * @param link

@@ -24,29 +24,26 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  */
 public class StateMachineDiagram extends Diagram {
 
-	/**
-	 * コンストラクタ
-	 */
 	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter writer){
 		super(diagram, writer);
 	}
 
 	/**
-	 * サブダイアグラムがあれば、そのオブジェクトの宣言文を出力する
+	 * サブダイアグラムを宣言をする
 	 */
 	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				StateMachineDiagram nestDiagram = new StateMachineDiagram(subDiagram, sceneWriter);
-				nestDiagram.existsTragetPresence();
-				nestDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
+				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, sceneWriter);
+				hierarchyDiagram.existsScene();
+				hierarchyDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
 		}
 	}
 
 	/**
-	 * サブダイアグラムオブジェクトを返す
+	 * サブダイアグラムを返す
 	 * @param parent
 	 * @return nullの場合がある
 	 */
@@ -61,18 +58,17 @@ public class StateMachineDiagram extends Diagram {
 	}
 	
 	/**
-	 * サブダイアグラムを持つ性質のノードかどうか
+	 * サブダイアグラムを持つノード型である
 	 */
 	protected boolean hasSubDiagram(INodePresentation parent) {
 		return parent.getType().equals("SubmachineState");
 	}
 
 	/**
-	 * ノードが出力対象ではない
+	 * ノードが描画対象でない
 	 * @param ノード
-	 * @return 除外ノードである
 	 */
-	protected boolean excludeIPresentation(INodePresentation presentation) {
+	protected boolean isExcludes(INodePresentation presentation) {
 		/**
 		 * 除外対象要素
 		 * パーティション : "Partition" | 入場点 : "EntryPointPseudostate" | 退場点 : "ExitPointPseudostate" | サブマシン状態の擬似状態 : "StubState in SubmachineState" 
@@ -84,7 +80,7 @@ public class StateMachineDiagram extends Diagram {
 				return true;
 			}
 		}	 
-		return super.excludeIPresentation(presentation);
+		return super.isExcludes(presentation);
 	}
 
 	/**
@@ -97,14 +93,39 @@ public class StateMachineDiagram extends Diagram {
 	 */
 	@Override
 	protected void draw(INodePresentation node, int hierarchy) throws IOException {
-		if(hasSubDiagram(node)) {
-			drawSubmachineState(node, hierarchy);
-			drawSource(node);
-		}else if(drawVertex(node)) {
+		if(drawInternalMachine(node)) {
 			drawSource(node);
 		}else {
 			super.draw(node, hierarchy);
 		}
+	}
+	
+	/**
+	 * サブマシン状態(SubmachineState)にサブマシンがあるときサブダイアグラムを配置する
+	 * 
+	 * @param hierarchy
+	 * @param node
+	 * @return ダイアグラム階層がある
+	 * @throws IOException
+	 */
+	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
+		IStateMachineDiagram subDiagram = subDiagram(node);
+		Rectangle2D bound = node.getRectangle();
+		double scale = 1.0;
+		if(subDiagram != null) {
+			double deltaZ= 48.0;
+			Rectangle2D subBound = subDiagram.getBoundRect();
+			scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ)); // povray object scale 24
+			double posz = zposition(node) - deltaZ*scale;
+			double shift = 12.0;
+			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() + shift - (subBound.getCenterY() + (deltaZ/2))*scale);
+			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
+			sceneWriter.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+				+ translate(center(node), zposition(node)) + " }" + CR);
+			textOnStage(node, bound, 0.0);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -113,7 +134,7 @@ public class StateMachineDiagram extends Diagram {
 	 * @return
 	 * @throws IOException
 	 */
-	protected boolean drawVertex(INodePresentation node) throws IOException {
+	protected boolean drawInternalMachine(INodePresentation node) throws IOException {
 		if(node.getModel() instanceof IState) {
 			IState state = (IState)node.getModel();
 			if(state.getRegionSize() > 0) {
@@ -139,40 +160,13 @@ public class StateMachineDiagram extends Diagram {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 振る舞い呼び出しアクション、サブマシン状態にサブダイアグラムを配置する
-	 * ※pending : とりあえず、サブダイアグラムのPOVRayオブジェクトを呼び出すテンプレートをコメント出力する
-	 * 				エディタで編集する
-	 * 
-	 * @param hierarchy
-	 * @param node
-	 * @throws IOException
-	 */
-	protected void drawSubmachineState(INodePresentation node, int hierarchy) throws IOException {
-		IStateMachineDiagram subDiagram = subDiagram(node);
-		Rectangle2D bound = node.getRectangle();
-		double scale = 1.0;
-		if(subDiagram != null) {
-			double deltaZ= 48.0;
-			Rectangle2D subBound = subDiagram.getBoundRect();
-			scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ)); // povray object scale 24
-			double posz = zposition(node) - deltaZ*scale;
-			double shift = 12.0;
-			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() + shift - (subBound.getCenterY() + (deltaZ/2))*scale);
-			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
-			drawSubDiagram(node, hierarchy + 1);
-		}
-		sceneWriter.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
-			+ translate(center(node), zposition(node)) + " }" + CR);
-		textOnStage(node, bound, 0.0);
-	}
-	
-	/**
-	 * torus | sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
-	 * @param sourcez ソースノードの高さ
-	 * @param targetz ターゲットノードの高さ
+	 * @param lineRadius 
+	 * @param sourcez ソースの高さ
+	 * @param targetz ターゲットの高さ
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
