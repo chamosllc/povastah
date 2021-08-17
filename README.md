@@ -12,6 +12,8 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 デモ用astahプロジェクト [examples/povastah.asta](https://github.com/chamosllc/povastah/tree/master/examples/povastah.asta)
 
+※[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
+
 ##### クラス図
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
@@ -119,9 +121,16 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 1. astah*ツールを起動して、3DCG視覚化するダイアグラムを含むプロジェクトを開く。
 2. プラグインツールで、POVRayスクリプトファイル(.pov)を作成する。
-3. リンク影のマテリアルを切り替えるときは、POVRayスクリプトファイルを編集する。
-```#declare ShadowType=1;```
-4. POVRayツールで。POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
+    - POVRayスクリプトファイルはastah*プロジェクト構造と同型のファイルツリー構造に展開される。
+3. POVRayツールで、POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
+4. POVRayスクリプトファイルを編集する。
+    * カメラの配置を変更する。
+       * ```#declare EYE = <ｘ,y,z>;```
+       - ｘは水平軸で右手が正である。yは垂直軸で上手が正である。ｚはxy平面の直交軸で奥向きが正である。
+       - ステージ平面は、<0,0,32>に配置している。したがって、z>32には何も配置していない。
+    * カメラの焦点を変更する。
+       * ```#declare FOCUS = <x,y,z>;```
+    * リンク影のマテリアルを切り替える。
+       * ```#declare ShadowType=1;```
 
-
-※UTF-8で日本語文字を含めて出力します。POVRayエディタはUTF-8に対応していないため、povastahで出力されたファイルを編集する際は、別途、UTF-8を扱えるテキストエディタを推奨します。
+※UTF-8で日本語文字を含めて出力する。POVRayエディタはUTF-8に対応していないため、出力されたPOVRayスクリプトファイルを編集する際は、別途、UTF-8を扱えるテキストエディタを推奨する。
