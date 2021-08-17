@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ライフ
- * created at 2021/08/17
+ * created at 2021/08/18
  * presented by povastah
  **/
 
@@ -32,7 +32,7 @@
     sphere_sweep { linear_spline, 2, <188.540, -147.320, 4.00>, LRd <188.540, -246.654, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { linear_spline, 2, <188.540, -147.320, 4.00>, LRd <188.540, -246.654, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-    torus { LOOPRd, LRd translate<188.54000000000002, -147.3203125, 4.0 - LOOPRd> material { ControlFlowObjectFlowMaterial }  }
+    torus { LOOPRd, LRd translate<188.54000000000002, -147.3203125, 4.0 - LOOPRd> material { ControlFlowObjectFlowMaterial } no_shadow }
   object { Action rotate -x*90 scale 24.0 translate <426.540, -147.320, 0.00> }
     object { Circle_Text( LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <426.540, -147.320, 30.00> }
     union{
@@ -64,15 +64,15 @@
     object { Circle_Text( LabelFont, "終了",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <192.540, -341.333, 30.00> }
   object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628 translate <307.747, -208.469, -4.78>}
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate <340.540, -236.154, 0.00> }
-    text { ttf LabelFont, "物を取り扱う", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <304.000, -290.974, 31.00> }
+    text { ttf LabelFont, "物を取り扱う", 1, 0 scale TextScale texture { LabelTecture } translate <304.000, -290.974, 31.00> }
     union{
     sphere_sweep { cubic_spline, 5, <340.540, -236.154, 4.00>, LRd <340.540, -236.154, 4.00>, LRd <312.000, -326.000, 4.00>, LRd <192.540, -341.333, 4.00>, LRd <192.540, -341.333, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { cubic_spline, 5, <340.540, -236.154, 4.00>, LRd <340.540, -236.154, 4.00>, LRd <312.000, -326.000, 4.00>, LRd/2.0 <192.540, -341.333, 4.00>, 0.0 <192.540, -341.333, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
 }
 object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <280, -400, -300>;
-#declare FOCUS = <280, -250, 0>;
-camera { location EYE direction 1.1*z look_at FOCUS }
+#declare EYE = <261, -446, -379>;
+#declare FOCUS = <261, -206, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}
