@@ -39,8 +39,8 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected Map<IClass, Integer> classHierachyOrder = new HashMap<>();
 
-	public ClassDiagram(IDiagram diagram, OutputStreamWriter writer){
-		super(diagram, writer);
+	public ClassDiagram(IDiagram diagram, OutputStreamWriter scene){
+		super(diagram, scene);
 	}
 
 	/**
@@ -129,14 +129,16 @@ public class ClassDiagram extends Diagram {
 		}
 	}
 	
-	/*
+	/**
+	 * シーン記述のヘッダ部を記述する
 	 * クラス階層順位をコメントする
+	 * @throws IOException
 	 */
 	protected void header() throws IOException {
 		super.header();
 		if(classHierachyOrder.size() > 1) {
-			sceneWriter.write("// hierachy depth: " + classHierachyOrder + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
-			sceneWriter.flush();
+			scene.write("// hierachy depth: " + classHierachyOrder + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
+			scene.flush();
 		}
 	}
 
@@ -205,24 +207,24 @@ public class ClassDiagram extends Diagram {
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
 		if(type.equals("Link")) {
-			drawNoShadow(link, sourcez, targetz);
+			draw(link, center(link.getSource()), center(link.getTarget()), sourcez, targetz, true);
 		}else if(type.equals("Generalization")) {
-			sceneWriter.write(drawGeneralization(link, sourcez, targetz));
+			scene.write(drawGeneralization(link, sourcez, targetz));
 		}else if(type.equals("AssociationClass")){
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
 			String start = coordinate(sourcep, sourcez) + ", LRd ";
 			String end = coordinate(targetp, targetz) + ", LRd ";
 			INodePresentation assocNode = find((IAssociationClass)(link.getModel()));
-			sceneWriter.write("    sphere_sweep { cubic_spline, 5, " + start + start
+			scene.write("    sphere_sweep { cubic_spline, 5, " + start + start
 					+ coordinate(center(assocNode), zposition(assocNode)) + ", LRd "
-					+end + end + material(link) + "no_shadow }" + CR);
+					+end + end + materialClause(link, true) + CR);
 		}else{
 			super.draw(link, sourcez, targetz);
 		}	
 	}
 
-	/*
+	/**
 	 * 継承(Generalization)を描く
 	 * 
 	 * ※Generalizationのlinkは、sourceがサブクラスでtargetがスーパークラスであるが、points[]はtargetからsoruceへの点列となっている。
@@ -230,7 +232,7 @@ public class ClassDiagram extends Diagram {
 	 * @param link
 	 * @param sourcez ソースの高さ
 	 * @param targetz ターゲットの高さ
-	 * @return
+	 * @return 継承リンク記述
 	 */
 	protected String drawGeneralization(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String description = "    sphere_sweep { linear_spline, ";
@@ -244,7 +246,7 @@ public class ClassDiagram extends Diagram {
 				description += coordinate(points[i], sourcez)  + ", LRd ";
 			}
 		}
-		return description + coordinate(targetp, targetz) + ", LRd " + material(link) + "no_shadow }" + CR;
+		return description + coordinate(targetp, targetz) + ", LRd " + materialClause(link, true) + CR;
 	}
 	 
 	/**
@@ -262,11 +264,14 @@ public class ClassDiagram extends Diagram {
 	}
 	
 	/**
-	 * ロバストネス図対応
-	 * 特定のステレオタイプについてはそのステレオタイプに対するPOVRayオブジェクトの型をマッピングする
+	 * 型名を返す
+	 * 原則としてastah*要素型名とPOVRayオブジェクト宣言名は同じである
+	 * 
+	 * [ロバストネス図対応]
+	 * ただし、特定のステレオタイプについてはそのステレオタイプに対するPOVRayオブジェクト型をマッピングする。
 	 * 
 	 * @param presence
-	 * @return
+	 * @return オブジェクト宣言名
 	 */
 	protected String type(IPresentation presence) {
 		IElement model = presence.getModel();

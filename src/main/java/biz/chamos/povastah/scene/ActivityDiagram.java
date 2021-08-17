@@ -23,8 +23,8 @@ import com.change_vision.jude.api.inf.presentation.IPresentation;
  */
 public class ActivityDiagram extends Diagram {
 
-	public ActivityDiagram(IDiagram diagram, OutputStreamWriter sceneWriter){
-		super(diagram, sceneWriter);
+	public ActivityDiagram(IDiagram diagram, OutputStreamWriter scene){
+		super(diagram, scene);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class ActivityDiagram extends Diagram {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, sceneWriter);
+				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, scene);
 				hierarchyDiagram.existsScene();
 				hierarchyDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
@@ -83,11 +83,12 @@ public class ActivityDiagram extends Diagram {
 	}
 	
 	/**
-	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるときサブダイアグラムを配置する
+	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
+	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるとき配置する
 	 * 
 	 * @param hierarchy
 	 * @param node
-	 * @return ダイアグラム階層がある
+	 * @return サブアクティビティがある
 	 * @throws IOException
 	 */
 	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
@@ -99,9 +100,10 @@ public class ActivityDiagram extends Diagram {
 			double scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ));
 			double posz = zposition(node) - deltaZ*scale;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() + (deltaZ/2))*scale);
-			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
-			sceneWriter.write("  object { " + type(node) + OBJECT_UNIT + translate(center(node), zposition(node)) + " }" + CR);
-			textOnStage(node, bound);
+			scene.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
+			scene.write("  object { " + type(node) + OBJECT_UNIT + translate(center(node), zposition(node)) + " }" + CR);
+			
+			textOnStage(node, new Point2D.Double(bound.getMinX() + 28.0, bound.getMaxY() + 32.0), 31.0);
 			return true;
 		}
 		return false;
@@ -118,22 +120,5 @@ public class ActivityDiagram extends Diagram {
 			label = label.replace(" : ", ":"); // "インスタンス名 : クラス名"を空白文字を抜いて"インスタンス名:クラス名"にする
 		}
 		return label;
-	}
-	
-	/**
-	 * サブダイアグラム上にノードのラベルを描く
-	 * @param node
-	 * @param bound
-	 * @throws IOException
-	 */
-	protected void textOnStage(INodePresentation node, Rectangle2D bound) throws IOException {
-		/*
-		 * writeLabel
-		 */
-		String label = label(node);
-		if(!label.isEmpty()) {
-			sceneWriter.write("    text { ttf LabelFont, \"" + label + "\", 1, 0 scale <16, 16, 2> texture { LabelTecture }"
-					+ translate(new Point2D.Double(bound.getMinX() + 28.0, bound.getMaxY() + 32), zposition(node) + 31) + " }" + CR);
-		}
 	}
 }

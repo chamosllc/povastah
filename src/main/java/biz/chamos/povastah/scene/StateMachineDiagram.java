@@ -24,8 +24,8 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  */
 public class StateMachineDiagram extends Diagram {
 
-	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter writer){
-		super(diagram, writer);
+	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter scene){
+		super(diagram, scene);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class StateMachineDiagram extends Diagram {
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, sceneWriter);
+				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, scene);
 				hierarchyDiagram.existsScene();
 				hierarchyDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
 			} catch (Exception e) {}
@@ -84,8 +84,7 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	/**
-	 * 指定ノードのPOVRayオブジェクトを描く
-	 * 内部状態のある状態
+	 * 指定ノードを描く
 	 * 
 	 * @param node
 	 * @param hierarchy
@@ -101,11 +100,12 @@ public class StateMachineDiagram extends Diagram {
 	}
 	
 	/**
-	 * サブマシン状態(SubmachineState)にサブマシンがあるときサブダイアグラムを配置する
+	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
+	 * サブマシン状態(SubmachineState)にサブマシンがあるとき配置する
 	 * 
 	 * @param hierarchy
 	 * @param node
-	 * @return ダイアグラム階層がある
+	 * @return サブマシンがある
 	 * @throws IOException
 	 */
 	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
@@ -119,13 +119,35 @@ public class StateMachineDiagram extends Diagram {
 			double posz = zposition(node) - deltaZ*scale;
 			double shift = 12.0;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() + shift - (subBound.getCenterY() + (deltaZ/2))*scale);
-			sceneWriter.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
-			sceneWriter.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+			scene.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
+			scene.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
 				+ translate(center(node), zposition(node)) + " }" + CR);
-			textOnStage(node, bound, 0.0);
+			textOnStage(node, new Point2D.Double(bound.getMinX() + 10.0, bound.getMinY() + 10.0), 0.0);
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * リンクを円環で描く
+	 * @param link
+	 * @param sourcep
+	 * @param sourcez
+	 * @throws IOException
+	 */
+	protected void drawLoop(ILinkPresentation link, Point2D sourcep, double sourcez) throws IOException {
+		INodePresentation node = link.getSource();
+		boolean isEntity = subDiagram(node) == null;
+		if(isEntity && node.getModel() instanceof IState){
+			IState state = (IState)node.getModel();
+			isEntity = state.getRegionSize() == 0;
+		}
+		if(isEntity){
+			super.drawLoop(link, sourcep, sourcez);
+		}else {
+			Rectangle2D bound = node.getRectangle();
+			scene.write("    torus { LOOPRd, LRd translate<" + bound.getMaxX() + " - LOOPRd, -" + bound.getMinY() + " - 4.0, " + sourcez + " - LOOPRd> " + materialClause(link, true) + CR);
+		}
 	}
 	
 	/**
@@ -144,17 +166,17 @@ public class StateMachineDiagram extends Diagram {
 				String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
 					+ translate(point, zposition(node) + 12.0) + " }";
 				// vertexをstageの凹にする
-				sceneWriter.write("  difference {" + stage + CR);
+				scene.write("  difference {" + stage + CR);
 				for(int i=0; i < vertex.length; i++) {
 					try {
-						bound = state.getRegionRectangle(i);
-						point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-						sceneWriter.write("    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth()*0.95, bound.getHeight()*0.95, 12.0)
+						Rectangle2D area = state.getRegionRectangle(i);
+						point = new Point2D.Double(area.getCenterX(), area.getCenterY());
+						scene.write("    object { StateInternal scale" + String.format(COORDINATE, area.getWidth()*0.95, area.getHeight()*0.95, 12.0)
 							+ translate(point, zposition(node)) + " }" + CR);						
 					} catch (InvalidUsingException e) {}
 				}
-				sceneWriter.write("  }" + CR);
-				textOnStage(node, node.getRectangle(), TEXT_OFFSET_Z);
+				scene.write("  }" + CR);
+				textOnStage(node, new Point2D.Double(bound.getMinX() + 10.0, bound.getMinY() + 10.0), TEXT_OFFSET_Z);
 				return true;
 			}
 		}
@@ -162,7 +184,7 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	/**
-	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * sphere_sweep{ linear_spline | cubic_spline }を記述する
 	 * @param link
 	 * @param lineRadius 
 	 * @param sourcez ソースの高さ
@@ -198,9 +220,9 @@ public class StateMachineDiagram extends Diagram {
 			
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
-			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "}" + CR
+			scene.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link, true) + " }" + CR
 					+ difference + " no_shadow }" + CR);
-			sceneWriter.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + shadowMaterial(link) + "}" + CR
+			scene.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + material(link, false) + " }" + CR
 					+ difference + " no_image }" + CR);		
 		}
 	}

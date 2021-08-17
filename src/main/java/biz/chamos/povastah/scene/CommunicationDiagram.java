@@ -15,15 +15,21 @@ import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
+/**
+ * CommunicationDiagram Object in POVRay Scene
+ * 
+ * @author mashiro@chamos.biz
+ * @since 2021/08/07
+ *
+ */
 public class CommunicationDiagram extends ClassDiagram {
 
-	public CommunicationDiagram(IDiagram diagram, OutputStreamWriter writer) {
-		super(diagram, writer);
+	public CommunicationDiagram(IDiagram diagram, OutputStreamWriter scene) {
+		super(diagram, scene);
 	}
 
 	/**
-	 * 指定ノードのPOVRayオブジェクトを描く
-	 * 内部状態のある状態
+	 * 指定ノードを描く
 	 * 
 	 * @param node
 	 * @param hierarchy
@@ -37,12 +43,12 @@ public class CommunicationDiagram extends ClassDiagram {
 				if((link.getSource().getModel() == message.getSource()) && link.getTarget().getModel() == message.getTarget()){
 					Point2D sourcep = center(link.getSource());
 					Point2D targetp = center(link.getTarget());
-					sceneWriter.write(draw(link, sourcep, targetp, OFFSET_Z, OFFSET_Z, false) + shadowMaterial(link) + "no_image }" + CR);
+					scene.write(draw(link, sourcep, targetp, OFFSET_Z, OFFSET_Z, false) + materialClause(link, false) + CR);
 					break;
 				}else if((link.getSource().getModel() == message.getTarget()) && link.getTarget().getModel() == message.getSource()) {					
 					Point2D targetp = center(link.getSource());
 					Point2D sourcep = center(link.getTarget());
-					sceneWriter.write(drawReverse(link, sourcep, targetp, OFFSET_Z, OFFSET_Z) + shadowMaterial(link) + "no_image }" + CR);
+					scene.write(drawReverse(link, sourcep, targetp, OFFSET_Z, OFFSET_Z) + materialClause(link, false) + CR);
 					break;
 				}
 			}
@@ -53,9 +59,10 @@ public class CommunicationDiagram extends ClassDiagram {
 	}
 
 	/**
-	 * ノードのラベルのテクスチャを返す
+	 * ラベルのテクスチャを返す
+	 * メッセージのラベルのときは"MessageLabelTecture"を返す。
 	 * @param node
-	 * @return
+	 * @return テクスチャを返す
 	 */
 	protected String labelTexture(INodePresentation node) {
 		if(node.getModel() instanceof IMessage) {
@@ -66,9 +73,9 @@ public class CommunicationDiagram extends ClassDiagram {
 	}
 	
 	/**
-	 * リンクの矢印を描く
+	 * メッセージリンクの接続方向とメッセージが逆向きのときの矢印を記述する
 	 * @param points
-	 * @return
+	 * @return 矢印記述を返す
 	 */
 	protected String drawReverse(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz) {
 		String description;
@@ -138,7 +145,7 @@ public class CommunicationDiagram extends ClassDiagram {
 	}
 	
 	/**
-	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
+	 * sphere_sweep{ linear_spline | cubic_spline }を記述する 
 	 * @param link
 	 * @param lineRadius 
 	 * @param sourcez ソースの高さ
@@ -150,7 +157,7 @@ public class CommunicationDiagram extends ClassDiagram {
 		if(type.equals("LifelineLink")) {
 			Point2D sourcep = center(link.getSource());
 			Point2D targetp = center(link.getTarget());
-			sceneWriter.write(draw(link, sourcep, targetp, sourcez, targetz, true) + material(link) + "no_shadow }" + CR);
+			scene.write(draw(link, sourcep, targetp, sourcez, targetz, true) + materialClause(link, true) + CR);
 		}else{
 			super.draw(link, sourcez, targetz);
 		}	

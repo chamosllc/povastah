@@ -23,20 +23,17 @@ import biz.chamos.povastah.scene.StateMachineDiagram;
 import biz.chamos.povastah.scene.UseCaseDiagram;
 
 /**
- * POVRay Scene Launguage Script
- *  astahダイアグラムの3DCG表現を出力する(POVRayシーン言語スクリプトファイルを出力する)
+ * astah*ダイアグラムをPOVRayシーンに変換するプラグインツール
  *  
  * @author mashiro@chamos.biz
  * @since 2021/07/01
- *
- * @param <T> ダイアグラムの型
  */
 public class SceneProducer {
+	final static protected String FILE_EXT = ".pov";
 	protected ProjectAccessor accessor;
 	protected File targetDirectory;
 	protected String projectName;
-	final static protected String FILE_EXT = ".pov";
-
+	
 	public SceneProducer(ProjectAccessor accessor, File targetDirectory) throws IOException, ProjectNotFoundException {
 		this.accessor = accessor;
 		this.projectName = accessor.getProject().getName();
@@ -44,55 +41,55 @@ public class SceneProducer {
 	}
 
 	/**
-	 * プロジェクト内のダイアグラムをPOVRayシーン言語スクリプトへ変換する
+	 * ダイアグラムをPOVRayシーンとして描く
 	 * 
 	 * @throws IOException
 	 * @throws ProjectNotFoundException
 	 */
 	public void produceAll() throws ProjectNotFoundException, IOException {
 		/*
-		 * プロジェクト中のすべてのユースケース図を出力する
+		 * すべてのユースケース図を描く
 		 * IUseCaseDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IUseCaseDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram)) {
-				(new UseCaseDiagram((IUseCaseDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter scene = createScene(diagram)) {
+				(new UseCaseDiagram((IUseCaseDiagram)diagram, scene)).produce();
 			}
 		}
-		/**
-		 * プロジェクト中のすべてのクラス図を出力する
+		/*
+		 * すべてのクラス図を描く
 		 * IClassDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IClassDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram)) {
-				(new ClassDiagram((IClassDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter scene = createScene(diagram)) {
+				(new ClassDiagram((IClassDiagram)diagram, scene)).produce();
 			}
 		}
 		/*
-		 * プロジェクト中のすべてのコミュニケーション図を出力する
+		 * すべてのコミュニケーション図を描く
 		 * ICommunicationDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(ICommunicationDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram)) {
-				(new CommunicationDiagram((ICommunicationDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter scene = createScene(diagram)) {
+				(new CommunicationDiagram((ICommunicationDiagram)diagram, scene)).produce();
 			}
 		}
 		/*
-		 * プロジェクト中のすべてのステートマシン図を出力する
+		 * すべてのステートマシン図を描く
 		 * IStateMachineDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IStateMachineDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram)) {
-				(new StateMachineDiagram((IStateMachineDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter scene = createScene(diagram)) {
+				(new StateMachineDiagram((IStateMachineDiagram)diagram, scene)).produce();
 			}
 		}
 		/*
-		 * プロジェクト中のすべてのアクティビティ図を出力する
+		 * すべてのアクティビティ図を描く
 		 * IActivityDiagram
 		 */
 		for(INamedElement diagram: accessor.findElements(IActivityDiagram.class)){
-			try(OutputStreamWriter writer = createWriter(diagram)) {
-				(new ActivityDiagram((IActivityDiagram)diagram, writer)).produce();
+			try(OutputStreamWriter scene = createScene(diagram)) {
+				(new ActivityDiagram((IActivityDiagram)diagram, scene)).produce();
 			}
 		}
 	}
@@ -102,10 +99,8 @@ public class SceneProducer {
 	 * @param diagram
 	 * @param directory
 	 * @return POVRayシーン記述ファイル(.pov)
-	 * @throws IOException
 	 */
-	protected OutputStreamWriter createWriter(INamedElement diagram)
-			throws IOException {
+	protected OutputStreamWriter createScene(INamedElement diagram) throws IOException {
 		String filename = targetDirectory + File.separator + projectName + File.separator + diagram.getFullNamespace(File.separator);
 		Files.createDirectories(Paths.get(filename));
 		filename += File.separator + diagram.getName() + FILE_EXT;

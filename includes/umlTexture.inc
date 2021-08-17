@@ -28,6 +28,9 @@
 // among classes
 #declare AssociationMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Gypsum_06 } }
 
+// among usecases
+#declare UseCaseTexture = texture { T_Wood10 }
+
 // among actions
 #declare ControlFlowObjectFlowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Beerbottle } }
 
