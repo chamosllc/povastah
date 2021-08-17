@@ -428,7 +428,7 @@ abstract public class Diagram {
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		Point2D sourcep = center(link.getSource());
 		Point2D targetp = center(link.getTarget());
-		if(sourcep.equals(targetp)) {
+		if(link.getSource() == link.getTarget()) {
 			drawLoop(link, sourcep, sourcez);
 		}else {
 			scene.write("    union{" + CR);
@@ -497,8 +497,8 @@ abstract public class Diagram {
 	 * @param link
 	 * @return マテリアル記述を返す
 	 */
-	protected String materialClause(ILinkPresentation link, boolean isShape) {
-		return material(link, isShape) + (isShape?"no_shadow":"no_image") + " }";
+	protected String materialClause(IPresentation presence, boolean isShape) {
+		return material(presence, isShape) + (isShape?"no_shadow":"no_image") + " }";
 	}
 
 	/**
@@ -506,8 +506,8 @@ abstract public class Diagram {
 	 * @param link
 	 * @return マテリアル句を返す
 	 */
-	protected String material(ILinkPresentation link, boolean isShape) {
-		return "material { " + (isShape?"":"Shadow") + type(link) + "Material } ";
+	protected String material(IPresentation presence, boolean isShape) {
+		return "material { " + (isShape?"":"Shadow") + type(presence) + "Material } ";
 	}
 	
 	/**

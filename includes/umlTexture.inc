@@ -36,7 +36,12 @@
 
 // among states
 #declare TransitionMaterial = material { texture { pigment { Col_Glass_Green } finish{ F_Glass1 } } interior { ior 1.5 } }
+// stateinternal
+#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Amethyst_04 } }
+//#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Aquamarine_06 } } 
 
+#declare StateMaterial = material { InternalTransitionMaterial } 
+#declare SubmachineStateMaterial = material { texture{ T_Silver_1B } interior{ ior 1.5 }}
 
 // class hierarchies
 #declare GeneralizationMaterial  = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Ruby } }
@@ -69,6 +74,8 @@
     #declare ShadowDependencyMaterial = material { DependencyMaterial }
     #declare ShadowIncludeMaterial = material { IncludeMaterial }
     #declare ShadowTemplateBindingMaterial = material { TemplateBindingMaterial }
+    #declare ShadowStateMaterial = material { StateInternalMateria } 
+    #declare ShadowSubmachineStateMaterial = material { SubmachineStateMaterial }
 #else
     #declare ShadowLinkMaterial = material { ShadowMaterial }
     #declare ShadowLifelineLinkMaterial = material { ShadowMaterial } 
@@ -79,6 +86,8 @@
     #declare ShadowDependencyMaterial = material { ShadowMaterial }
     #declare ShadowIncludeMaterial = material { ShadowMaterial }
     #declare ShadowTemplateBindingMaterial = material { ShadowMaterial }
+    #declare ShadowStateMaterial = material { ShadowMaterial } 
+    #declare ShadowSubmachineStateMaterial = material { ShadowMaterial }
 #end
 
 /** Stage Texture for Diagram **/
@@ -88,7 +97,5 @@
 #declare ActivityDiagramTexture = texture { ActivityTexture rotate -x*90 scale 96 }
 #declare UseCaseDiagramTexture = texture { pigment{ crackle form <-0.8,0.8,0>*3 scale 3 color_map{[0.0 color rgb<1.0,0.7,0.5>][0.5 White] }} finish { phong 0.2 } rotate -x*90 rotate z*45 scale 96 }
 #declare StateMachineDiagramTexture = texture { pigment { brick White Flesh} finish { phong 0.2 } rotate -y*90 scale 16 }
-// stateinternal
-#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Amethyst_04 } }
-//#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Aquamarine_06 } } 
+
 
