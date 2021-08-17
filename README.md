@@ -10,16 +10,20 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 ## Demo
 
-<details>
-<summary>astah*プロジェクト demo</summary> 
+簡易例題 astah*プロジェクト([examples/povastah.asta](https://github.com/chamosllc/povastah/tree/master/examples/povastah.asta))
 
-##### クラス図
+※[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
+
+<details>
+<summary>クラス図</summary> 
+
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
 <tbody>
 <tr><td>クラスとインタフェース</td>
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9.jpg" width="96"></td>
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9.png" width="240"></td></tr>
+</details>
 
 <tr><td>関連クラス</td>
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E9%96%A2%E9%80%A3%E3%82%AF%E3%83%A9%E3%82%B9.jpg" width="240"></td>
@@ -39,7 +43,9 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 </tbody>
 </table>
 
-##### コミュニケーション図
+<details>
+<summary>コミュニケーション図</summary> 
+
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
 <tbody>
@@ -48,8 +54,10 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E5%9B%B3/MVC%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3.png" width="320"></td></tr>
 </tbody>
 </table>
+</details>
 
-##### ユースケース図
+<details>
+<summary>ユースケース図</summary> 
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
 <tbody>
@@ -58,8 +66,11 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9%E5%9B%B3/%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9.png" width="320"></td></tr>
 </tbody>
 </table>
+</details>
 
-##### アクティビティ図
+<details>
+<summary>アクティビティ図</summary> 
+
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
 <tbody>
@@ -74,8 +85,11 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A9%E3%82%A4%E3%83%95.png" width="320"></td></tr>
 </tbody>
 </table>
+</details>
 
-##### ステートマシン図
+<details>
+<summary>ステートマシン図</summary> 
+
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
 <tbody>
@@ -91,10 +105,6 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 </tbody>
 </table>
 </details>
-
-デモ用[examples/povastah.asta](https://github.com/chamosllc/povastah/tree/master/examples/povastah.asta)
-
-※[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
 
 ## Requirement
 実行環境
