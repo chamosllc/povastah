@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
@@ -32,10 +34,12 @@ import biz.chamos.povastah.scene.UseCaseDiagram;
 public class SceneProducer {
 	protected ProjectAccessor accessor;
 	protected File targetDirectory;
+	protected String projectName;
 	final static protected String FILE_EXT = ".pov";
 
 	public SceneProducer(ProjectAccessor accessor, File targetDirectory) throws IOException, ProjectNotFoundException {
 		this.accessor = accessor;
+		this.projectName = accessor.getProject().getName();
 		this.targetDirectory = targetDirectory;
 	}
 
@@ -46,8 +50,6 @@ public class SceneProducer {
 	 * @throws ProjectNotFoundException
 	 */
 	public void produceAll() throws ProjectNotFoundException, IOException {
-		String projectName = accessor.getProject().getName();
-
 		/*
 		 * プロジェクト中のすべてのユースケース図を出力する
 		 * IUseCaseDiagram
@@ -104,6 +106,9 @@ public class SceneProducer {
 	 */
 	protected OutputStreamWriter createWriter(INamedElement diagram)
 			throws IOException {
-		return new OutputStreamWriter(new FileOutputStream(targetDirectory + File.separator + diagram.getName() + FILE_EXT), "UTF-8");
+		String filename = targetDirectory + File.separator + projectName + File.separator + diagram.getFullNamespace(File.separator);
+		Files.createDirectories(Paths.get(filename));
+		filename += File.separator + diagram.getName() + FILE_EXT;
+		return new OutputStreamWriter(new FileOutputStream(filename), "UTF-8");
 	}
 }

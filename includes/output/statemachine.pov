@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
- * povastah-Lineup ステートマシン図
- * created at 2021/08/05
+ * ステートマシン図
+ * created at 2021/08/17
  * presented by povastah
  **/
 

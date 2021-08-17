@@ -12,6 +12,7 @@ import java.util.List;
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
 import com.change_vision.jude.api.inf.model.IDiagram;
+import com.change_vision.jude.api.inf.model.INamedElement;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
@@ -91,6 +92,7 @@ public abstract class Diagram {
 	public Diagram(IDiagram diagram, OutputStreamWriter sceneWriter){
 		this.sceneWriter = sceneWriter;
 		this.diagram = diagram;
+		
 	}
 
 	/**
@@ -155,7 +157,8 @@ public abstract class Diagram {
 	protected void header() throws IOException {
 		Calendar cl = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		sceneWriter.write(String.format(HEADER_COMMENT, diagram.getName(), sdf.format(cl.getTime())));
+		INamedElement parent = (INamedElement)diagram.getOwner();
+		sceneWriter.write(String.format(HEADER_COMMENT, diagram.getFullName("/"), sdf.format(cl.getTime())));
 		sceneWriter.write(GLOBAL_SETTINGS);
 		sceneWriter.flush();
 	}
