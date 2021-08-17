@@ -11,7 +11,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 ## Demo
 
 <details>
-<summary>デモ用astahプロジェクト</summary> 
+<summary>astah*プロジェクト demo</summary> 
 
 ##### クラス図
 <table>
@@ -92,7 +92,8 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 </table>
 </details>
 
-[examples/povastah.asta](https://github.com/chamosllc/povastah/tree/master/examples/povastah.asta)</summary>
+デモ用[examples/povastah.asta](https://github.com/chamosllc/povastah/tree/master/examples/povastah.asta)
+
 ※[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
 
 ## Requirement
