@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図
- * created at 2021/08/17
+ * created at 2021/08/18
  * presented by povastah
  **/
 
@@ -36,11 +36,12 @@
   object { State rotate -x*90 scale 24.0 translate <180.833, -105.380, 0.00> }
     object { Circle_Text( LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <180.833, -105.380, 30.00> }
   object { StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f scale 0.5691105769230769 translate <538.551, -191.976, -27.32> }
-  object { SubmachineState scale <167.000, 59.188, 16.00> translate <655.124, -232.714, 0.00> }
+  object { SubmachineState scale <167.000, 59.188, 20.00> translate <655.124, -232.714, 0.00> }
     text { ttf LabelFont, "SubmachineState", 1, 0 scale TextScale texture { LabelTecture } translate <581.624, -213.120, 0.00> }
-  difference {    object { StateInternal scale<413.667, 180.094, 16.00> translate <297.833, -256.620, 12.00> }
-    object { StateInternal scale<217.233, 171.089, 12.00> translate <205.333, -256.620, 0.00> }
-    object { StateInternal scale<175.750, 171.089, 12.00> translate <412.167, -256.620, 0.00> }
+  difference {
+    object { StateInternal scale<413.667, 180.094, 20.00> translate <297.833, -256.620, -4.00> }
+    object { StateInternal scale<224.093, 176.492, 20.00> translate <205.333, -256.620, -4.50> }
+    object { StateInternal scale<181.300, 176.492, 20.00> translate <412.167, -256.620, -4.50> }
   }
     text { ttf LabelFont, "StateInternal", 1, 0 scale TextScale texture { LabelTecture } translate <101.000, -176.573, 30.00> }
   object { State rotate -x*90 scale 24.0 translate <205.500, -224.714, 0.00> }

@@ -10,6 +10,7 @@ import com.change_vision.jude.api.inf.model.IActivity;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IObjectNode;
+import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
@@ -120,5 +121,14 @@ public class ActivityDiagram extends Diagram {
 			label = label.replace(" : ", ":"); // "インスタンス名 : クラス名"を空白文字を抜いて"インスタンス名:クラス名"にする
 		}
 		return label;
+	}
+	
+	/**
+	 * 山なりのリンクである
+	 * @param link
+	 * @return リンク元かForkノード、あるいは、リンク先がJoinノードである
+	 */
+	protected boolean isOverHorizontal(ILinkPresentation link) {
+		return link.getSource().getType().equals("ForkNode") || link.getTarget().getType().equals("JoinNode");
 	}
 }

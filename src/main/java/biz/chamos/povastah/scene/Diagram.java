@@ -462,12 +462,61 @@ abstract public class Diagram {
 	 */
 	protected String draw(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz, boolean isShape) {
 		String description;
+		if(isOverHorizontal(link)) {
+			description = drawOver(link, sourcep, targetp, sourcez, targetz, isShape);
+		}else {
+			Point2D[] points = link.getPoints();
+			String start = coordinate(sourcep, sourcez) + ", LRd ";
+			String end = coordinate(targetp, targetz) + ((isShape)?", LRd ":", 0.0 ");
+			int length = points.length; // 2 or 5以上
+			boolean isCurve = link.getProperty("line.shape").equals("curve");
+			if(!isCurve || length == 2) {
+				description = "    sphere_sweep { linear_spline, " + length + ", ";
+			}else {
+				if(length == 3) { // 1点経由 曲線
+					description = "    sphere_sweep { cubic_spline, 5, " + start;
+				}else{ // 2点以上経由 曲線
+					description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
+				}
+			}
+			description += start; // 始点			
+			if(length > 2) { // 経由点を曲線で結ぶ
+				double deltaz = (targetz - sourcez)/(length - 1);
+				for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
+					description += coordinate(points[i], sourcez+deltaz) + ", LRd"
+							+ ((isShape)?"":("/" + (Math.pow(2.0, (double)i)))) + " "; // 始点→経由点→終点
+					deltaz += deltaz;
+				}
+				if(isCurve) {
+					description += end; // 終点
+				}
+			}
+			description += end; // 終点
+		}
+		return description;
+	}
+
+	/**
+	 * 山なりのリンク(影なし)、あるいは、その矢印(影)の記述を返す
+	 * @param リンク
+	 * @param リンク元ノードの位置
+	 * @param リンク先ノードの位置
+	 * @param リンク元ノードの高さ
+	 * @param リンク先ノードの高さ
+	 * @param リンク記述(true)か矢印記述(false)か
+	 * @return リンク記述あるいは矢印記述
+	 */
+	protected String drawOver(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz, boolean isShape) {
+		String description;
+		double top = 36.0;
 		Point2D[] points = link.getPoints();
 		String start = coordinate(sourcep, sourcez) + ", LRd ";
 		String end = coordinate(targetp, targetz) + ((isShape)?", LRd ":", 0.0 ");
 		int length = points.length; // 2 or 5以上
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
-		if(!isCurve || length == 2) {
+		if(length == 2) {// 直線の場合、山なりの頂点の中間点を通るcubic_splineを描く
+			description = "    sphere_sweep { cubic_spline, 5, " + start;
+		}else if(!isCurve) {
 			description = "    sphere_sweep { linear_spline, " + length + ", ";
 		}else {
 			if(length == 3) { // 1点経由 曲線
@@ -476,20 +525,32 @@ abstract public class Diagram {
 				description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
 			}
 		}
-		description += start; // 始点			
-		if(length > 2) { // 経由点を曲線で結ぶ
+		description += start; // 始点
+		if(length == 2) {
+			description += coordinate(new Point2D.Double((sourcep.getX() + targetp.getX())/2, (sourcep.getY() + targetp.getY())/2), sourcez - top) + ", LRd"
+					+ ((isShape)?"":("/" + (Math.pow(2.0, 1)))) + " ";
+		}else {
 			double deltaz = (targetz - sourcez)/(length - 1);
 			for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-				description += coordinate(points[i], sourcez+deltaz) + ", LRd"
+				description += coordinate(points[i], sourcez+deltaz-top) + ", LRd"
 						+ ((isShape)?"":("/" + (Math.pow(2.0, (double)i)))) + " "; // 始点→経由点→終点
 				deltaz += deltaz;
 			}
-			if(isCurve) {
-				description += end; // 終点
-			}
+		}
+		if(length == 2 || isCurve) {
+			description += end; // 終点
 		}
 		description += end; // 終点
 		return description;
+	}
+	
+	/**
+	 * 山なりのリンクである
+	 * @param link
+	 * @return 山なりである
+	 */
+	protected boolean isOverHorizontal(ILinkPresentation link) {
+		return false; 
 	}
 	
 	/**

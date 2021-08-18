@@ -42,15 +42,26 @@
 
 #declare Action = object { Round_Cylinder(<0, -0.6, 0>, <0, 0.8, 0>, 1.0, 0.15, 0) texture{ ActivityTexture scale 1/2 }}
 
+/*
 #declare ForkNode = union {
     cylinder {<0, 0, -0.3>, <0, 0, 0.2>, 1 material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
     cylinder {<0, 0,  0.2>, <0, 0, 0.3>, 1 texture {T_Copper_4A}}
 }
 
+
 #declare JoinNode = union {
     cylinder {<0, 0, -0.3>, <0, 0, -0.2>, 1 texture {T_Copper_4A}}
     cylinder {<0, 0, -0.2>, <0, 0,  0.3>, 1 material { texture { pigment { color rgbf<1, 1, 1, 0.8> } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_05 } }} 
 }
+
+#declare ForkNode = object{ Round_Cylinder_Tube( <0, -1, 0>, <0, 1, 0>, 1, 0.2, 0, 1)
+    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
+*/
+#declare ForkNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1) rotate x*180
+    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_07 } }}
+                              
+#declare JoinNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1)
+    material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
 
 #declare Activity=union{
   object{ Fence }

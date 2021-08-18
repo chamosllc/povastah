@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.model.IDiagram;
+import com.change_vision.jude.api.inf.model.IEntity;
 import com.change_vision.jude.api.inf.model.IState;
 import com.change_vision.jude.api.inf.model.IStateMachine;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
@@ -23,6 +24,9 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  *
  */
 public class StateMachineDiagram extends Diagram {
+	static final double VERTEX_R = 0.98;
+	static final double VERTEX_H = 20.0;
+	static final double VERTEX_D = 4.0;
 
 	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter scene){
 		super(diagram, scene);
@@ -120,7 +124,7 @@ public class StateMachineDiagram extends Diagram {
 			double shift = 12.0;
 			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() + shift - (subBound.getCenterY() + (deltaZ/2))*scale);
 			scene.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + " }" + CR);
-			scene.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 16.0)
+			scene.write("  object { " + type(node) + " scale " + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), VERTEX_H)
 				+ translate(center(node), zposition(node)) + " }" + CR);
 			textOnStage(node, new Point2D.Double(bound.getMinX() + 10.0, bound.getMinY() + 10.0), 0.0);
 			return true;
@@ -141,16 +145,16 @@ public class StateMachineDiagram extends Diagram {
 				IVertex[] vertex = state.getSubvertexes();
 				Rectangle2D bound = node.getRectangle();
 				Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-				String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), 18.0)
-					+ translate(point, zposition(node) - 4.0) + " }";
+				String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), VERTEX_H)
+					+ translate(point, zposition(node) - VERTEX_D) + " }";
 				// vertexをstageの凹にする
-				scene.write("  difference {" + stage + CR);
+				scene.write("  difference {" + CR + stage + CR);
 				for(int i=0; i < vertex.length; i++) {
 					try {
 						Rectangle2D area = state.getRegionRectangle(i);
 						point = new Point2D.Double(area.getCenterX(), area.getCenterY());
-						scene.write("    object { StateInternal scale" + String.format(COORDINATE, area.getWidth()*0.95, area.getHeight()*0.95, 20.0)
-							+ translate(point, zposition(node) -6.0) + " }" + CR);						
+						scene.write("    object { StateInternal scale" + String.format(COORDINATE, area.getWidth()*VERTEX_R, area.getHeight()*VERTEX_R, VERTEX_H)
+							+ translate(point, zposition(node) - VERTEX_D - 0.5) + " }" + CR);						
 					} catch (InvalidUsingException e) {}
 				}
 				scene.write("  }" + CR);
@@ -183,41 +187,67 @@ public class StateMachineDiagram extends Diagram {
 		if(link.getSource() == link.getTarget()) {
 			drawLoop(link, sourcep, sourcez);
 		}else {
-			INodePresentation region[] = new INodePresentation[2];
-			if(link.getSource().getModel() instanceof IState) {
-				IState state = (IState)link.getSource().getModel();
-				if(state.getRegionSize() > 0){ // ソースがStateInternalならソースをregion[0]に代入する
-					region[0] = link.getSource();
-				}
-			}
-			if(link.getTarget().getModel() instanceof IState) {
-				IState state = (IState)link.getTarget().getModel();
-				if(state.getRegionSize() > 0) { // ターゲットがStateInternalならターゲットをregion[1]に代入する
-					region[1] = link.getTarget();
-				}
-			}
+			INodePresentation[] region = getInternalRegion(link);
 			if(region[0] != null || region[1] != null) {
 				String difference = ""; // difference StateInternals
 				for(int i=0; i < region.length; i++) {
 					if(region[i] != null) {
 						Rectangle2D bound = (i==0)?region[i].getRectangle():region[i].getRectangle();
 						Point2D point = new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-						difference += "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth()*0.95, bound.getHeight()*0.95, 20.0)
+						difference += "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth()*VERTEX_R, bound.getHeight()*VERTEX_R, VERTEX_H)
 							+ translate(point, zposition(region[i])) + " }" + CR;
 					}
 				}
 				sourcep = center(link.getSource());
 				Point2D targetp = center(link.getTarget());
-				scene.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link, true) + " }" + CR
-						+ difference + " no_shadow }" + CR);
+				scene.write("  difference {" + CR + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link, true) + " }" + CR
+						+ difference + "    no_shadow }" + CR);
 				scene.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + material(link, false) + " }" + CR
-						+ difference + " no_image }" + CR);		
-			}else{
+						+ difference + "    no_image }" + CR);		
+			} else {
 				super.draw(link, sourcez, targetz);
 			}
 		}
 	}
 
+	/**
+	 * リンク元、リンク先の内部状態領域を取得する
+	 * @param link
+	 * @return region[0]=リンク元領域, region[1]=リンク先領域
+	 */
+	protected INodePresentation[] getInternalRegion(ILinkPresentation link) {
+		INodePresentation region[] = new INodePresentation[2];
+		if(link.getSource().getModel() instanceof IState) {
+			IState state = (IState)link.getSource().getModel();
+			if(state.getRegionSize() > 0){ // ソースがStateInternalならソースをregion[0]に代入する
+				region[0] = link.getSource();
+			}
+		}
+		if(link.getTarget().getModel() instanceof IState) {
+			IState state = (IState)link.getTarget().getModel();
+			if(state.getRegionSize() > 0) { // ターゲットがStateInternalならターゲットをregion[1]に代入する
+				region[1] = link.getTarget();
+			}
+		}
+		return region;
+	}
+
+	/**
+	 * 山なりのリンクである
+	 * @param link
+	 * @return リンク元か先が内部状態内の状態である
+	 */
+	protected boolean isOverHorizontal(ILinkPresentation link) {
+		if(link.getSource().getType().equals("ForkPseudostate") || link.getTarget().getType().equals("JoinPseudostate")) {
+			return true;
+		};
+		IEntity parent = link.getSource().getModel().getContainer();
+		if(parent instanceof IState) {
+			return parent != link.getTarget().getModel().getContainer();
+		}
+		return link.getTarget().getModel().getContainer() instanceof IState; 
+	}
+	
 	/**
 	 * リンクを円環で描く
 	 * @param link

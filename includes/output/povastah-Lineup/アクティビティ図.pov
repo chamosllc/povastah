@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図
- * created at 2021/08/17
+ * created at 2021/08/18
  * presented by povastah
  **/
 
@@ -37,7 +37,7 @@
     object { Circle_Text( LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <233.004, -87.448, 30.00> }
   object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale 0.1517679282868526 translate <171.540, -280.465, -5.46>}
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate <187.500, -303.255, 0.00> }
-    text { ttf LabelFont, "CallBehaviorAction", 1, 0 scale <16, 16, 2> texture { LabelTecture } translate <154.000, -354.302, 31.00> }
+    text { ttf LabelFont, "CallBehaviorAction", 1, 0 scale TextScale texture { LabelTecture } translate <154.000, -354.302, 31.00> }
   object { ActivityFinal rotate -x*90 scale 24.0 translate <659.350, -303.255, 0.00> }
     object { Circle_Text( LabelFont, "ActivityFinal",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <659.350, -303.255, 30.00> }
   object { SendSignalAction rotate -x*90 scale 24.0 translate <345.000, -183.760, 0.00> }

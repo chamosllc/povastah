@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * サブステートマシン図
- * created at 2021/08/17
+ * created at 2021/08/18
  * presented by povastah
  **/
 
