@@ -426,16 +426,60 @@ abstract public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		Point2D sourcep = center(link.getSource());
-		Point2D targetp = center(link.getTarget());
-		if(link.getSource() == link.getTarget()) {
-			drawLoop(link, sourcep, sourcez);
-		}else {
-			scene.write("    union{" + CR);
-			scene.write(draw(link, sourcep, targetp, sourcez, targetz, true) + materialClause(link, true) + CR);
-			scene.write(draw(link, sourcep, targetp, sourcez, targetz, false) + materialClause(link, false) + CR);
-			scene.write("    }" + CR);
+		String description = "";
+		LineSort sort = lineSort(link);
+		if(sort.equals(LineSort.Loop)) {
+			description = drawLoop(link, center(link.getSource()), sourcez);
+		}else{
+			List<Point3D> linePoints = sort.vertexes(link, sourcez, targetz);
+			description = "    union{" + CR;
+			description += draw(link, linePoints, true) + materialClause(link, true) + CR;
+			description += draw(link, linePoints, false) + materialClause(link, false) + CR;
+			description += "    }" + CR;
 		}
+		scene.write(description);
+	}
+
+	/**
+	 * リンク種別を返す
+	 * 
+	 * @param link
+	 * @return リンク種別
+	 */
+	protected LineSort lineSort(ILinkPresentation link) {
+		INodePresentation source = link.getSource();
+		INodePresentation target = link.getTarget();
+		if(source == target) {
+			return LineSort.Loop;
+		}
+		if(isSourceUp(source)) {
+			if(isTargetUp(target)) {
+				return LineSort.Both;
+			}else {
+				return LineSort.Source;
+			}
+		}else if(isTargetUp(target)) {
+				return LineSort.Target;
+		}
+		return LineSort.Origin;
+	}
+
+	/**
+	 * ノードがリンク元のとき山なりのリンクである
+	 * @param node
+	 * @return 山なり
+	 */
+	protected boolean isSourceUp(INodePresentation node) {
+		return false; 
+	}
+
+	/**
+	 * ノードがリンク先のとき山なりのリンクである
+	 * @param node
+	 * @return 山なり
+	 */
+	protected boolean isTargetUp(INodePresentation node) {
+		return false; 
 	}
 
 	/**
@@ -443,11 +487,10 @@ abstract public class Diagram {
 	 * @param link
 	 * @param sourcep
 	 * @param sourcez
-	 * @throws IOException
 	 */
-	protected void drawLoop(ILinkPresentation link, Point2D sourcep, double sourcez) throws IOException {
+	protected String drawLoop(ILinkPresentation link, Point2D sourcep, double sourcez) {
 		sourcep.setLocation(sourcep.getX(), sourcep.getY());
-		scene.write("    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + materialClause(link, true) + CR);
+		return "    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + materialClause(link, true) + CR;
 	}
 
 	/**
@@ -460,97 +503,39 @@ abstract public class Diagram {
 	 * @param リンク記述(true)か矢印記述(false)か
 	 * @return リンク記述あるいは矢印記述
 	 */
-	protected String draw(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz, boolean isShape) {
-		String description;
-		if(isOverHorizontal(link)) {
-			description = drawOver(link, sourcep, targetp, sourcez, targetz, isShape);
-		}else {
-			Point2D[] points = link.getPoints();
-			String start = coordinate(sourcep, sourcez) + ", LRd ";
-			String end = coordinate(targetp, targetz) + ((isShape)?", LRd ":", 0.0 ");
-			int length = points.length; // 2 or 5以上
-			boolean isCurve = link.getProperty("line.shape").equals("curve");
-			if(!isCurve || length == 2) {
-				description = "    sphere_sweep { linear_spline, " + length + ", ";
-			}else {
-				if(length == 3) { // 1点経由 曲線
-					description = "    sphere_sweep { cubic_spline, 5, " + start;
-				}else{ // 2点以上経由 曲線
-					description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
-				}
-			}
-			description += start; // 始点			
-			if(length > 2) { // 経由点を曲線で結ぶ
-				double deltaz = (targetz - sourcez)/(length - 1);
-				for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-					description += coordinate(points[i], sourcez+deltaz) + ", LRd"
-							+ ((isShape)?"":("/" + (Math.pow(2.0, (double)i)))) + " "; // 始点→経由点→終点
-					deltaz += deltaz;
-				}
-				if(isCurve) {
-					description += end; // 終点
-				}
-			}
-			description += end; // 終点
-		}
-		return description;
-	}
-
-	/**
-	 * 山なりのリンク(影なし)、あるいは、その矢印(影)の記述を返す
-	 * @param リンク
-	 * @param リンク元ノードの位置
-	 * @param リンク先ノードの位置
-	 * @param リンク元ノードの高さ
-	 * @param リンク先ノードの高さ
-	 * @param リンク記述(true)か矢印記述(false)か
-	 * @return リンク記述あるいは矢印記述
-	 */
-	protected String drawOver(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz, boolean isShape) {
-		String description;
-		double top = 36.0;
-		Point2D[] points = link.getPoints();
-		String start = coordinate(sourcep, sourcez) + ", LRd ";
-		String end = coordinate(targetp, targetz) + ((isShape)?", LRd ":", 0.0 ");
-		int length = points.length; // 2 or 5以上
+	protected String draw(ILinkPresentation link, List<Point3D> linePoints, boolean isShape) {
+		int length = linePoints.size();
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
-		if(length == 2) {// 直線の場合、山なりの頂点の中間点を通るcubic_splineを描く
-			description = "    sphere_sweep { cubic_spline, 5, " + start;
-		}else if(!isCurve) {
-			description = "    sphere_sweep { linear_spline, " + length + ", ";
+		String description = "    sphere_sweep { ";
+		if(length == 2 || (!isCurve && link.getAllPoints().length == length)) {
+			description += "linear_spline, ";
 		}else {
-			if(length == 3) { // 1点経由 曲線
-				description = "    sphere_sweep { cubic_spline, 5, " + start;
-			}else{ // 2点以上経由 曲線
-				description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
+			if(length > 6){
+				description += "b_spline, ";
+			}else {
+				description += "cubic_spline, ";
 			}
 		}
-		description += start; // 始点
-		if(length == 2) {
-			description += coordinate(new Point2D.Double((sourcep.getX() + targetp.getX())/2, (sourcep.getY() + targetp.getY())/2), sourcez - top) + ", LRd"
-					+ ((isShape)?"":("/" + (Math.pow(2.0, 1)))) + " ";
+		description +=  length + ", ";
+		if(isShape) {
+			for(Point3D point: linePoints) {
+				description += coordinate(point) + ", LRd ";
+			}
 		}else {
-			double deltaz = (targetz - sourcez)/(length - 1);
-			for(int i=1; i < length - 1; i++) { // pointsの最初と最後の値を使わない(ノードの端点)
-				description += coordinate(points[i], sourcez+deltaz-top) + ", LRd"
-						+ ((isShape)?"":("/" + (Math.pow(2.0, (double)i)))) + " "; // 始点→経由点→終点
-				deltaz += deltaz;
+			int count = 0;
+			for(Point3D point: linePoints) {
+				description += coordinate(point);
+				if(count == 0) {
+					description += ", LRd ";
+				}else if(count < length - 1) {
+					description += ", LRd/" + (Math.pow(2.0, (double)(count-1))) + " ";
+				}else {
+					description += ", 0.0 ";
+				}
+				count++;
 			}
 		}
-		if(length == 2 || isCurve) {
-			description += end; // 終点
-		}
-		description += end; // 終点
 		return description;
-	}
-	
-	/**
-	 * 山なりのリンクである
-	 * @param link
-	 * @return 山なりである
-	 */
-	protected boolean isOverHorizontal(ILinkPresentation link) {
-		return false; 
 	}
 	
 	/**
@@ -598,7 +583,11 @@ abstract public class Diagram {
 	protected String coordinate(Point2D point) {
 		return coordinate(point, 0.0);
 	}
+
 	
+	protected String coordinate(Point3D point) {
+		return String.format(COORDINATE, point.getX(), -point.getY(), point.getZ());
+	}
 	/**
 	 * ベクトル表記を返す
 	 * @param point

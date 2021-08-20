@@ -10,7 +10,6 @@ import com.change_vision.jude.api.inf.model.IActivity;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IObjectNode;
-import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
@@ -124,11 +123,20 @@ public class ActivityDiagram extends Diagram {
 	}
 	
 	/**
-	 * 山なりのリンクである
-	 * @param link
-	 * @return リンク元かForkノード、あるいは、リンク先がJoinノードである
+	 * ForkNodeがリンク元のとき山なりのリンクである
+	 * @param node
+	 * @return 山なり
 	 */
-	protected boolean isOverHorizontal(ILinkPresentation link) {
-		return link.getSource().getType().equals("ForkNode") || link.getTarget().getType().equals("JoinNode");
+	protected boolean isSourceUp(INodePresentation node) {
+		return node.getType().equals("ForkNode");
+	}
+	
+	/**
+	 * JoinNodeがリンク先のとき山なりのリンクである
+	 * @param node
+	 * @return 山なり
+	 */
+	protected boolean isTargetUp(INodePresentation node) {
+		return node.getType().equals("JoinNode");
 	}
 }

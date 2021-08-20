@@ -4,10 +4,10 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.model.IDiagram;
-import com.change_vision.jude.api.inf.model.IEntity;
 import com.change_vision.jude.api.inf.model.IState;
 import com.change_vision.jude.api.inf.model.IStateMachine;
 import com.change_vision.jude.api.inf.model.IStateMachineDiagram;
@@ -183,9 +183,10 @@ public class StateMachineDiagram extends Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		Point2D sourcep = center(link.getSource());
+		LineSort sort = lineSort(link);
+		scene.write("// " + sort.toString() + CR);;
 		if(link.getSource() == link.getTarget()) {
-			drawLoop(link, sourcep, sourcez);
+			scene.write(drawLoop(link, center(link.getSource()), sourcez));
 		}else {
 			INodePresentation[] region = getInternalRegion(link);
 			if(region[0] != null || region[1] != null) {
@@ -198,11 +199,10 @@ public class StateMachineDiagram extends Diagram {
 							+ translate(point, zposition(region[i])) + " }" + CR;
 					}
 				}
-				sourcep = center(link.getSource());
-				Point2D targetp = center(link.getTarget());
-				scene.write("  difference {" + CR + draw(link, sourcep, targetp, sourcez, targetz, true) + material(link, true) + " }" + CR
+				List<Point3D> linePoints = sort.vertexes(link, sourcez, targetz);
+				scene.write("  difference {" + CR + draw(link, linePoints, true) + material(link, true) + " }" + CR
 						+ difference + "    no_shadow }" + CR);
-				scene.write("  difference {" + draw(link, sourcep, targetp, sourcez, targetz, false) + material(link, false) + " }" + CR
+				scene.write("  difference {" + draw(link, linePoints, false) + material(link, false) + " }" + CR
 						+ difference + "    no_image }" + CR);		
 			} else {
 				super.draw(link, sourcez, targetz);
@@ -233,21 +233,65 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	/**
-	 * 山なりのリンクである
+	 * リンク種別を返す
+	 * 
 	 * @param link
-	 * @return リンク元か先が内部状態内の状態である
+	 * @return リンク種別
 	 */
-	protected boolean isOverHorizontal(ILinkPresentation link) {
-		if(link.getSource().getType().equals("ForkPseudostate") || link.getTarget().getType().equals("JoinPseudostate")) {
-			return true;
-		};
-		IEntity parent = link.getSource().getModel().getContainer();
-		if(parent instanceof IState) {
-			return parent != link.getTarget().getModel().getContainer();
+	protected LineSort lineSort(ILinkPresentation link) {
+		INodePresentation source = link.getSource();
+		INodePresentation target = link.getTarget();
+		if(isOtherParent(source, target)) {
+			if(isInternal(source) || isSourceUp(source)) {
+				if(isInternal(target) || isTargetUp(target)) {
+					return LineSort.Both;
+				}else {
+					return LineSort.Source;
+				}
+			}else if(isInternal(target) || isTargetUp(target)) {
+				return LineSort.Target;
+			}
 		}
-		return link.getTarget().getModel().getContainer() instanceof IState; 
+		return super.lineSort(link);
+	}
+
+	/**
+	 * ForkPseudostateがリンク元のとき山なりのリンクである
+	 * @param node
+	 * @return 山なり
+	 */
+	protected boolean isSourceUp(INodePresentation node) {
+		return node.getType().equals("ForkPseudostate");
 	}
 	
+	/**
+	 * JoinPseudostateがリンク先のとき山なりのリンクである
+	 * @param node
+	 * @return 山なり
+	 */
+	protected boolean isTargetUp(INodePresentation node) {
+		return node.getType().equals("JoinPseudostate");
+	}
+	
+	/**
+	 * 2つの異なる状態が同一内部状態内にない
+	 * @param source
+	 * @param target
+	 * @return 山なり
+	 */
+	public boolean isOtherParent(INodePresentation source, INodePresentation target) {
+		return source != target // 念押し
+				&& source.getModel().getContainer() != target.getModel().getContainer();
+	}
+
+	/**
+	 * ノードが内部状態内にある
+	 * @param node
+	 * @return 内部状態内にある
+	 */
+	protected boolean isInternal(INodePresentation node) {
+		return node.getModel().getContainer() instanceof IState;
+	}	
 	/**
 	 * リンクを円環で描く
 	 * @param link
@@ -255,17 +299,17 @@ public class StateMachineDiagram extends Diagram {
 	 * @param sourcez
 	 * @throws IOException
 	 */
-	protected void drawLoop(ILinkPresentation link, Point2D sourcep, double sourcez) throws IOException {
+	protected String drawLoop(ILinkPresentation link, Point2D sourcep, double sourcez) {
 		INodePresentation node = link.getSource();
 		boolean isEntity = subDiagram(node) == null; // サブダイアグラムを持たない
 		if(isEntity && node.getModel() instanceof IState){
 			isEntity = ((IState)node.getModel()).getRegionSize() == 0; // 内部状態領域を持たない
 		}
 		if(isEntity){
-			super.drawLoop(link, sourcep, sourcez);
+			return super.drawLoop(link, sourcep, sourcez);
 		}else {
 			Rectangle2D bound = node.getRectangle();
-			scene.write("    torus { LOOPRd, LRd translate<" + bound.getMaxX() + " - LOOPRd," + (-bound.getMinY()) + ", " + sourcez + "-LOOPRd> " + materialClause(link.getSource(), true) + CR);
+			return "    torus { LOOPRd, LRd translate<" + bound.getMaxX() + " - LOOPRd," + (-bound.getMinY()) + ", " + sourcez + "-LOOPRd> " + materialClause(link.getSource(), true) + CR;
 		}
 	}
 }

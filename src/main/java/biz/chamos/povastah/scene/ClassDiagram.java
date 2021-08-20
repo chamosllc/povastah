@@ -207,7 +207,8 @@ public class ClassDiagram extends Diagram {
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
 		if(type.equals("Link")) {
-			draw(link, center(link.getSource()), center(link.getTarget()), sourcez, targetz, true);
+			LineSort sort = lineSort(link);
+			scene.write(draw(link, sort.vertexes(link, sourcez, targetz), true) + materialClause(link, true) + CR);
 		}else if(type.equals("Generalization")) {
 			scene.write(drawGeneralization(link, sourcez, targetz));
 		}else if(type.equals("AssociationClass")){

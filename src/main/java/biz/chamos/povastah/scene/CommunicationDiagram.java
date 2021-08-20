@@ -1,9 +1,9 @@
 package biz.chamos.povastah.scene;
 
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.change_vision.jude.api.inf.model.IClass;
@@ -40,15 +40,14 @@ public class CommunicationDiagram extends ClassDiagram {
 		if(node.getModel() instanceof IMessage) {
 			IMessage message = (IMessage)(node.getModel());
 			for(ILinkPresentation link: node.getLinks()) {	
+				LineSort sort = lineSort(link);
+				List<Point3D> linePoints = sort.vertexes(link, OFFSET_Z, OFFSET_Z);
 				if((link.getSource().getModel() == message.getSource()) && link.getTarget().getModel() == message.getTarget()){
-					Point2D sourcep = center(link.getSource());
-					Point2D targetp = center(link.getTarget());
-					scene.write(draw(link, sourcep, targetp, OFFSET_Z, OFFSET_Z, false) + materialClause(link, false) + CR);
+					scene.write(draw(link, linePoints, false) + materialClause(link, false) + CR);
 					break;
-				}else if((link.getSource().getModel() == message.getTarget()) && link.getTarget().getModel() == message.getSource()) {					
-					Point2D targetp = center(link.getSource());
-					Point2D sourcep = center(link.getTarget());
-					scene.write(drawReverse(link, sourcep, targetp, OFFSET_Z, OFFSET_Z) + materialClause(link, false) + CR);
+				}else if((link.getSource().getModel() == message.getTarget()) && link.getTarget().getModel() == message.getSource()) {	
+					Collections.reverse(linePoints);
+					scene.write(draw(link, linePoints, false) + materialClause(link, false) + CR);
 					break;
 				}
 			}
@@ -70,43 +69,6 @@ public class CommunicationDiagram extends ClassDiagram {
 		}else {
 			return super.labelTexture(node);
 		}
-	}
-	
-	/**
-	 * メッセージリンクの接続方向とメッセージが逆向きのときの矢印を記述する
-	 * @param points
-	 * @return 矢印記述を返す
-	 */
-	protected String drawReverse(ILinkPresentation link, Point2D sourcep, Point2D targetp, double sourcez, double targetz) {
-		String description;
-		Point2D[] points = link.getPoints();
-		String start = coordinate(sourcep, sourcez) + ", LRd ";
-		String end = coordinate(targetp, targetz) + ", 0.0 ";
-		int length = points.length; // 2 or 5以上
-		boolean isCurve = link.getProperty("line.shape").equals("curve");
-		if(!isCurve || length == 2) {
-			description = "    sphere_sweep { linear_spline, " + length + ", ";
-		}else {
-			if(length == 3) { // 1点経由 曲線
-				description = "    sphere_sweep { cubic_spline, 5, " + start;
-			}else{ // 2点以上経由 曲線
-				description = "    sphere_sweep { b_spline, " + (length + 2) + ", " + start;
-			}
-		}
-		description += start; // 始点			
-		if(length > 2) { // 経由点を曲線で結ぶ
-			double deltaz = (targetz - sourcez)/(length - 1);
-			for(int i=length - 2; i == 0; i--) { // pointsの最初と最後の値を使わない(ノードの端点)
-				description += coordinate(points[i], sourcez+deltaz) + ", LRd"
-						+ ("/" + (Math.pow(2.0, (double)i))) + " "; // 始点→経由点→終点
-				deltaz += deltaz;
-			}
-			if(isCurve) {
-				description += end; // 終点
-			}
-		}
-		description += end; // 終点
-		return description;
 	}
 	
 	/**
@@ -155,9 +117,7 @@ public class CommunicationDiagram extends ClassDiagram {
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String type = link.getType();
 		if(type.equals("LifelineLink")) {
-			Point2D sourcep = center(link.getSource());
-			Point2D targetp = center(link.getTarget());
-			scene.write(draw(link, sourcep, targetp, sourcez, targetz, true) + materialClause(link, true) + CR);
+			scene.write(draw(link, lineSort(link).vertexes(link, sourcez, targetz), true) + materialClause(link, true) + CR);
 		}else{
 			super.draw(link, sourcez, targetz);
 		}	
