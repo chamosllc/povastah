@@ -26,4 +26,12 @@ public class Point3D {
 	public double getZ() {
 		return z;
 	}
+	
+	public Point2D getXY() {
+		return point;
+	}
+	
+	public void setZ(double z) {
+		this.z = z;
+	}
 }

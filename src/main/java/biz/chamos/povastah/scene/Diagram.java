@@ -510,11 +510,7 @@ abstract public class Diagram {
 		if(length == 2 || (!isCurve && link.getAllPoints().length == length)) {
 			description += "linear_spline, ";
 		}else {
-			if(length > 6){
-				description += "b_spline, ";
-			}else {
-				description += "cubic_spline, ";
-			}
+			description += "cubic_spline, ";
 		}
 		description +=  length + ", ";
 		if(isShape) {

@@ -184,7 +184,6 @@ public class StateMachineDiagram extends Diagram {
 	 */
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		LineSort sort = lineSort(link);
-		scene.write("// " + sort.toString() + CR);;
 		if(link.getSource() == link.getTarget()) {
 			scene.write(drawLoop(link, center(link.getSource()), sourcez));
 		}else {
