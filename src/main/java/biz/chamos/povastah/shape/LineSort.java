@@ -1,4 +1,4 @@
-package biz.chamos.povastah.scene;
+package biz.chamos.povastah.shape;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -77,6 +77,28 @@ public enum LineSort {
 	
 	/**
 	 * リンク種別に応じて、リンクの描画軌跡点列を作る
+	 * 
+	 * astah*
+	 * 始点=ソースノードの中心あるいは端点
+	 * 終点=ターゲットノードの中心あるいは端点
+	 * リンク軌跡点列=[始点, …, 終点]
+	 * 
+	 * POVRay
+	 * astah*の端点は中心に置き換える
+	 * 
+	 * 始点'=ソースノードの中心
+	 * 終点'=ターゲットノードの中心
+	 * 描画軌跡点列 直線=[始点', …, 終点'] 曲線=[始点', 始点', …, 終点', 終点']
+	 * 
+	 * リンク軌跡点列=[始点, 終点]の場合
+	 * 	Both:   [始点', 始点', 中間点↑, 終点', 終点']			
+	 *  Source: [始点', 始点', 始点と中間点の中間点↑, 中間点, 終点', 終点']
+	 *  Target: [始点', 始点', 中間点, 始点と中間点の中間点↑, 終点', 終点']
+	 * リンク軌跡点列=[始点, …, 終点]の場合
+	 * 	Both:   [始点', 始点', Pn↑, 終点', 終点']			
+	 *  Source: [始点', 始点', P(n<length/2)↑, P(n>=length/2), 終点', 終点']
+	 *  Target: [始点', 始点', P(n<length/2), P(n>=length/2)↑, 終点', 終点']
+	 *  
 	 * @param link
 	 * @param sourcez
 	 * @param targetz
@@ -107,7 +129,7 @@ public enum LineSort {
 					vertexes.add(end); // 曲線 終点の一つ前の点 終点と同じ点
 				}
 			}
-		}else { // 山なりな曲線にする
+		}else { // 山なりな線にする
 			Point3D center = topVertex(start.getXY(), end.getXY(), sourcez + TOP); // 始点と終点の間に種別の距離率を加味して点を作る
 			vertexes.add(start); // 曲線 2点目 始点と同じ点
 			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 
@@ -121,43 +143,39 @@ public enum LineSort {
 					}				
 					vertexes.add(center);
 					if(this.equals(Target)) {
-						vertexes.add(topVertex(center.getXY(), end.getXY(), sourcez + TOP));			
+						vertexes.add(topVertex(center.getXY(), end.getXY(), targetz + TOP));			
 					}				
 				}
 			}else {
 				double deltaz;
-				if(isCurve) {
-					if(this.equals(Source)) {			
-						vertexes.add(topVertex(start.getXY(), points[2], sourcez + TOP));
-						deltaz = (targetz - TOP)/(length - 2);
-						for(int i=2; i < length - 2; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz + deltaz));
-							deltaz += deltaz;
-						}
-					}else if(this.equals(Target)) {
-						deltaz = (targetz - TOP)/(length - 2);
-						for(int i=2; i < length - 2; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz + deltaz));
-							deltaz += deltaz;
-						}
-						vertexes.add(topVertex(end.getXY(), points[length - 2], targetz + TOP));	
-					}else {
-						for(int i=2; i < length - 2; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz + TOP));
-						}
+				if(this.equals(Both)) {
+					for(int i=2; i < length - 2; i++) {
+						vertexes.add(new Point3D(points[i].getX(), points[i].getY(), sourcez + TOP));
+					}
+				}else if(length == 3) {
+					if(this.equals(Source)) {
+						vertexes.add(topVertex(start.getXY(), points[1], sourcez + TOP));
+						vertexes.add(new Point3D(points[1].getX(), points[1].getY(), targetz));
+					}else if(this.equals(Target)) {						
+						vertexes.add(new Point3D(points[1].getX(), points[1].getY(), sourcez));
+						vertexes.add(topVertex(points[1], end.getXY(), targetz + TOP));
 					}
 				}else {
-					int midIndex = (length-1)/2;
-					deltaz = (targetz -TOP)/midIndex;
-					double ovrerz = targetz + deltaz;
-					for(int i=1; i <= midIndex; i++) {
-						vertexes.add(new Point3D(points[i].getX(), points[i].getY(), ovrerz));
-						ovrerz += deltaz;
-					}
-					ovrerz -= 2.0* deltaz;
-					for(int i=midIndex + 1; i < length - 1; i++) {
-						vertexes.add(new Point3D(points[i].getX(), points[i].getY(), ovrerz));
-						ovrerz -= deltaz;
+					int turn = (int)((length - 2)/2);
+					if(this.equals(Source)) {
+						for(int i=1; i <= turn; i++) {
+							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), sourcez + TOP));
+						}
+						for(int i=turn + 1; i < length - 1; i++) {
+							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz));
+						}
+					}else if(this.equals(Target)) {
+						for(int i=1; i <= turn; i++) {
+							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), sourcez));
+						}
+						for(int i=turn + 1; i < length - 1; i++) {
+							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz + TOP));
+						}
 					}
 				}
 			}

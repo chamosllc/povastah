@@ -57,7 +57,7 @@
 #declare ForkNode = object{ Round_Cylinder_Tube( <0, -1, 0>, <0, 1, 0>, 1, 0.2, 0, 1)
     material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
 */
-#declare ForkNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1) rotate x*180
+#declare ForkNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1) rotate x*180 translate -y*0.6
     material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_07 } }}
                               
 #declare JoinNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1)

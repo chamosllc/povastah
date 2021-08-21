@@ -15,6 +15,9 @@ import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
+import biz.chamos.povastah.shape.LineSort;
+import biz.chamos.povastah.shape.Point3D;
+
 /**
  * CommunicationDiagram Object in POVRay Scene
  * 

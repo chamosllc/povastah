@@ -16,6 +16,9 @@ import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
+import biz.chamos.povastah.shape.LineSort;
+import biz.chamos.povastah.shape.Point3D;
+
 /**
  * Diagram Object in POVRay Scene
  * 
@@ -428,6 +431,7 @@ abstract public class Diagram {
 	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
 		String description = "";
 		LineSort sort = lineSort(link);
+//		scene.write("// " + sort.toString() + " curve:" + link.getProperty("line.shape").equals("curve") + " | points:" + link.getAllPoints().length + CR);
 		if(sort.equals(LineSort.Loop)) {
 			description = drawLoop(link, center(link.getSource()), sourcez);
 		}else{

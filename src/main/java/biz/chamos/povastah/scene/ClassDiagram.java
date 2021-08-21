@@ -18,7 +18,9 @@ import com.change_vision.jude.api.inf.model.IGeneralization;
 import com.change_vision.jude.api.inf.model.IInstanceSpecification;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
-import com.change_vision.jude.api.inf.presentation.IPresentation;;
+import com.change_vision.jude.api.inf.presentation.IPresentation;
+
+import biz.chamos.povastah.shape.LineSort;;
 
 /**
  * ClassDiagram Object in POVRay Scene

@@ -15,6 +15,9 @@ import com.change_vision.jude.api.inf.model.IVertex;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 
+import biz.chamos.povastah.shape.LineSort;
+import biz.chamos.povastah.shape.Point3D;
+
 /**
  * StateMachineDiagram Object in POVRay Scene
  * 	Enable Hierachy Diagram visualization

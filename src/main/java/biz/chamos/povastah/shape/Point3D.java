@@ -1,4 +1,4 @@
-package biz.chamos.povastah.scene;
+package biz.chamos.povastah.shape;
 
 import java.awt.geom.Point2D;
 
