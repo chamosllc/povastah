@@ -1,7 +1,6 @@
 package biz.chamos.povastah.shape;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +22,13 @@ public enum LineSort {
 	Both(true, true, 0.5); // リンク先も元も昇るタイプである
 
 	/**
+	 * リンクのデフォルトz座標値
+	 */
+	static final public double OFFSET_Z = 4.0;
+	/**
 	 * 上昇分
 	 */
-	static final double TOP = -32.0;
+	static final public double TOP = -32.0;
 	/**
 	 * リンク元が昇るタイプである
 	 */
@@ -43,36 +46,6 @@ public enum LineSort {
 		this.sourceUp = sourceUp;
 		this.targetUp = targetUp;
 		this.ratio = ratio;
-	}
-
-	/**
-	 * リンクの軌跡点を指定ノード側に半分の距離寄せる
-	 * 
-	 * @param sourceb
-	 * @param nextp
-	 * @param z
-	 * @return 軌跡点
-	 */
-	public Point3D topVertex(Point2D sourcep, Point2D nextp, double z) {
-		return new Point3D((sourcep.getX() + nextp.getX()) * 0.5, (sourcep.getY() + nextp.getY()) * 0.5, z);
-	}
-	
-	/**
-	 * リンク元とリンク先の直線間に距離率に応じた軌跡点を返す
-	 * @param sourceb
-	 * @param targetb
-	 * @return 軌跡点
-	 */
-	public Point3D vertex(Rectangle2D sourceb, Rectangle2D targetb, double z) {
-		double x = sourceb.getCenterX() - (sourceb.getCenterX() - targetb.getCenterX())*ratio;
-		double y = sourceb.getCenterY() - (sourceb.getCenterY() - targetb.getCenterY())*ratio;
-		return new Point3D(x, y, z);
-	}
-
-	public Point3D vertex(Point2D sourcep, Point2D targetp, double z) {
-		double x = sourcep.getX() - (sourcep.getX() - targetp.getX())*ratio;
-		double y = sourcep.getY() - (sourcep.getY() - targetp.getY())*ratio;
-		return new Point3D(x, y, z);
 	}
 	
 	/**
@@ -100,16 +73,16 @@ public enum LineSort {
 	 *  Target: [始点', 始点', P(n<length/2), P(n>=length/2)↑, 終点', 終点']
 	 *  
 	 * @param link
-	 * @param sourcez
-	 * @param targetz
+	 * @param source
+	 * @param target
 	 * @return リンク描画軌跡点列
 	 */
-	public List<Point3D> vertexes(ILinkPresentation link, double sourcez, double targetz) {
+	public List<Point3D> vertexes(ILinkPresentation link, Node source, Node target) {
 		List<Point3D> vertexes = new ArrayList<>();
-		Rectangle2D sourceb = link.getSource().getRectangle();
-		Rectangle2D targetb = link.getTarget().getRectangle();
-		Point3D start = new Point3D(sourceb.getCenterX(), sourceb.getCenterY(), sourcez);
-		Point3D end = new Point3D(targetb.getCenterX(), targetb.getCenterY(), targetz);
+		Point3D start = source.getLocation();
+		start = start.settleZ(start.getZ() + OFFSET_Z);
+		Point3D end = target.getLocation();
+		end = end.settleZ(end.getZ() + OFFSET_Z);
 		Point2D[] points = link.getAllPoints();
 		int length = points.length;
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
@@ -120,9 +93,9 @@ public enum LineSort {
 				if(isCurve) {
 					vertexes.add(start); // 曲線 2点目 始点と同じ点
 				}
-				double deltaz = (targetz - sourcez)/(length - 1);
+				double deltaz = (end.getZ() - start.getZ())/(length - 1);
 				for(int i=1; i < length - 1; i++) {
-					vertexes.add(new Point3D(points[i], sourcez + deltaz));
+					vertexes.add(new Point3D(inversion(points[i]), start.getZ() + deltaz));
 					deltaz += deltaz;
 				}
 				if(isCurve) {
@@ -130,51 +103,54 @@ public enum LineSort {
 				}
 			}
 		}else { // 山なりな線にする
-			Point3D center = topVertex(start.getXY(), end.getXY(), sourcez + TOP); // 始点と終点の間に種別の距離率を加味して点を作る
+			Point3D addPoint;
+			Point3D center = start.center(end); // 始点と終点の間に種別の距離率を加味して点を作る
+			double topZ = center.getZ() + TOP;
 			vertexes.add(start); // 曲線 2点目 始点と同じ点
-			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 
-				Point3D addPoint;
+			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 				
 				if(this.equals(Both)) {
-					vertexes.add(center);
+					vertexes.add(center.settleZ(topZ));
 				}else {
-					center.setZ(0.0);
 					if(this.equals(Source)) {
-						vertexes.add(topVertex(start.getXY(), center.getXY(), sourcez + TOP));	
+						vertexes.add(start.center(center).settleZ(topZ));	
 					}				
 					vertexes.add(center);
 					if(this.equals(Target)) {
-						vertexes.add(topVertex(center.getXY(), end.getXY(), targetz + TOP));			
+						vertexes.add(center.center(end).settleZ(topZ));			
 					}				
 				}
 			}else {
-				double deltaz;
 				if(this.equals(Both)) {
 					for(int i=2; i < length - 2; i++) {
-						vertexes.add(new Point3D(points[i].getX(), points[i].getY(), sourcez + TOP));
+						vertexes.add(new Point3D(inversion(points[i]), topZ));
 					}
-				}else if(length == 3) {
+				}else if(length == 3) {					
 					if(this.equals(Source)) {
-						vertexes.add(topVertex(start.getXY(), points[1], sourcez + TOP));
-						vertexes.add(new Point3D(points[1].getX(), points[1].getY(), targetz));
-					}else if(this.equals(Target)) {						
-						vertexes.add(new Point3D(points[1].getX(), points[1].getY(), sourcez));
-						vertexes.add(topVertex(points[1], end.getXY(), targetz + TOP));
+						addPoint = new Point3D(inversion(points[1]), start.getZ());
+						center = start.center(addPoint).settleZ(topZ);
+						vertexes.add(center);
+						vertexes.add(addPoint);
+					}else if(this.equals(Target)) {
+						addPoint = new Point3D(inversion(points[1]), start.getZ());
+						vertexes.add(addPoint);
+						center = addPoint.center(end).settleZ(topZ);
+						vertexes.add(center);
 					}
 				}else {
 					int turn = (int)((length - 2)/2);
 					if(this.equals(Source)) {
 						for(int i=1; i <= turn; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), sourcez + TOP));
+							vertexes.add(new Point3D(inversion(points[i]), topZ));
 						}
 						for(int i=turn + 1; i < length - 1; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz));
+							vertexes.add(new Point3D(inversion(points[i]), end.getZ()));
 						}
 					}else if(this.equals(Target)) {
 						for(int i=1; i <= turn; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), sourcez));
+							vertexes.add(new Point3D(inversion(points[i]),  start.getZ()));
 						}
 						for(int i=turn + 1; i < length - 1; i++) {
-							vertexes.add(new Point3D(points[i].getX(), points[i].getY(), targetz + TOP));
+							vertexes.add(new Point3D(inversion(points[i]), topZ));
 						}
 					}
 				}
@@ -183,5 +159,96 @@ public enum LineSort {
 		}
 		vertexes.add(end); // 終点
 		return vertexes;
+	}
+
+	public List<String> stringVertexes(ILinkPresentation link, Node source, Node target) {
+		List<String> vertexes = new ArrayList<>();
+		Point3D start = source.getLocation();
+		start = start.settleZ(start.getZ() + OFFSET_Z);
+		Point3D end = target.getLocation();
+		end = end.settleZ(end.getZ() + OFFSET_Z);
+		Point2D[] points = link.getAllPoints();
+		int length = points.length;
+		boolean isCurve = link.getProperty("line.shape").equals("curve");
+		
+		vertexes.add(source.vertLink()); // 始点
+		if(this.equals(Origin)) {
+			if(length > 2) {
+				if(isCurve) {
+					vertexes.add(source.vertLink()); // 曲線 2点目 始点と同じ点
+				}
+				double deltaz = (end.getZ() - start.getZ())/(length - 1);
+				for(int i=1; i < length - 1; i++) {
+					vertexes.add(source.vertex(new Point3D(inversion(points[i]), start.getZ() + deltaz)));
+					deltaz += deltaz;
+				}
+				if(isCurve) {
+					vertexes.add(target.vertLink()); // 曲線 終点の一つ前の点 終点と同じ点
+				}
+			}
+		}else { // 山なりな線にする
+			Point3D addPoint;
+			Point3D center = start.center(end); // 始点と終点の間に種別の距離率を加味して点を作る
+			double topZ = center.getZ() + TOP;
+			vertexes.add(source.vertLink()); // 曲線 2点目 始点と同じ点
+			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 				
+				if(this.equals(Both)) {
+					vertexes.add(source.vertex(center, topZ));
+				}else {
+					if(this.equals(Source)) {
+						vertexes.add(source.vertex(start.center(center), topZ));	
+					}				
+					vertexes.add(source.vertex(center));
+					if(this.equals(Target)) {
+						vertexes.add(target.vertex(center.center(end), topZ));			
+					}				
+				}
+			}else {
+				if(this.equals(Both)) {
+					for(int i=2; i < length - 2; i++) {
+						vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
+					}
+				}else if(length == 3) {					
+					if(this.equals(Source)) {
+						addPoint = new Point3D(inversion(points[1]), start.getZ());
+						vertexes.add(source.vertex(start.center(addPoint), topZ));
+						vertexes.add(source.vertex(addPoint));
+					}else if(this.equals(Target)) {
+						addPoint = new Point3D(inversion(points[1]), start.getZ());
+						vertexes.add(source.vertex(addPoint));
+						vertexes.add(target.vertex(addPoint.center(end), topZ));
+					}
+				}else {
+					int turn = (int)((length - 2)/2);
+					if(this.equals(Source)) {
+						for(int i=1; i <= turn; i++) {
+							vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
+						}
+						for(int i=turn + 1; i < length - 1; i++) {
+							vertexes.add(source.vertex(new Point3D(inversion(points[i]), end.getZ())));
+						}
+					}else if(this.equals(Target)) {
+						for(int i=1; i <= turn; i++) {
+							vertexes.add(source.vertex(new Point3D(inversion(points[i]),  start.getZ())));
+						}
+						for(int i=turn + 1; i < length - 1; i++) {
+							vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
+						}
+					}
+				}
+			}
+			vertexes.add(target.vertLink()); // 曲線 終点の一つ前の点 終点と同じ点
+		}
+		vertexes.add(target.vertLink()); // 終点
+		return vertexes;
+	}
+
+	/**
+	 * astah*座標系のY座標反転し、POVRay座標系のY座標に写像する。
+	 * @param point
+	 * @return POVRay XY座標点
+	 */
+	protected Point2D inversion(Point2D point) {
+		return new Point2D.Double(point.getX(), -point.getY());
 	}
 }

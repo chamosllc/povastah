@@ -1,7 +1,5 @@
 package biz.chamos.povastah.scene;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -12,6 +10,9 @@ import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IObjectNode;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
+
+import biz.chamos.povastah.shape.Node;
+import biz.chamos.povastah.shape.Point3D;
 
 /**
  * ActivityDiagram Object in POVRay Scene
@@ -49,13 +50,13 @@ public class ActivityDiagram extends Diagram {
 	/**
 	 * サブダイアグラムを宣言をする
 	 */
-	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z){
+	protected void declareDiagram(Node parent, int hierarchy, Point3D point){
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
 				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, scene);
-				hierarchyDiagram.existsScene();
-				hierarchyDiagram.declareDiagram(hierarchy, new Point2D.Double(), z);
+				hierarchyDiagram.existsScene(hierarchy);
+				hierarchyDiagram.drawDiagram(hierarchy, point);
 			} catch (Exception e) {}
 		}
 	}
@@ -65,7 +66,7 @@ public class ActivityDiagram extends Diagram {
 	 * @param parent
 	 * @return nullの場合がある
 	 */
-	protected IActivityDiagram subDiagram(INodePresentation parent) {
+	protected IActivityDiagram subDiagram(Node parent) {
 		if(hasSubDiagram(parent)) {
 			IActivity activity = ((IAction) parent.getModel()).getCallingActivity(); // nullの場合がある
 			if(activity != null) {
@@ -78,8 +79,8 @@ public class ActivityDiagram extends Diagram {
 	/**
 	 * サブダイアグラムを持つノード型である
 	 */
-	protected boolean hasSubDiagram(INodePresentation parent) {
-		return parent.getType().equals("CallBehaviorAction");
+	protected boolean hasSubDiagram(Node parent) {
+		return parent.isType("CallBehaviorAction");
 	}
 	
 	/**
@@ -91,19 +92,13 @@ public class ActivityDiagram extends Diagram {
 	 * @return サブアクティビティがある
 	 * @throws IOException
 	 */
-	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
-		IActivityDiagram subDiagram;
-		if((subDiagram = subDiagram(node)) != null) {
-			double deltaZ = 36.0;
-			Rectangle2D bound = node.getRectangle();
-			Rectangle2D subBound = subDiagram.getBoundRect(); 
-			double scale = Math.min(bound.getWidth()/(subBound.getWidth() + deltaZ), bound.getHeight()/(subBound.getHeight() + deltaZ));
-			double posz = zposition(node) - deltaZ*scale;
-			Point2D point = new Point2D.Double(bound.getCenterX() - (subBound.getCenterX() + (deltaZ/2))*scale, bound.getCenterY() - (subBound.getCenterY() + (deltaZ/2))*scale);
-			scene.write("  object { " + id(subDiagram) + " scale " + scale + translate(point, posz) + "}" +CR);
-			scene.write("  object { " + type(node) + OBJECT_UNIT + translate(center(node), zposition(node)) + " }" + CR);
+	protected boolean drawSubDiagram(Node node, int hierarchy) throws IOException {
+		IActivityDiagram subDiagram = subDiagram(node);
+		if(subDiagram != null) {
+			double delta = 36.0;
+			scene.write(node.drawWithStage(id(subDiagram), subDiagram.getBoundRect(), delta));
 			
-			textOnStage(node, new Point2D.Double(bound.getMinX() + 28.0, bound.getMaxY() + 32.0), 31.0);
+//			textOnStage(node, new Point2D.Double(node.getBound().getMinX() + 28.0, node.getBound().getMaxY() + 32.0), 31.0);
 			return true;
 		}
 		return false;
@@ -115,7 +110,7 @@ public class ActivityDiagram extends Diagram {
 	 * @return ラベル名
 	 */
 	protected String label(IPresentation presence) {
-		String label = super.label(presence);
+	String label = super.label(presence);
 		if(presence.getModel() instanceof IObjectNode) {
 			label = label.replace(" : ", ":"); // "インスタンス名 : クラス名"を空白文字を抜いて"インスタンス名:クラス名"にする
 		}

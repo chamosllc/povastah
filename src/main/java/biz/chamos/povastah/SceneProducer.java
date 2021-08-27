@@ -48,15 +48,6 @@ public class SceneProducer {
 	 */
 	public void produceAll() throws ProjectNotFoundException, IOException {
 		/*
-		 * すべてのユースケース図を描く
-		 * IUseCaseDiagram
-		 */
-		for(INamedElement diagram: accessor.findElements(IUseCaseDiagram.class)){
-			try(OutputStreamWriter scene = createScene(diagram)) {
-				(new UseCaseDiagram((IUseCaseDiagram)diagram, scene)).produce();
-			}
-		}
-		/*
 		 * すべてのクラス図を描く
 		 * IClassDiagram
 		 */
@@ -90,6 +81,15 @@ public class SceneProducer {
 		for(INamedElement diagram: accessor.findElements(IActivityDiagram.class)){
 			try(OutputStreamWriter scene = createScene(diagram)) {
 				(new ActivityDiagram((IActivityDiagram)diagram, scene)).produce();
+			}
+		}
+		/*
+		 * すべてのユースケース図を描く
+		 * IUseCaseDiagram
+		 */
+		for(INamedElement diagram: accessor.findElements(IUseCaseDiagram.class)){
+			try(OutputStreamWriter scene = createScene(diagram)) {
+				(new UseCaseDiagram((IUseCaseDiagram)diagram, scene)).produce();
 			}
 		}
 	}

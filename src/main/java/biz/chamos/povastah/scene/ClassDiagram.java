@@ -20,7 +20,9 @@ import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
-import biz.chamos.povastah.shape.LineSort;;
+import biz.chamos.povastah.shape.LineSort;
+import biz.chamos.povastah.shape.Node;
+import biz.chamos.povastah.shape.Point3D;;
 
 /**
  * ClassDiagram Object in POVRay Scene
@@ -49,10 +51,11 @@ public class ClassDiagram extends Diagram {
 	 *描画ノードを抽出し、対象の有無を返す
 	 * @return 対象の有無
 	 */
-	protected boolean existsScene(){
-		boolean exists = super.existsScene();
+	protected boolean existsScene(int hierarchy){
+		boolean exists = super.existsScene(hierarchy);
 		if(exists) {
 			orderClassHierachy();
+			correctZofNodes();
 		}
 		return exists;
 	}
@@ -64,7 +67,7 @@ public class ClassDiagram extends Diagram {
 	 */
 	protected void orderClassHierachy() {
 		Collection<IClass> models = new HashSet<>();
-		for(INodePresentation node: nodes) {
+		for(Node node: nodes) {
 			if(node.getModel() instanceof IClass) {
 				models.add((IClass)node.getModel());
 			}
@@ -130,6 +133,17 @@ public class ClassDiagram extends Diagram {
 			}
 		}
 	}
+
+	/**
+	 * ノードのz座標値を設定する
+	 */
+	protected void correctZofNodes() {
+		for(Node node: nodes) {
+			if(classHierachyOrder.containsKey(node.getModel())) {
+				node.getLocation().setZ(classHierachyOrder.get(node.getModel()) * DEPTH_OFFSET);
+			}
+		}
+	}
 	
 	/**
 	 * シーン記述のヘッダ部を記述する
@@ -142,17 +156,6 @@ public class ClassDiagram extends Diagram {
 			scene.write("// hierachy depth: " + classHierachyOrder + CR + "// #declare Depth = " + DEPTH_OFFSET + ";" + CR + CR);
 			scene.flush();
 		}
-	}
-
-	/**
-	 * ノードのz座標値(クラス継承関係による高さを算出する)
-	 */
-	protected double zposition(INodePresentation node) {
-		double z = super.zposition(node);
-		if(classHierachyOrder.containsKey(node.getModel())) {
-			z = classHierachyOrder.get(node.getModel()) * DEPTH_OFFSET;
-		}
-		return z;
 	}
 
 	/**
@@ -191,39 +194,30 @@ public class ClassDiagram extends Diagram {
 	}
 
 	/**
-	 * リンクを描く
-	 * @param link
-	 * @throws IOException
-	 */
-	protected void draw(ILinkPresentation link) throws IOException {
-		draw(link, OFFSET_Z + zposition(link.getSource()), OFFSET_Z + zposition(link.getTarget()));
-	}
-
-	/**
 	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
 	 * @param sourcez ソースの高さ
 	 * @param targetz ターゲットの高さ
 	 * @throws IOException
 	 */
-	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+	protected void draw(ILinkPresentation link, Node source, Node target) throws IOException {
 		String type = link.getType();
+		scene.write("// " + type + CR);
 		if(type.equals("Link")) {
 			LineSort sort = lineSort(link);
-			scene.write(draw(link, sort.vertexes(link, sourcez, targetz), true) + materialClause(link, true) + CR);
+			List<String> linePoints = sort.stringVertexes(link, source, target);
+			scene.write(draw(link, linePoints, true) + materialClause(link, true) + CR);
 		}else if(type.equals("Generalization")) {
-			scene.write(drawGeneralization(link, sourcez, targetz));
+			scene.write(drawGeneralization(link, source, target));
 		}else if(type.equals("AssociationClass")){
-			Point2D sourcep = center(link.getSource());
-			Point2D targetp = center(link.getTarget());
-			String start = coordinate(sourcep, sourcez) + ", LRd ";
-			String end = coordinate(targetp, targetz) + ", LRd ";
-			INodePresentation assocNode = find((IAssociationClass)(link.getModel()));
+			String start = source.getName() + ", LRd ";
+			String end = target.getName() + ", LRd ";
+			Node assocNode = find((IAssociationClass)(link.getModel()));
 			scene.write("    sphere_sweep { cubic_spline, 5, " + start + start
-					+ coordinate(center(assocNode), zposition(assocNode)) + ", LRd "
+					+ assocNode.getLocation() + ", LRd "
 					+end + end + materialClause(link, true) + CR);
 		}else{
-			super.draw(link, sourcez, targetz);
+			super.draw(link, source, target);
 		}	
 	}
 
@@ -237,19 +231,18 @@ public class ClassDiagram extends Diagram {
 	 * @param targetz ターゲットの高さ
 	 * @return 継承リンク記述
 	 */
-	protected String drawGeneralization(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+	protected String drawGeneralization(ILinkPresentation link, Node source, Node target) throws IOException {
 		String description = "    sphere_sweep { linear_spline, ";
-		Point2D sourcep = center(link.getSource());
-		Point2D targetp = center(link.getTarget());
 		Point2D[] points = link.getPoints();
 		int length = points.length;		
-		description += length + ", " + coordinate(sourcep, sourcez) + ", LRd ";
+		description += length + ", " + source.getName() + ", LRd ";
 		if(points.length > 2) {
 			for(int i = length-2; i > 0; i--) {
-				description += coordinate(points[i], sourcez)  + ", LRd ";
+				Point3D point = new  Point3D(points[i].getX(), -points[i].getY(), source.getLocation().getZ());
+				description += source.vertex(point) + ", LRd ";
 			}
 		}
-		return description + coordinate(targetp, targetz) + ", LRd " + materialClause(link, true) + CR;
+		return description + target.getName() + ", LRd " + materialClause(link, true) + CR;
 	}
 	 
 	/**
@@ -257,8 +250,8 @@ public class ClassDiagram extends Diagram {
 	 * @param assoc
 	 * @return
 	 */
-	protected INodePresentation find(IAssociationClass assoc) {
-		for(INodePresentation node: nodes) {
+	protected Node find(IAssociationClass assoc) {
+		for(Node node: nodes) {
 			if(node.getModel()==assoc) {
 				return node;
 			}

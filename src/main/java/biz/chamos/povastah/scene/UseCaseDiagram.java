@@ -1,11 +1,12 @@
 package biz.chamos.povastah.scene;
 
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import com.change_vision.jude.api.inf.model.IDiagram;
-import com.change_vision.jude.api.inf.presentation.INodePresentation;
+
+import biz.chamos.povastah.shape.Node;
+import biz.chamos.povastah.shape.Point3D;
 
 /**
  * UseCaseDiagram Object in POVRay Scene
@@ -30,15 +31,15 @@ public class UseCaseDiagram extends ClassDiagram {
 	 * @throws IOException
 	 */
 	@Override
-	protected void draw(INodePresentation node, int hierarchy) throws IOException {
-		if(node.getType().equals("UseCase")){
+	protected void draw(Node node, int hierarchy) throws IOException {
+		if(node.isType("UseCase")){
 			String[] labels = node.getLabel().split("\n");
 			int max = 0;
 			double height = labels.length * 0.2 + 0.4;
 			for(String label: labels) {
 				max = Integer.max(label.getBytes().length, max);
 			}
-			Point2D point = center(node);
+			Point3D point = node.getLocation();
 			scene.write("  cylinder {-z, z 1 texture { UseCaseTexture } scale <" + (max*0.1+0.2) + ", " + height
 					+ ", 0.05> texture { pigment { object { union { " + CR);
 			for(int i=0; i < labels.length;  i++) {
@@ -46,8 +47,8 @@ public class UseCaseDiagram extends ClassDiagram {
 			}
 			scene.write("     scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}" +CR
 					+ "    finish { phong 1 ambient 0.2 } scale <.7, .5, 10> translate <-" + (max/32.0) +", -0.5, -2>" + CR 
-					+ "  } scale 64 " + translate(point) + "}" +CR);
-			drawSource(node);
+					+ "  } scale 64 translate" + point + "}" +CR);
+			drawLinkSource(node);
 		}else {
 			super.draw(node, hierarchy);
 		}

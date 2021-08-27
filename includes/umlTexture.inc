@@ -74,7 +74,7 @@
     #declare ShadowDependencyMaterial = material { DependencyMaterial }
     #declare ShadowIncludeMaterial = material { IncludeMaterial }
     #declare ShadowTemplateBindingMaterial = material { TemplateBindingMaterial }
-    #declare ShadowStateMaterial = material { StateInternalMateria } 
+    #declare ShadowStateMaterial = material { TransitionMaterial } 
     #declare ShadowSubmachineStateMaterial = material { SubmachineStateMaterial }
 #else
     #declare ShadowLinkMaterial = material { ShadowMaterial }

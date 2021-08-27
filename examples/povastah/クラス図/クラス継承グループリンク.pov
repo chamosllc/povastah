@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス図/クラス継承グループリンク
- * created at 2021/08/17
+ * created at 2021/08/27
  * presented by povastah
  **/
 
@@ -12,29 +12,38 @@
 #declare ShadowType = 0;
 #include "povastah.inc"
 
-#declare LRd = 3.2;
-#declare LOOPRd = 36.0;
-#declare TextScale = <16, 16, 2>;
+#local LRd = 3.2;
+#local LOOPRd = 36.0;
+#local TextScale = <16, 16, 2>;
 
-// hierachy depth: {Diagram=2, ClassDiagram=1, StateMachineDiagram=1, ActivityDiagram=1}
+// hierachy depth: {StateMachineDiagram=1, ActivityDiagram=1, Diagram=2, ClassDiagram=1}
 // #declare Depth = -32.0;
 
+// ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449
+#local Class0_0 = <310.833, -88.820, -64.0>;
+#local Class0_1 = <127.500, -239.487, -32.0>;
+#local Class0_2 = <310.833, -239.487, -32.0>;
+#local Class0_3 = <521.500, -239.487, -32.0>;
+
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {
-  object { Class rotate -x*90 scale 24.0 translate <310.833, -88.820, -64.00> }
-    object { Circle_Text( LabelFont, "Diagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <310.833, -88.820, 30.00> }
-  object { Class rotate -x*90 scale 24.0 translate <127.500, -239.487, -32.00> }
-    object { Circle_Text( LabelFont, "ClassDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <127.500, -239.487, 30.00> }
-    sphere_sweep { linear_spline, 4, <127.500, -239.487, -28.00>, LRd <127.500, -171.487, -28.00>, LRd <310.833, -171.487, -28.00>, LRd <310.833, -88.820, -60.00>, LRd material { GeneralizationMaterial } no_shadow }
-  object { Class rotate -x*90 scale 24.0 translate <310.833, -239.487, -32.00> }
-    object { Circle_Text( LabelFont, "ActivityDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <310.833, -239.487, 30.00> }
-    sphere_sweep { linear_spline, 4, <310.833, -239.487, -28.00>, LRd <310.833, -171.487, -28.00>, LRd <310.833, -171.487, -28.00>, LRd <310.833, -88.820, -60.00>, LRd material { GeneralizationMaterial } no_shadow }
-  object { Class rotate -x*90 scale 24.0 translate <521.500, -239.487, -32.00> }
-    object { Circle_Text( LabelFont, "StateMachineDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <521.500, -239.487, 30.00> }
-    sphere_sweep { linear_spline, 4, <521.500, -239.487, -28.00>, LRd <521.500, -171.487, -28.00>, LRd <310.833, -171.487, -28.00>, LRd <310.833, -88.820, -60.00>, LRd material { GeneralizationMaterial } no_shadow }
+  object { Class rotate -x*90 scale 24.0 translate Class0_0 }
+    object { Circle_Text(LabelFont, "Diagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Class0_0, 94.0)  }
+  object { Class rotate -x*90 scale 24.0 translate Class0_1 }
+    object { Circle_Text(LabelFont, "ClassDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Class0_1, 62.0)  }
+// Generalization
+    sphere_sweep { linear_spline, 4, Class0_1, LRd  vertex(Class0_1, <0.000, 68.000, 0.000>), LRd  vertex(Class0_1, <183.333, 68.000, 0.000>), LRd Class0_0, LRd material { GeneralizationMaterial } no_shadow }
+  object { Class rotate -x*90 scale 24.0 translate Class0_2 }
+    object { Circle_Text(LabelFont, "ActivityDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Class0_2, 62.0)  }
+// Generalization
+    sphere_sweep { linear_spline, 4, Class0_2, LRd  vertex(Class0_2, <0.000, 68.000, 0.000>), LRd  vertex(Class0_2, <0.000, 68.000, 0.000>), LRd Class0_0, LRd material { GeneralizationMaterial } no_shadow }
+  object { Class rotate -x*90 scale 24.0 translate Class0_3 }
+    object { Circle_Text(LabelFont, "StateMachineDiagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Class0_3, 62.0)  }
+// Generalization
+    sphere_sweep { linear_spline, 4, Class0_3, LRd  vertex(Class0_3, <0.000, 68.000, 0.000>), LRd  vertex(Class0_3, <-210.667, 68.000, 0.000>), LRd Class0_0, LRd material { GeneralizationMaterial } no_shadow }
 }
 object { ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 rotate z*30 }
-#declare EYE = <360, -360, -200>;
-#declare FOCUS = <360, 0, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <360, -300, -200>;
+#declare FOCUS = <360, -64, 0>;
+camera { location EYE direction 0.9*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

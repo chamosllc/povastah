@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ムーブメント
- * created at 2021/08/17
+ * created at 2021/08/27
  * presented by povastah
  **/
 
@@ -12,44 +12,51 @@
 #declare ShadowType = 0;
 #include "povastah.inc"
 
-#declare LRd = 3.2;
-#declare LOOPRd = 36.0;
-#declare TextScale = <16, 16, 2>;
+#local LRd = 3.2;
+#local LOOPRd = 36.0;
+#local TextScale = <16, 16, 2>;
+
+// ActivityDiagram_ei16c82e3456575d0ee46bca982933226e
+#local InitialNode0_0 = <188.540, -61.333, 0.0>;
+#local Action0_1 = <188.540, -147.320, 0.0>;
+#local Action0_2 = <426.540, -147.320, 0.0>;
+#local Action0_3 = <188.540, -246.654, 0.0>;
+#local ActivityFinal0_4 = <188.540, -324.667, 0.0>;
 
 #declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
-  object { InitialNode rotate -x*90 scale 24.0 translate <188.540, -61.333, 0.00> }
+  object { InitialNode rotate -x*90 scale 24.0 translate InitialNode0_0 }
     union{
-    sphere_sweep { linear_spline, 2, <188.540, -61.333, 4.00>, LRd <188.540, -147.320, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <188.540, -61.333, 4.00>, LRd <188.540, -147.320, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(InitialNode0_0, 4.0), LRd  vert(Action0_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(InitialNode0_0, 4.0), LRd  vert(Action0_1, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-  object { Action rotate -x*90 scale 24.0 translate <188.540, -147.320, 0.00> }
-    object { Circle_Text( LabelFont, "物を見る",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <188.540, -147.320, 30.00> }
+  object { Action rotate -x*90 scale 24.0 translate Action0_1 }
+    object { Circle_Text(LabelFont, "物を見る",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action0_1, 30.0)  }
     union{
-    sphere_sweep { cubic_spline, 5, <188.540, -147.320, 4.00>, LRd <188.540, -147.320, 4.00>, LRd <294.667, -190.000, 4.00>, LRd <426.540, -147.320, 4.00>, LRd <426.540, -147.320, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5, <188.540, -147.320, 4.00>, LRd <188.540, -147.320, 4.00>, LRd <294.667, -190.000, 4.00>, LRd/2.0 <426.540, -147.320, 4.00>, 0.0 <426.540, -147.320, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(Action0_1, 4.0), LRd  vert(Action0_1, 4.0), LRd  vertex(Action0_1, <106.127, -42.680, 4.000>), LRd  vert(Action0_2, 4.0), LRd  vert(Action0_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(Action0_1, 4.0), LRd  vert(Action0_1, 4.0), LRd/1.0  vertex(Action0_1, <106.127, -42.680, 4.000>), LRd/2.0  vert(Action0_2, 4.0), LRd/4.0  vert(Action0_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
     union{
-    sphere_sweep { linear_spline, 2, <188.540, -147.320, 4.00>, LRd <188.540, -246.654, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <188.540, -147.320, 4.00>, LRd <188.540, -246.654, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(Action0_1, 4.0), LRd  vert(Action0_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Action0_1, 4.0), LRd  vert(Action0_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-    torus { LOOPRd, LRd translate<188.54000000000002, -147.3203125, 4.0 - LOOPRd> material { ControlFlowObjectFlowMaterial }  }
-  object { Action rotate -x*90 scale 24.0 translate <426.540, -147.320, 0.00> }
-    object { Circle_Text( LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <426.540, -147.320, 30.00> }
+    torus { LOOPRd, LRd translate vert(<188.540, -147.320, 0.000>, - LOOPRd) material { ControlFlowObjectFlowMaterial } no_shadow }
+  object { Action rotate -x*90 scale 24.0 translate Action0_2 }
+    object { Circle_Text(LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action0_2, 30.0)  }
     union{
-    sphere_sweep { cubic_spline, 5, <426.540, -147.320, 4.00>, LRd <426.540, -147.320, 4.00>, LRd <305.333, -90.667, 4.00>, LRd <188.540, -147.320, 4.00>, LRd <188.540, -147.320, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5, <426.540, -147.320, 4.00>, LRd <426.540, -147.320, 4.00>, LRd <305.333, -90.667, 4.00>, LRd/2.0 <188.540, -147.320, 4.00>, 0.0 <188.540, -147.320, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(Action0_2, 4.0), LRd  vert(Action0_2, 4.0), LRd  vertex(Action0_2, <-121.207, 56.654, 4.000>), LRd  vert(Action0_1, 4.0), LRd  vert(Action0_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(Action0_2, 4.0), LRd  vert(Action0_2, 4.0), LRd/1.0  vertex(Action0_2, <-121.207, 56.654, 4.000>), LRd/2.0  vert(Action0_1, 4.0), LRd/4.0  vert(Action0_1, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-  object { Action rotate -x*90 scale 24.0 translate <188.540, -246.654, 0.00> }
-    object { Circle_Text( LabelFont, "物を消す",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate <188.540, -246.654, 30.00> }
+  object { Action rotate -x*90 scale 24.0 translate Action0_3 }
+    object { Circle_Text(LabelFont, "物を消す",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action0_3, 30.0)  }
     union{
-    sphere_sweep { linear_spline, 2, <188.540, -246.654, 4.00>, LRd <188.540, -324.667, 4.00>, LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2, <188.540, -246.654, 4.00>, LRd <188.540, -324.667, 4.00>, 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(Action0_3, 4.0), LRd  vert(ActivityFinal0_4, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Action0_3, 4.0), LRd  vert(ActivityFinal0_4, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-  object { ActivityFinal rotate -x*90 scale 24.0 translate <188.540, -324.667, 0.00> }
+  object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_4 }
 }
 object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e }
-#declare EYE = <280, -380, -320>;
-#declare FOCUS = <280, -220, 0>;
-camera { location EYE direction 1.2*z look_at FOCUS }
+#declare EYE = <300, -360, -300>;
+#declare FOCUS = <300, -240, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}

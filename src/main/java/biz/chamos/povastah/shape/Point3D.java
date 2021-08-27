@@ -15,6 +15,11 @@ public class Point3D {
 		this(new Point2D.Double(x, y), z);
 	}
 	
+	public Point3D() {
+		this.point = new Point2D.Double();
+		this.z = 0.0;
+	}
+
 	public double getX() {
 		return point.getX();
 	}
@@ -33,5 +38,26 @@ public class Point3D {
 	
 	public void setZ(double z) {
 		this.z = z;
+	}
+	
+	public Point3D settleZ(double z) {
+		return new Point3D(point, z);
+	}
+	
+	public Point3D minus(Point3D other) {
+		return new Point3D(new Point2D.Double(point.getX() - other.getX(), point.getY() - other.getY()), z - other.getZ());
+	}
+	
+	/**
+	 * 与えられた点との中間点を返す
+	 * @param 他の点
+	 * @return 中間点
+	 */
+	public Point3D center(Point3D other) {
+		return new Point3D(new Point2D.Double((point.getX() + other.getX())/2.0, (point.getY() + other.getY())/2.0), (z + other.getZ())/2.0);
+	}
+	
+	public String toString() {
+		return String.format("<%.3f, %.3f, %.3f>", point.getX(), point.getY(), z);
 	}
 }

@@ -11,12 +11,12 @@ import java.util.List;
 
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.model.IDiagram;
-import com.change_vision.jude.api.inf.model.INamedElement;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 import biz.chamos.povastah.shape.LineSort;
+import biz.chamos.povastah.shape.Node;
 import biz.chamos.povastah.shape.Point3D;
 
 /**
@@ -29,12 +29,11 @@ abstract public class Diagram {
 	/*
 	 * オブジェクトのz値のオフセット
 	 */
-	static final protected double OFFSET_Z = 4.0;
-	static final protected double TEXT_OFFSET_Z = 30.0;
+	static final public double TEXT_OFFSET_Z = 30.0;
 	/*
 	 * 改行文字列
 	 */
-	static final protected String CR = System.lineSeparator();
+	static final public String CR = System.lineSeparator();
 	/*
 	 * シーン記述のヘッダーコメント部
 	 */
@@ -49,9 +48,9 @@ abstract public class Diagram {
 			+ "#global_settings { charset utf8 }" + CR + CR
 			+ "#declare ShadowType = 0;" + CR
 			+ "#include \"povastah.inc\"" + CR + CR
-			+ "#declare LRd = 3.2;" + CR							// リンクsphere_sweepオブジェクトの半径
-			+ "#declare LOOPRd = 36.0;" + CR					// 自己遷移リンクtorusオブジェクトの半径
-			+ "#declare TextScale = <16, 16, 2>;" + CR  + CR;	// Circle_Text, textオブジェクトのスケーリング
+			+ "#local LRd = 3.2;" + CR							// リンクsphere_sweepオブジェクトの半径
+			+ "#local LOOPRd = 36.0;" + CR					// 自己遷移リンクtorusオブジェクトの半径
+			+ "#local TextScale = <16, 16, 2>;" + CR  + CR;	// Circle_Text, textオブジェクトのスケーリング
 	
 	/*
 	 * 撮影環境記述
@@ -61,16 +60,15 @@ abstract public class Diagram {
 	/*
 	 * 3D座標系フォーマット
 	 */
-	static final String COORDINATE = "<%.3f, %.3f, %.2f>";
-	static final String ICOORDINATE = "<%d, %d, %d>";
+	static final public String COORDINATE = "<%.3f, %.3f, %.2f>";
+	static final public String ICOORDINATE = "<%d, %d, %d>";
 	/*
 	 * オブジェクト関連フォーマット
 	 */
-	static final String OBJECT_UNIT = " rotate -x*90 scale 24.0";
-	static final String CIRCLE_TEXT = "    object { Circle_Text( LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }";
-	static final String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
-	static final String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale TextScale texture { LabelTecture }%s }";
-
+	static final public String OBJECT_UNIT = " rotate -x*90 scale 24.0";
+	static final public String CIRCLE_TEXT = "    object { Circle_Text(LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }" + CR;
+	static final public String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
+	
 	/**
 	 * シーン記述ファイル
 	 */
@@ -82,7 +80,7 @@ abstract public class Diagram {
 	/**
 	 * ダイアグラム内の描画対象ノード
 	 */
-	protected List<INodePresentation> nodes;
+	protected List<Node> nodes;
 
 	/**
 	 * ダイアグラムの矩形領域
@@ -99,12 +97,12 @@ abstract public class Diagram {
 	 * ダイアグラムをシーンとして記述する
 	 */
 	public void produce(){
-		if(existsScene()) {
+		if(existsScene(0)) {
 			try {
 				header();
-				drawDiagram(new Point2D.Double(), 0.0);
+				drawDiagram();
 				stage();
-			}catch(IOException | InvalidUsingException e) {}
+			}catch(IOException e) {}
 		}
 	}
 	
@@ -112,20 +110,34 @@ abstract public class Diagram {
 	 * 描画ノードを抽出し、対象の有無を返す
 	 * @return 対象の有無
 	 */
-	protected boolean existsScene(){
-		nodes = new ArrayList<INodePresentation>();
+	protected boolean existsScene(int hierarchy){
+		nodes = new ArrayList<Node>();
 		try {
+			int id = 0;
 			for(IPresentation presence: diagram.getPresentations()){ // 除外ノードでないノードを集める
 				if(presence instanceof INodePresentation) {
-					INodePresentation node = (INodePresentation)presence;
-					if(!isExcludes(node)) {
-						nodes.add(node);
+					INodePresentation inode = (INodePresentation)presence;
+					if(!isExcludes(inode)) {
+						nodes.add(new Node(id++, hierarchy, type(inode), inode, label(inode)));
 					}
 				}
 			}
 		} catch (InvalidUsingException e) {} // astah* communityでエラーになるとのこと
 		return !nodes.isEmpty();
 	}
+
+	/**
+	 * ダイアグラム上のノード座標を変数として宣言する
+	 */
+	protected void declareNodes() {
+		try {
+			scene.write("// " + id(this.diagram) + CR);
+			for (Node node : nodes) {
+				scene.write(node.declare());
+			}
+			scene.write(CR);
+		} catch (IOException e) {}
+	};
 
 	/**
 	 * ノードが描画対象でない
@@ -156,7 +168,6 @@ abstract public class Diagram {
 	protected void header() throws IOException {
 		Calendar cl = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		INamedElement parent = (INamedElement)diagram.getOwner();
 		scene.write(String.format(HEADER_COMMENT, diagram.getFullName("/"), sdf.format(cl.getTime())));
 		scene.write(GLOBAL_SETTINGS);
 		scene.flush();
@@ -181,27 +192,26 @@ abstract public class Diagram {
 	}
 
 	/**
-	 * ダイアグラムを描く
+	 * ダイアグラムを宣言し、描画する
 	 * @throws IOException
-	 * @throws InvalidUsingException 
 	 */
-	protected void drawDiagram(Point2D dpoint, double z) throws IOException, InvalidUsingException {
-		scene.write("object { " + declareDiagram(0, dpoint, z) + " }" +CR);
+	protected void drawDiagram() throws IOException {
+		String name = drawDiagram(0, new Point3D());
+		scene.write("object { " + name + " }" +CR);	
 	}
-
 	/**
-	 * ダイアグラムを宣言し、ダイアグラム宣言名を返す
+	 * ダイアグラムを宣言する
 	 * @param hierarchy
 	 * @param dpoint
 	 * @param z
-	 * @return ダイアグラム名
 	 * @throws IOException
 	 */
-	protected String declareDiagram(int hierarchy, Point2D dpoint, double z) throws IOException {
-		declareSubDiagrams(hierarchy, dpoint, z);
-		String name = diagramID();
+	protected String drawDiagram(int hierarchy, Point3D point) throws IOException {
+		declareNodes();
+		declareSubDiagrams(hierarchy, point);
+		String name = id(this.diagram);
 		scene.write("#declare " + name + " = union {" + CR);
-		drawNodes(hierarchy, dpoint, z);
+		drawNodes(hierarchy);
 		scene.write("}" + CR);
 		return name;
 	}
@@ -213,9 +223,9 @@ abstract public class Diagram {
 	 * @param dpoint
 	 * @param z
 	 */
-	protected void declareSubDiagrams(int hierarchy, Point2D dpoint, double z) {
-		for(INodePresentation parent: nodes) {
-			declareDiagram(parent, hierarchy+1, dpoint, z);
+	protected void declareSubDiagrams(int hierarchy, Point3D point) {
+		for(Node parent: nodes) {
+			declareDiagram(parent, hierarchy+1, point);
 		}
 	}
 
@@ -227,24 +237,15 @@ abstract public class Diagram {
 	 * @param dpoint
 	 * @param z
 	 */
-	protected void declareDiagram(INodePresentation parent, int hierarchy, Point2D dpoint, double z) {}
+	protected void declareDiagram(Node parent, int hierarchy, Point3D point) {}
 
 	/**
 	 * サブダイアグラムを持つノード型である
 	 * 
 	 * @param parent
 	 */
-	protected boolean hasSubDiagram(INodePresentation parent) {
+	protected boolean hasSubDiagram(Node parent) {
 		return false;
-	}
-	
-	/**
-	 * このダイアグラム宣言名を返す
-	 * 
-	 * @return ダイアグラム宣言名
-	 */
-	protected String diagramID() {
-		return id(this.diagram);
 	}
 	
 	/**
@@ -271,8 +272,8 @@ abstract public class Diagram {
 	 * 対象ノードすべてを描く
 	 * @throws IOException
 	 */
-	protected void drawNodes(int hierarchy, Point2D dpoint, double z) throws IOException {
-		for (INodePresentation node : nodes) {
+	protected void drawNodes(int hierarchy) throws IOException {
+		for (Node node : nodes) {
 			draw(node, hierarchy);
 		}
 	}
@@ -284,13 +285,11 @@ abstract public class Diagram {
 	 * @param hierarchy
 	 * @throws IOException
 	 */
-	protected void draw(INodePresentation node, int hierarchy) throws IOException {
+	protected void draw(Node node, int hierarchy) throws IOException {
 		if(!drawSubDiagram(node, hierarchy + 1)) {
-			Point2D point = center(node);	
-			scene.write("  object { " + type(node) + OBJECT_UNIT + translate(point, zposition(node)) + " }" + CR);
-			text(node);
+			scene.write(node.draw());
 		}
-		drawSource(node);
+		drawLinkSource(node);
 	}
 
 	/**
@@ -298,30 +297,12 @@ abstract public class Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void drawSource(INodePresentation node) throws IOException {
+	protected void drawLinkSource(Node node) throws IOException {
 		for(ILinkPresentation link: node.getLinks()) {
-			if(link.getSource() == node) {
+			if(node.isSource(link)) {
 				draw(link);
 			}
 		}
-	}
-
-	/**
-	 * ノードのz座標値
-	 * @param node
-	 * @return
-	 */
-	protected double zposition(INodePresentation node) {
-		return 0.0;
-	}
-	
-	/**
-	 * ノードオブジェクトの中心座標を取得する
-	 * @param node
-	 * @return Point2D 中心座標
-	 */
-	protected Point2D center(INodePresentation node) {
-		return new Point2D.Double(node.getRectangle().getCenterX(), node.getRectangle().getCenterY());
 	}
 
 	/**
@@ -353,62 +334,22 @@ abstract public class Diagram {
 	 * @return ダイアグラム階層がある
 	 * @throws IOException
 	 */
-	protected boolean drawSubDiagram(INodePresentation node, int hierarchy) throws IOException {
+	protected boolean drawSubDiagram(Node node, int hierarchy) throws IOException {
 		return false;
 	}
 
-	/**
-	 * ラベルを描く
-	 * @param node
-	 * @throws IOException
-	 */
-	protected void text(INodePresentation node) throws IOException {
-		String nodeLabel = label(node);
-		if(!nodeLabel.replace(" ", "").isEmpty()) { // 名前がないか空白だけの名前は表示しない
-			double step = 0.8;
-			Point2D point = (Point2D)center(node);
-			for(String label: nodeLabel.split("\n")) {
-				double radius = 1.6;
-				double scale = 1.0;
-				if(label.getBytes().length >= 20) { // 文字列が1週を越えるとエラーになる。20文字を目安に、サイズの縮小と半径の拡大を補正してエラーを避ける。
-					scale -= (label.getBytes().length - 20)/30.0;
-					radius += (label.getBytes().length - 20)/30.0;
-				}
-				scene.write(String.format(CIRCLE_TEXT, label, scale, radius,  labelTexture(node) + translate(point, TEXT_OFFSET_Z)) + CR);
-				radius += step;
-			}
-		}
-	}
-	
-	/**
-	 * ラベルのテクスチャを返す
-	 * @param node
-	 * @return テクスチャを返す
-	 */
-	protected String labelTexture(INodePresentation node) {
-		return "texture { LabelTecture }";
-	}
-
-	/**
-	 * サブダイアグラム上にノードのラベルを描く
-	 * @param node
-	 * @param bound
-	 * @throws IOException
-	 */
-	protected void textOnStage(INodePresentation node, Point2D point, double offsetz) throws IOException {
-		String label = label(node);
-		if(!label.isEmpty()) {
-			scene.write(String.format(TEXT16, label, translate(point, zposition(node) + offsetz)) + CR);
-		}
-	}
-	
 	/**
 	 * ノード、リンクのラベル名を返す
 	 * @param presence
 	 * @return ラベル名
 	 */
 	protected String label(IPresentation presence) {
-		return presence.getLabel();
+		String label = presence.getLabel();
+		if(label.replace(" ", "").isEmpty()) {
+			return "";
+		}else {
+			return label;
+		}
 	}
 
 	/**
@@ -417,33 +358,52 @@ abstract public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link) throws IOException {
-		draw(link, OFFSET_Z, OFFSET_Z);
+		draw(link, findNode(link.getSource()), findNode(link.getTarget()));
 	}
 
 	/**
 	 * リンクを描く
 	 * @param link
 	 * @param lineRadius 
-	 * @param sourcez ソースの高さ
-	 * @param targetz ターゲットの高さ
+	 * @param source ソースの高さ
+	 * @param target ターゲットの高さ
 	 * @throws IOException
 	 */
-	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
+	protected void draw(ILinkPresentation link, Node source, Node target) throws IOException {
 		String description = "";
 		LineSort sort = lineSort(link);
-//		scene.write("// " + sort.toString() + " curve:" + link.getProperty("line.shape").equals("curve") + " | points:" + link.getAllPoints().length + CR);
 		if(sort.equals(LineSort.Loop)) {
-			description = drawLoop(link, center(link.getSource()), sourcez);
+			description = drawLoop(link, source);
 		}else{
-			List<Point3D> linePoints = sort.vertexes(link, sourcez, targetz);
-			description = "    union{" + CR;
-			description += draw(link, linePoints, true) + materialClause(link, true) + CR;
-			description += draw(link, linePoints, false) + materialClause(link, false) + CR;
-			description += "    }" + CR;
+			description = drawArrow(link, source, target, sort);
 		}
 		scene.write(description);
 	}
 
+	protected String drawArrow(ILinkPresentation link, Node source, Node target, LineSort sort) {
+		String description;
+		List<String> linePoints = sort.stringVertexes(link, source, target);
+		description = "    union{" + CR;
+		description += draw(link, linePoints, true) + materialClause(link, true) + CR;
+		description += draw(link, linePoints, false) + materialClause(link, false) + CR;
+		description += "    }" + CR;
+		return description;
+	}
+
+	/**
+	 * 指定のプレゼンテーションを持つ描画対象ノードを返す
+	 * @param presence
+	 * @return 描画対象ノード
+	 */
+	protected Node findNode(INodePresentation presence){
+		for(Node node: nodes) {
+			if(node.sameEntity(presence)) {
+				return node;
+			}
+		}
+		return null; // エラー
+	}
+	
 	/**
 	 * リンク種別を返す
 	 * 
@@ -492,9 +452,8 @@ abstract public class Diagram {
 	 * @param sourcep
 	 * @param sourcez
 	 */
-	protected String drawLoop(ILinkPresentation link, Point2D sourcep, double sourcez) {
-		sourcep.setLocation(sourcep.getX(), sourcep.getY());
-		return "    torus { LOOPRd, LRd translate<" + sourcep.getX() + ", " + (-sourcep.getY()) + ", " + sourcez + " - LOOPRd> " + materialClause(link, true) + CR;
+	protected String drawLoop(ILinkPresentation link, Node source) {
+		return "    torus { LOOPRd, LRd translate vert(" + source.getLocation() + ", - LOOPRd) " + materialClause(link, true) + CR;
 	}
 
 	/**
@@ -507,8 +466,39 @@ abstract public class Diagram {
 	 * @param リンク記述(true)か矢印記述(false)か
 	 * @return リンク記述あるいは矢印記述
 	 */
-	protected String draw(ILinkPresentation link, List<Point3D> linePoints, boolean isShape) {
-		int length = linePoints.size();
+//	protected String draw(ILinkPresentation link, List<Point3D> linePoints, boolean isShape) {
+//		int length = linePoints.size();
+//		boolean isCurve = link.getProperty("line.shape").equals("curve");
+//		String description = "    sphere_sweep { ";
+//		if(length == 2 || (!isCurve && link.getAllPoints().length == length)) {
+//			description += "linear_spline, ";
+//		}else {
+//			description += "cubic_spline, ";
+//		}
+//		description +=  length + ", ";
+//		if(isShape) {
+//			for(Point3D point: linePoints) {
+//				description += point + ", LRd ";
+//			}
+//		}else {
+//			int count = 0;
+//			for(Point3D point: linePoints) {
+//				description += point;
+//				if(count == 0) {
+//					description += ", LRd ";
+//				}else if(count < length - 1) {
+//					description += ", LRd/" + (Math.pow(2.0, (double)(count-1))) + " ";
+//				}else {
+//					description += ", 0.0 ";
+//				}
+//				count++;
+//			}
+//		}
+//		return description;
+//	}
+
+	protected String draw(ILinkPresentation link, List<String> vertexes, boolean isShape) {
+		int length = vertexes.size();
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
 		String description = "    sphere_sweep { ";
 		if(length == 2 || (!isCurve && link.getAllPoints().length == length)) {
@@ -518,13 +508,13 @@ abstract public class Diagram {
 		}
 		description +=  length + ", ";
 		if(isShape) {
-			for(Point3D point: linePoints) {
-				description += coordinate(point) + ", LRd ";
+			for(String point: vertexes) {
+				description += point + ", LRd ";
 			}
 		}else {
 			int count = 0;
-			for(Point3D point: linePoints) {
-				description += coordinate(point);
+			for(String point: vertexes) {
+				description += point;
 				if(count == 0) {
 					description += ", LRd ";
 				}else if(count < length - 1) {
@@ -555,46 +545,9 @@ abstract public class Diagram {
 	protected String material(IPresentation presence, boolean isShape) {
 		return "material { " + (isShape?"":"Shadow") + type(presence) + "Material } ";
 	}
-	
-	/**
-	 * translate句を返す
-	 * @param point
-	 * @return 移動句
-	 */
-	protected String translate(Point2D point) {
-		return translate(point, 0.0);
-	}
 
-	/**
-	 * translate句を返す
-	 * @param point
-	 * @param z
-	 * @return 移動句
-	 */
-	protected String translate(Point2D point, double z) {
-		return " translate " + coordinate(point, z);
-	}
-
-	/**
-	 * ベクトル表記を返す
-	 * @param point
-	 * @return <x,y,z>
-	 */
-	protected String coordinate(Point2D point) {
-		return coordinate(point, 0.0);
-	}
-
-	
-	protected String coordinate(Point3D point) {
-		return String.format(COORDINATE, point.getX(), -point.getY(), point.getZ());
-	}
-	/**
-	 * ベクトル表記を返す
-	 * @param point
-	 * @param z
-	 * @return <x,y,z>
-	 */
-	protected String coordinate(Point2D point, double z) {
-		return String.format(COORDINATE, point.getX(), -point.getY(), z);
+	protected Point2D center(INodePresentation node) {
+		Rectangle2D bound = node.getRectangle();
+		return new Point2D.Double(bound.getCenterX(), -bound.getCenterY());
 	}
 }

@@ -8,6 +8,14 @@
 /** Materials for povastah objects **/
 #include "povastahParts.inc"
 
+#macro vert(base, OZ)
+ base + <0,0,OZ>
+#end
+
+#macro vertex(base, add)
+ base + add
+#end
+
 /***************************************************/
 
 #declare LabelFont = "msgothic.ttc"
@@ -25,7 +33,10 @@
 /*
  * Use Case Diagram
  */
-#declare Actor = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
+#declare BoundaryInstance = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
+
+#declare Actor = object { BoundaryInstance }
+
 
 /*
  * Activity Diagram

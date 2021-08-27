@@ -12,11 +12,10 @@ import com.change_vision.jude.api.inf.model.IElement;
 import com.change_vision.jude.api.inf.model.ILifeline;
 import com.change_vision.jude.api.inf.model.IMessage;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
-import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 import biz.chamos.povastah.shape.LineSort;
-import biz.chamos.povastah.shape.Point3D;
+import biz.chamos.povastah.shape.Node;
 
 /**
  * CommunicationDiagram Object in POVRay Scene
@@ -39,38 +38,27 @@ public class CommunicationDiagram extends ClassDiagram {
 	 * @throws IOException
 	 */
 	@Override
-	protected void draw(INodePresentation node, int hierarchy) throws IOException {
+	protected void draw(Node node, int hierarchy) throws IOException {
 		if(node.getModel() instanceof IMessage) {
 			IMessage message = (IMessage)(node.getModel());
+			Node source, target;
 			for(ILinkPresentation link: node.getLinks()) {	
 				LineSort sort = lineSort(link);
-				List<Point3D> linePoints = sort.vertexes(link, OFFSET_Z, OFFSET_Z);
-				if((link.getSource().getModel() == message.getSource()) && link.getTarget().getModel() == message.getTarget()){
+				source = findNode(link.getSource());
+				target = findNode(link.getTarget());
+				List<String> linePoints = sort.stringVertexes(link, source, target);
+				if(source.getModel() == message.getSource() && target.getModel() == message.getTarget()){
 					scene.write(draw(link, linePoints, false) + materialClause(link, false) + CR);
 					break;
-				}else if((link.getSource().getModel() == message.getTarget()) && link.getTarget().getModel() == message.getSource()) {	
+				}else if(source.getModel() == message.getTarget() && target.getModel() == message.getSource()) {	
 					Collections.reverse(linePoints);
 					scene.write(draw(link, linePoints, false) + materialClause(link, false) + CR);
 					break;
 				}
 			}
-			text(node);
+			scene.write(node.text());
 		}else {
 			super.draw(node, hierarchy);
-		}
-	}
-
-	/**
-	 * ラベルのテクスチャを返す
-	 * メッセージのラベルのときは"MessageLabelTecture"を返す。
-	 * @param node
-	 * @return テクスチャを返す
-	 */
-	protected String labelTexture(INodePresentation node) {
-		if(node.getModel() instanceof IMessage) {
-			return "texture { MessageLabelTecture }";
-		}else {
-			return super.labelTexture(node);
 		}
 	}
 	
@@ -113,16 +101,17 @@ public class CommunicationDiagram extends ClassDiagram {
 	 * sphere_sweep{ linear_spline | cubic_spline }を記述する 
 	 * @param link
 	 * @param lineRadius 
-	 * @param sourcez ソースの高さ
-	 * @param targetz ターゲットの高さ
+	 * @param source ソースの高さ
+	 * @param target ターゲットの高さ
 	 * @throws IOException
 	 */
-	protected void draw(ILinkPresentation link, double sourcez, double targetz) throws IOException {
-		String type = link.getType();
-		if(type.equals("LifelineLink")) {
-			scene.write(draw(link, lineSort(link).vertexes(link, sourcez, targetz), true) + materialClause(link, true) + CR);
+	protected void draw(ILinkPresentation link, Node source, Node target) throws IOException {
+		if(link.getType().equals("LifelineLink")) {
+			LineSort sort = lineSort(link);
+			List<String> linePoints = sort.stringVertexes(link, source, target);
+			scene.write(draw(link, linePoints, true) + materialClause(link, true) + CR);
 		}else{
-			super.draw(link, sourcez, targetz);
+			super.draw(link, source, target);
 		}	
 	}
 }
