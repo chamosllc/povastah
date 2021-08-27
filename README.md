@@ -14,7 +14,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 ※[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
 
-<details open>
+<details>
 <summary>クラス図</summary> 
 
 <table>
