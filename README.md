@@ -146,5 +146,8 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
        * ```#declare FOCUS = <x,y,z>;```
     * リンク影のマテリアルを切り替える。
        * ```#declare ShadowType=1;```
+    * ノードオブジェクトの位置を動かす。
+       * ```#local Action0_1 = <188.540, -147.320, 0.0>;```
+
 
 ※UTF-8で日本語文字を含めて出力する。POVRayエディタはUTF-8に対応していないため、出力されたPOVRayスクリプトファイルを編集する際は、別途、UTF-8を扱えるテキストエディタを推奨する。
