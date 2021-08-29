@@ -27,10 +27,6 @@ import biz.chamos.povastah.shape.Point3D;
  */
 abstract public class Diagram {
 	/*
-	 * オブジェクトのz値のオフセット
-	 */
-	static final public double TEXT_OFFSET_Z = 30.0;
-	/*
 	 * 改行文字列
 	 */
 	static final public String CR = System.lineSeparator();
@@ -51,24 +47,12 @@ abstract public class Diagram {
 			+ "#local LRd = 3.2;" + CR							// リンクsphere_sweepオブジェクトの半径
 			+ "#local LOOPRd = 36.0;" + CR					// 自己遷移リンクtorusオブジェクトの半径
 			+ "#local TextScale = <16, 16, 2>;" + CR  + CR;	// Circle_Text, textオブジェクトのスケーリング
-	
 	/*
 	 * 撮影環境記述
 	 */
 	static final protected String CAMERA = "camera { location EYE direction 1*z look_at FOCUS }" + CR;
 	static final protected String LIGHT = "light_source { <-1000, -1000, -3000>   color White }" + CR;
-	/*
-	 * 3D座標系フォーマット
-	 */
-	static final public String COORDINATE = "<%.3f, %.3f, %.2f>";
-	static final public String ICOORDINATE = "<%d, %d, %d>";
-	/*
-	 * オブジェクト関連フォーマット
-	 */
-	static final public String OBJECT_UNIT = " rotate -x*90 scale 24.0";
-	static final public String CIRCLE_TEXT = "    object { Circle_Text(LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }" + CR;
-	static final public String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
-	
+	static final protected String PLANE = "plane { z, 32 texture { %s }}" + CR;
 	/**
 	 * シーン記述ファイル
 	 */
@@ -178,16 +162,15 @@ abstract public class Diagram {
 	 * @throws IOException
 	 */
 	protected void stage() throws IOException {
-		final String DEFVAR = "#declare %s = " + ICOORDINATE + ";" + CR;
+		final String DEFVAR = "#declare %s = <%d, %d, %d>;" + CR;
 		// フレームの矩形の中心をカメラ焦点にする
 		int stageX = (int)stageBounds.getCenterX();
 		int stageY = (int)-stageBounds.getCenterY();
 		int stageZ = stageY - Math.abs(stageX) - 32;
 		scene.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 120));
 		scene.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0));
-		scene.write(CAMERA);
-		scene.write(LIGHT);
-		scene.write("plane { z, 32 texture { " + stageTexture() + " }}" + CR);
+		scene.write(CAMERA + LIGHT);
+		scene.write(String.format(PLANE, stageTexture()));
 		scene.flush();
 	}
 
@@ -196,8 +179,8 @@ abstract public class Diagram {
 	 * @throws IOException
 	 */
 	protected void drawDiagram() throws IOException {
-		String name = drawDiagram(0, new Point3D());
-		scene.write("object { " + name + " }" +CR);	
+		drawDiagram(0, new Point3D());
+		scene.write("object { " + id(diagram) + " }" +CR);
 	}
 	/**
 	 * ダイアグラムを宣言する
@@ -206,14 +189,12 @@ abstract public class Diagram {
 	 * @param z
 	 * @throws IOException
 	 */
-	protected String drawDiagram(int hierarchy, Point3D point) throws IOException {
+	protected void drawDiagram(int hierarchy, Point3D point) throws IOException {
 		declareNodes();
 		declareSubDiagrams(hierarchy, point);
-		String name = id(this.diagram);
-		scene.write("#declare " + name + " = union {" + CR);
+		scene.write("#declare " + id(diagram) + " = union {" + CR);
 		drawNodes(hierarchy);
 		scene.write("}" + CR);
-		return name;
 	}
 
 	/**

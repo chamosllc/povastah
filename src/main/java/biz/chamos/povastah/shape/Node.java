@@ -19,6 +19,15 @@ import com.change_vision.jude.api.inf.presentation.INodePresentation;
  * @since 2021/08/21
  */
 public class Node {
+	/*
+	 * オブジェクトのz値のオフセット
+	 */
+	static final public double TEXT_OFFSET_Z = 30.0;
+	/*
+	 * オブジェクト関連フォーマット
+	 */
+	static final public String OBJECT_UNIT = " rotate -x*90 scale 24.0";
+	static final public String CIRCLE_TEXT = "    object { Circle_Text(LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }" + CR;
 	static final public String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale TextScale texture { LabelTecture }%s no_shadow }" + CR;
 
 	/**
@@ -120,6 +129,11 @@ public class Node {
 		return String.format(" vert(%s, %.1f)", name, location.getZ() + LineSort.OFFSET_Z);
 	}
 
+	/**
+	 * ノード中心座標に macro vert(
+	 * @param zposition
+	 * @return
+	 */
 	public String vert(double zposition) {
 		return String.format(" vert(%s, %.1f)", name, zposition);
 	}

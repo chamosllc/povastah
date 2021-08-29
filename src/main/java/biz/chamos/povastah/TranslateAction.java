@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import com.change_vision.jude.api.inf.AstahAPI;
 import com.change_vision.jude.api.inf.exception.ProjectNotFoundException;
-import com.change_vision.jude.api.inf.model.IModel;
 import com.change_vision.jude.api.inf.project.ProjectAccessor;
 import com.change_vision.jude.api.inf.ui.IPluginActionDelegate;
 import com.change_vision.jude.api.inf.ui.IWindow;
@@ -25,8 +24,6 @@ public class TranslateAction implements IPluginActionDelegate {
 	    try {
 	        api = AstahAPI.getAstahAPI();
 	        ProjectAccessor projectAccessor = api.getProjectAccessor();
-	        IModel project = projectAccessor.getProject();
-
 	        File directory = selectScriptOutputDirectory(window, projectAccessor.getProjectPath());
 	        if(directory != null) {
 		        new SceneProducer(projectAccessor, directory).produceAll();

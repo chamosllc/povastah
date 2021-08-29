@@ -17,7 +17,11 @@ import biz.chamos.povastah.shape.Point3D;
  *
  */
 public class UseCaseDiagram extends ClassDiagram {
-
+	/*
+	 * オブジェクト関連フォーマット
+	 */
+	static final public String TEXT = "    text { ttf LabelFont, \"%s\", 1, 0 texture { LabelTecture }%s }";
+	
 	public UseCaseDiagram(IDiagram diagram, OutputStreamWriter scene){
 		super(diagram, scene);
 	}

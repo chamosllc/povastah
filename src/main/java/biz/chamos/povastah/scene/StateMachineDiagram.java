@@ -30,6 +30,10 @@ public class StateMachineDiagram extends Diagram {
 	static final public double VERTEX_R = 0.97;
 	static final public double VERTEX_H = 20.0;
 	static final public double VERTEX_D = 4.0;
+	/*
+	 * 3D座標系フォーマット
+	 */
+	static final protected String COORDINATE = "<%.3f, %.3f, %.2f>";
 
 	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter scene){
 		super(diagram, scene);
