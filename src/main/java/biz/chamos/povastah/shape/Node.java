@@ -130,20 +130,28 @@ public class Node {
 	}
 
 	/**
-	 * ノード中心座標に macro vert(
+	 * ノード中心座標からZ座標だけ引数分移動する
 	 * @param zposition
-	 * @return
+	 * @return " vert(name, zpositon)",
 	 */
 	public String vert(double zposition) {
 		return String.format(" vert(%s, %.1f)", name, zposition);
 	}
-	
+	/** 
+	 * ノード中心座標kから相対座標分移動する
+	 * @param point
+	 * @return " vertex(name, point-location)"
+	 */
+	public String vertex(Point3D point) {
+		return String.format(" vert(vertex(%s, %s), %.1f)", name, point.minus(location));
+	}
+	/** 
+	 * ノード中心座標からの相対座標とZ値分移動する
+	 * @param zposition
+	 * @return " vert(vertex(name, point-location), zposition)"
+	 */
 	public String vertex(Point3D point, double zposition) {
 		return String.format(" vert(vertex(%s, %s), %.1f)", name, point.minus(location), zposition);
-	}
-	
-	public String vertex(Point3D point) {
-		return String.format(" vertex(%s, %s)", name, point.minus(location));
 	}
 	
 	public String translate(double zposition) {
