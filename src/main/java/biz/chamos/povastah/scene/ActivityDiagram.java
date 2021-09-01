@@ -2,6 +2,7 @@ package biz.chamos.povastah.scene;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 import com.change_vision.jude.api.inf.model.IAction;
 import com.change_vision.jude.api.inf.model.IActivity;
@@ -22,12 +23,16 @@ import biz.chamos.povastah.shape.Point3D;
  * @since 2021/07/07
  *
  */
-public class ActivityDiagram extends Diagram {
+public class ActivityDiagram extends HierarchyDiagram {
 
 	public ActivityDiagram(IDiagram diagram, OutputStreamWriter scene){
 		super(diagram, scene);
 	}
 
+	public ActivityDiagram(IDiagram diagram, List<IDiagram> child, OutputStreamWriter scene){
+		super(diagram, scene);
+		this.children = child;
+	}
 	/**
 	 * ノードが描画対象でない
 	 * @param ノード
@@ -50,13 +55,14 @@ public class ActivityDiagram extends Diagram {
 	/**
 	 * サブダイアグラムを宣言をする
 	 */
-	protected void declareDiagram(Node parent, int hierarchy, Point3D point){
+	protected void declareDiagram(Node parent, Point3D point){
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, scene);
-				hierarchyDiagram.existsScene(hierarchy);
-				hierarchyDiagram.drawDiagram(hierarchy, point);
+				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, children, scene);
+				if(hierarchyDiagram.existsScene()) {
+					hierarchyDiagram.drawDiagram(point);
+				}
 			} catch (Exception e) {}
 		}
 	}
@@ -64,13 +70,17 @@ public class ActivityDiagram extends Diagram {
 	/**
 	 * サブダイアグラムを返す
 	 * @param parent
-	 * @return nullの場合がある
+	 * @return サブダイアラムが指定されていない、あるいは、既に定義されたダイアグラムの場合は、nullを返す
 	 */
 	protected IActivityDiagram subDiagram(Node parent) {
 		if(hasSubDiagram(parent)) {
 			IActivity activity = ((IAction) parent.getModel()).getCallingActivity(); // nullの場合がある
 			if(activity != null) {
-				return activity.getActivityDiagram();
+				IActivityDiagram diagram = activity.getActivityDiagram();
+				if(!children.contains(diagram)) {
+					children.add(diagram);
+				}
+				return diagram; 
 			}
 		}
 		return null;
@@ -79,26 +89,23 @@ public class ActivityDiagram extends Diagram {
 	/**
 	 * サブダイアグラムを持つノード型である
 	 */
+	@Override
 	protected boolean hasSubDiagram(Node parent) {
-		return parent.isType("CallBehaviorAction");
+		return parent.isLiterallyType("CallBehaviorAction");
 	}
 	
 	/**
 	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
 	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるとき配置する
-	 * 
-	 * @param hierarchy
 	 * @param node
 	 * @return サブアクティビティがある
 	 * @throws IOException
 	 */
-	protected boolean drawSubDiagram(Node node, int hierarchy) throws IOException {
+	protected boolean drawSubDiagram(Node node) throws IOException {
 		IActivityDiagram subDiagram = subDiagram(node);
 		if(subDiagram != null) {
 			double delta = 36.0;
 			scene.write(node.drawWithStage(id(subDiagram), subDiagram.getBoundRect(), delta));
-			
-//			textOnStage(node, new Point2D.Double(node.getBound().getMinX() + 28.0, node.getBound().getMaxY() + 32.0), 31.0);
 			return true;
 		}
 		return false;
@@ -122,8 +129,8 @@ public class ActivityDiagram extends Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isSourceUp(INodePresentation node) {
-		return node.getType().equals("ForkNode");
+	protected boolean isSourceUp(Node node) {
+		return node.isLiterallyType("ForkNode");
 	}
 	
 	/**
@@ -131,7 +138,7 @@ public class ActivityDiagram extends Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isTargetUp(INodePresentation node) {
-		return node.getType().equals("JoinNode");
+	protected boolean isTargetUp(Node node) {
+		return node.isLiterallyType("JoinNode");
 	}
 }

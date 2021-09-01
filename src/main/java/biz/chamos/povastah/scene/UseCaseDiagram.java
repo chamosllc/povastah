@@ -29,14 +29,12 @@ public class UseCaseDiagram extends ClassDiagram {
 	/**
 	 * 指定ノードを描く
 	 * UseCaseの場合はユースケース名を書いた楕円柱オブジェクトを出力する
-	 * 
 	 * @param node
-	 * @param hierarchy ユースケースには階層がないので意味の無い値
 	 * @throws IOException
 	 */
 	@Override
-	protected void draw(Node node, int hierarchy) throws IOException {
-		if(node.isType("UseCase")){
+	protected void draw(Node node) throws Exception {
+		if(node.isLiterallyType("UseCase")){
 			String[] labels = node.getLabel().split("\n");
 			int max = 0;
 			double height = labels.length * 0.2 + 0.4;
@@ -54,7 +52,7 @@ public class UseCaseDiagram extends ClassDiagram {
 					+ "  } scale 64 translate" + point + "}" +CR);
 			drawLinkSource(node);
 		}else {
-			super.draw(node, hierarchy);
+			super.draw(node);
 		}
 	}
 }

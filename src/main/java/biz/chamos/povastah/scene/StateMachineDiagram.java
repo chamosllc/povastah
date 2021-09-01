@@ -26,7 +26,7 @@ import biz.chamos.povastah.shape.Point3D;
  * @since 2021/07/01
  *
  */
-public class StateMachineDiagram extends Diagram {
+public class StateMachineDiagram extends HierarchyDiagram {
 	static final public double VERTEX_R = 0.97;
 	static final public double VERTEX_H = 20.0;
 	static final public double VERTEX_D = 4.0;
@@ -35,20 +35,26 @@ public class StateMachineDiagram extends Diagram {
 	 */
 	static final protected String COORDINATE = "<%.3f, %.3f, %.2f>";
 
-	public StateMachineDiagram(IDiagram diagram, OutputStreamWriter scene){
+	public StateMachineDiagram(IDiagram diagram,OutputStreamWriter scene){
 		super(diagram, scene);
+	}
+
+	public StateMachineDiagram(IDiagram diagram, List<IDiagram> child, OutputStreamWriter scene){
+		this(diagram, scene);
+		this.children = child;
 	}
 
 	/**
 	 * サブダイアグラムを宣言をする
 	 */
-	protected void declareDiagram(Node parent, int hierarchy, Point3D point){
+	protected void declareDiagram(Node parent, Point3D point){
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			try {
-				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, scene);
-				hierarchyDiagram.existsScene(hierarchy);
-				hierarchyDiagram.drawDiagram(hierarchy, point);
+				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, children, scene);
+				if(hierarchyDiagram.existsScene()) {
+					hierarchyDiagram.drawDiagram(point);
+				}
 			} catch (Exception e) {}
 		}
 	}
@@ -62,7 +68,11 @@ public class StateMachineDiagram extends Diagram {
 		if(hasSubDiagram(parent)) {
 			IStateMachine machine = ((IState) parent.getModel()).getSubmachine(); // nullの場合がある
 			if(machine != null) {
-				return machine.getStateMachineDiagram(); 
+				IStateMachineDiagram diagram = machine.getStateMachineDiagram();
+				if(!children.contains(diagram)) {
+					children.add(diagram);
+				}
+				return diagram; 
 			}
 		}
 		return null;
@@ -71,8 +81,18 @@ public class StateMachineDiagram extends Diagram {
 	/**
 	 * サブダイアグラムを持つノード型である
 	 */
+	@Override
 	protected boolean hasSubDiagram(Node parent) {
-		return parent.isType("SubmachineState");
+		return parent.isLiterallyType("SubmachineState");
+	}
+	
+	/**
+	 * 階層構造を持つノードである
+	 * @param parent ノード
+	 */
+	@Override
+	protected boolean hasHierarchy(Node parent) {
+		return super.hasHierarchy(parent) || hasInternalMachine(parent);
 	}
 
 	/**
@@ -95,31 +115,27 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	/**
-	 * 指定ノードを描く
-	 * 
+	 * ノードを描く
 	 * @param node
-	 * @param hierarchy
 	 * @throws IOException
 	 */
-	@Override
-	protected void draw(Node node, int hierarchy) throws IOException {
-		if(drawInternalMachine(node)) {
+	protected void draw(Node node) throws Exception {
+		if(hasInternalMachine(node)) {
+			drawInternalMachine(node);
 			drawLinkSource(node);
 		}else {
-			super.draw(node, hierarchy);
+			super.draw(node);
 		}
 	}
 
 	/**
 	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
 	 * サブマシン状態(SubmachineState)にサブマシンがあるとき配置する
-	 * 
-	 * @param hierarchy
 	 * @param node
 	 * @return サブマシンがある
 	 * @throws IOException
 	 */
-	protected boolean drawSubDiagram(Node node, int hierarchy) throws IOException {
+	protected boolean drawSubDiagram(Node node) throws IOException {
 		IStateMachineDiagram subDiagram = subDiagram(node);
 		if(subDiagram != null) {
 			Rectangle2D bound = node.getBound();
@@ -131,39 +147,46 @@ public class StateMachineDiagram extends Diagram {
 	}
 
 	/**
-	 * 内部状態ステージを描く
-	 * @param node
-	 * @return
+	 * 内部状態マシンを描く
+	 * @param machine 内部状態マシンを持つノード
 	 * @throws IOException
 	 */
-	protected boolean drawInternalMachine(Node node) throws IOException {
+	protected void drawInternalMachine(Node machine) throws IOException {
+		IState state = (IState)machine.getModel();
+		double z = machine.getLocation().getZ() - VERTEX_D;
+		IVertex[] vertex = state.getSubvertexes();
+		Rectangle2D bound = machine.getBound();
+		Point3D point = machine.getLocation().settleZ(z);
+		String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), VERTEX_H)
+			+ machine.translate(z) + " }";
+		// vertexをstageの凹にする
+		scene.write("  difference {" + CR + stage + CR);
+		for(int i=0; i < vertex.length; i++) {
+			try {
+				Rectangle2D area = state.getRegionRectangle(i);
+				point = new Point3D(area.getCenterX(), -area.getCenterY(), z - 0.5);
+				scene.write("    object { StateInternal scale" + String.format(COORDINATE, area.getWidth()*VERTEX_R, area.getHeight()*VERTEX_R, VERTEX_H)
+					+ machine.translate(point) + " }" + CR);						
+			} catch (InvalidUsingException e) {}
+		}
+		scene.write("  }" + CR);
+		scene.write(machine.textOnStage(24.0));
+	}
+
+	/**
+	 * 内部状態マシンを持つ状態である
+	 * @param node
+	 * @return 内部状態マシンを持つ状態である
+	 */
+	protected boolean hasInternalMachine(Node node) {
 		if(node.getModel() instanceof IState) {
 			IState state = (IState)node.getModel();
 			if(state.getRegionSize() > 0) {
-				double z = node.getLocation().getZ() - VERTEX_D;
-				IVertex[] vertex = state.getSubvertexes();
-				Rectangle2D bound = node.getBound();
-				Point3D point = node.getLocation().settleZ(z);
-				String stage = "    object { StateInternal scale" + String.format(COORDINATE, bound.getWidth(), bound.getHeight(), VERTEX_H)
-					+ node.translate(z) + " }";
-				// vertexをstageの凹にする
-				scene.write("  difference {" + CR + stage + CR);
-				for(int i=0; i < vertex.length; i++) {
-					try {
-						Rectangle2D area = state.getRegionRectangle(i);
-						point = new Point3D(area.getCenterX(), -area.getCenterY(), z - 0.5);
-						scene.write("    object { StateInternal scale" + String.format(COORDINATE, area.getWidth()*VERTEX_R, area.getHeight()*VERTEX_R, VERTEX_H)
-							+ node.translate(point) + " }" + CR);						
-					} catch (InvalidUsingException e) {}
-				}
-				scene.write("  }" + CR);
-				scene.write(node.textOnStage(24.0));
 				return true;
-			}
+			};
 		}
 		return false;
 	}
-
 	/**
 	 * リンクを描く
 	 * @param link
@@ -209,19 +232,20 @@ public class StateMachineDiagram extends Diagram {
 	 * 
 	 * @param link
 	 * @return リンク種別
+	 * @throws Exception 
 	 */
-	protected LineSort lineSort(ILinkPresentation link) {
-		INodePresentation source = link.getSource();
-		INodePresentation target = link.getTarget();
+	protected LineSort lineSort(ILinkPresentation link) throws Exception {
+		Node source = findNode(link.getSource());
+		Node target = findNode(link.getTarget());
 		if(isOtherParent(source, target)) {
 			if(isInternal(source) || isSourceUp(source)) {
-				if(isInternal(target) || isTargetUp(target)) {
+				if(isInternal(target) || isTargetUp(target) || !hasHierarchy(target)) {
 					return LineSort.Both;
 				}else {
 					return LineSort.Source;
 				}
 			}else if(isInternal(target) || isTargetUp(target)) {
-				return LineSort.Target;
+				return LineSort.Both;
 			}
 		}
 		return super.lineSort(link);
@@ -232,8 +256,8 @@ public class StateMachineDiagram extends Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isSourceUp(INodePresentation node) {
-		return node.getType().equals("ForkPseudostate");
+	protected boolean isSourceUp(Node node) {
+		return node.isLiterallyType("ForkPseudostate");
 	}
 	
 	/**
@@ -241,8 +265,8 @@ public class StateMachineDiagram extends Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isTargetUp(INodePresentation node) {
-		return node.getType().equals("JoinPseudostate");
+	protected boolean isTargetUp(Node node) {
+		return node.isLiterallyType("JoinPseudostate");
 	}
 	
 	/**
@@ -251,7 +275,7 @@ public class StateMachineDiagram extends Diagram {
 	 * @param target
 	 * @return 山なり
 	 */
-	public boolean isOtherParent(INodePresentation source, INodePresentation target) {
+	public boolean isOtherParent(Node source, Node target) {
 		return source != target // 念押し
 				&& source.getModel().getContainer() != target.getModel().getContainer();
 	}
@@ -261,25 +285,20 @@ public class StateMachineDiagram extends Diagram {
 	 * @param node
 	 * @return 内部状態内にある
 	 */
-	protected boolean isInternal(INodePresentation node) {
+	protected boolean isInternal(Node node) {
 		return node.getModel().getContainer() instanceof IState;
-	}	
+	}
+
 	/**
 	 * リンクを円環で描く
 	 * @param link
-	 * @param sourcep
-	 * @param sourcez
-	 * @throws IOException
+	 * @param source
 	 */
 	protected String drawLoop(ILinkPresentation link, Node source) {
-		boolean isEntity = subDiagram(source) == null; // サブダイアグラムを持たない
-		if(isEntity && source.getModel() instanceof IState){
-			isEntity = ((IState)source.getModel()).getRegionSize() == 0; // 内部状態領域を持たない
-		}
-		if(isEntity){
-			return super.drawLoop(link, source);
+		if(hasHierarchy(source)){
+			return source.drawLoop() + materialClause(link.getSource(), true) + CR;		
 		}else {
-			return source.drawLoop() + materialClause(link.getSource(), true) + CR;
+			return super.drawLoop(link, source);
 		}
 	}
 }

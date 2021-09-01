@@ -34,6 +34,6 @@
 object { ClassDiagram_1ppa6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <252, -477, -401>;
 #declare FOCUS = <252, -237, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+camera { location EYE direction 1.6*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

@@ -32,13 +32,11 @@ public class CommunicationDiagram extends ClassDiagram {
 
 	/**
 	 * 指定ノードを描く
-	 * 
 	 * @param node
-	 * @param hierarchy
 	 * @throws IOException
 	 */
 	@Override
-	protected void draw(Node node, int hierarchy) throws IOException {
+	protected void draw(Node node) throws Exception {
 		if(node.getModel() instanceof IMessage) {
 			IMessage message = (IMessage)(node.getModel());
 			Node source, target;
@@ -58,14 +56,13 @@ public class CommunicationDiagram extends ClassDiagram {
 			}
 			scene.write(node.text());
 		}else {
-			super.draw(node, hierarchy);
+			super.draw(node);
 		}
 	}
 	
 	/**
 	 * ロバストネス図対応
 	 * 特定のステレオタイプについてはそのステレオタイプに対するPOVRayオブジェクトの型をマッピングする
-	 * 
 	 * @param presence
 	 * @return
 	 */
@@ -105,7 +102,7 @@ public class CommunicationDiagram extends ClassDiagram {
 	 * @param target ターゲットの高さ
 	 * @throws IOException
 	 */
-	protected void draw(ILinkPresentation link, Node source, Node target) throws IOException {
+	protected void draw(ILinkPresentation link, Node source, Node target) throws Exception {
 		if(link.getType().equals("LifelineLink")) {
 			LineSort sort = lineSort(link);
 			List<String> linePoints = sort.stringVertexes(link, source, target);

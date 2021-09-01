@@ -53,6 +53,7 @@ abstract public class Diagram {
 	static final protected String CAMERA = "camera { location EYE direction 1*z look_at FOCUS }" + CR;
 	static final protected String LIGHT = "light_source { <-1000, -1000, -3000>   color White }" + CR;
 	static final protected String PLANE = "plane { z, 32 texture { %s }}" + CR;
+
 	/**
 	 * シーン記述ファイル
 	 */
@@ -66,27 +67,27 @@ abstract public class Diagram {
 	 */
 	protected List<Node> nodes;
 
+	public Diagram(IDiagram diagram, OutputStreamWriter scene){
+		this.diagram = diagram;
+		this.scene = scene;
+	}
+	
 	/**
 	 * ダイアグラムの矩形領域
 	 */
 	protected Rectangle2D stageBounds;
-	
-	public Diagram(IDiagram diagram, OutputStreamWriter scene){
-		this.scene = scene;
-		this.diagram = diagram;
-		
-	}
 
 	/**
 	 * ダイアグラムをシーンとして記述する
+	 * @throws Exception 
 	 */
-	public void produce(){
-		if(existsScene(0)) {
+	public void produce() {
+		if(existsScene()) {
 			try {
 				header();
 				drawDiagram();
 				stage();
-			}catch(IOException e) {}
+			}catch(Exception e) {}
 		}
 	}
 	
@@ -94,15 +95,15 @@ abstract public class Diagram {
 	 * 描画ノードを抽出し、対象の有無を返す
 	 * @return 対象の有無
 	 */
-	protected boolean existsScene(int hierarchy){
+	protected boolean existsScene(){
 		nodes = new ArrayList<Node>();
 		try {
-			int id = 0;
+			int number = 0;
 			for(IPresentation presence: diagram.getPresentations()){ // 除外ノードでないノードを集める
 				if(presence instanceof INodePresentation) {
 					INodePresentation inode = (INodePresentation)presence;
 					if(!isExcludes(inode)) {
-						nodes.add(new Node(id++, hierarchy, type(inode), inode, label(inode)));
+						nodes.add(new Node(number++, diagramId(), type(inode), inode, label(inode)));
 					}
 				}
 			}
@@ -111,11 +112,18 @@ abstract public class Diagram {
 	}
 
 	/**
+	 * ダイアグラム番号
+	 * @return ダイアグラムが1つだけなので、ルートダイアグラム番号0を返す
+	 */
+	protected int diagramId() {
+		return 0;
+	}
+	
+	/**
 	 * ダイアグラム上のノード座標を変数として宣言する
 	 */
 	protected void declareNodes() {
 		try {
-			scene.write("// " + id(this.diagram) + CR);
 			for (Node node : nodes) {
 				scene.write(node.declare());
 			}
@@ -178,61 +186,25 @@ abstract public class Diagram {
 	 * ダイアグラムを宣言し、描画する
 	 * @throws IOException
 	 */
-	protected void drawDiagram() throws IOException {
-		drawDiagram(0, new Point3D());
+	protected void drawDiagram() throws Exception {
+		drawDiagram(new Point3D());
 		scene.write("object { " + id(diagram) + " }" +CR);
 	}
 	/**
 	 * ダイアグラムを宣言する
-	 * @param hierarchy
 	 * @param dpoint
-	 * @param z
 	 * @throws IOException
 	 */
-	protected void drawDiagram(int hierarchy, Point3D point) throws IOException {
-		declareNodes();
-		declareSubDiagrams(hierarchy, point);
+	protected void drawDiagram(Point3D point) throws Exception {
 		scene.write("#declare " + id(diagram) + " = union {" + CR);
-		drawNodes(hierarchy);
+		declareNodes();
+		drawNodes();
 		scene.write("}" + CR);
 	}
 
 	/**
-	 * すべてのサブダイアグラムを宣言する
-	 * 
-	 * @param hierarchy
-	 * @param dpoint
-	 * @param z
-	 */
-	protected void declareSubDiagrams(int hierarchy, Point3D point) {
-		for(Node parent: nodes) {
-			declareDiagram(parent, hierarchy+1, point);
-		}
-	}
-
-	/**
-	 * サブダイアグラムを宣言をする
-	 * 
-	 * @param parent
-	 * @param hierarchy
-	 * @param dpoint
-	 * @param z
-	 */
-	protected void declareDiagram(Node parent, int hierarchy, Point3D point) {}
-
-	/**
-	 * サブダイアグラムを持つノード型である
-	 * 
-	 * @param parent
-	 */
-	protected boolean hasSubDiagram(Node parent) {
-		return false;
-	}
-	
-	/**
 	 * 指定ダイアグラムの宣言名を返す
 	 * ※ユニークな名前が必要なので、IPresentaion.getID()文字列を利用する。ただし、ハイフォンを除去する
-	 * 
 	 * @param diagram 指定ダイアグラム
 	 * @return　ダイアグラム宣言名
 	 */
@@ -242,7 +214,6 @@ abstract public class Diagram {
 
 	/**
 	 * ダイアグラムのステージ(plane)のテクスチャ宣言名を返す
-	 * 
 	 * @return ダイアグラム型Texture
 	 */
 	protected String stageTexture() {
@@ -253,9 +224,9 @@ abstract public class Diagram {
 	 * 対象ノードすべてを描く
 	 * @throws IOException
 	 */
-	protected void drawNodes(int hierarchy) throws IOException {
+	protected void drawNodes() throws Exception {
 		for (Node node : nodes) {
-			draw(node, hierarchy);
+			draw(node);
 		}
 	}
 
@@ -263,13 +234,10 @@ abstract public class Diagram {
 	 * 指定ノードを描く
 	 * 
 	 * @param node
-	 * @param hierarchy
 	 * @throws IOException
 	 */
-	protected void draw(Node node, int hierarchy) throws IOException {
-		if(!drawSubDiagram(node, hierarchy + 1)) {
-			scene.write(node.draw());
-		}
+	protected void draw(Node node) throws Exception {
+		scene.write(node.draw());
 		drawLinkSource(node);
 	}
 
@@ -278,7 +246,7 @@ abstract public class Diagram {
 	 * @param node
 	 * @throws IOException
 	 */
-	protected void drawLinkSource(Node node) throws IOException {
+	protected void drawLinkSource(Node node) throws Exception {
 		for(ILinkPresentation link: node.getLinks()) {
 			if(node.isSource(link)) {
 				draw(link);
@@ -295,28 +263,6 @@ abstract public class Diagram {
 		Rectangle2D bound = link.getSource().getRectangle();
 		bound.add(link.getTarget().getRectangle());
 		return new Point2D.Double(bound.getCenterX(), bound.getCenterY());
-	}
-	
-	/**
-	 * 指定ノードのPOVRayオブジェクト型をマッピングする
-	 * ※IPresentation.getType()文字列を宣言名とする。ただし、この文字列中の記号や空白文字を除去する。
-	 * @param presence
-	 * @return
-	 */
-	protected String type(IPresentation presence) {
-		return presence.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
-	}
-
-	/**
-	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
-	 * 
-	 * @param hierarchy
-	 * @param node
-	 * @return ダイアグラム階層がある
-	 * @throws IOException
-	 */
-	protected boolean drawSubDiagram(Node node, int hierarchy) throws IOException {
-		return false;
 	}
 
 	/**
@@ -336,9 +282,9 @@ abstract public class Diagram {
 	/**
 	 * リンクを描く
 	 * @param link
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	protected void draw(ILinkPresentation link) throws IOException {
+	protected void draw(ILinkPresentation link) throws Exception {
 		draw(link, findNode(link.getSource()), findNode(link.getTarget()));
 	}
 
@@ -350,7 +296,7 @@ abstract public class Diagram {
 	 * @param target ターゲットの高さ
 	 * @throws IOException
 	 */
-	protected void draw(ILinkPresentation link, Node source, Node target) throws IOException {
+	protected void draw(ILinkPresentation link, Node source, Node target) throws Exception {
 		String description = "";
 		LineSort sort = lineSort(link);
 		if(sort.equals(LineSort.Loop)) {
@@ -375,36 +321,31 @@ abstract public class Diagram {
 	 * 指定のプレゼンテーションを持つ描画対象ノードを返す
 	 * @param presence
 	 * @return 描画対象ノード
+	 * @throws Exception 
 	 */
-	protected Node findNode(INodePresentation presence){
+	protected Node findNode(INodePresentation presence) throws Exception{
 		for(Node node: nodes) {
 			if(node.sameEntity(presence)) {
 				return node;
 			}
 		}
-		return null; // エラー
+		throw new Exception();
 	}
 	
 	/**
 	 * リンク種別を返す
-	 * 
 	 * @param link
 	 * @return リンク種別
+	 * @throws Exception 
 	 */
-	protected LineSort lineSort(ILinkPresentation link) {
-		INodePresentation source = link.getSource();
-		INodePresentation target = link.getTarget();
+	protected LineSort lineSort(ILinkPresentation link) throws Exception {
+		Node source = findNode(link.getSource());
+		Node target = findNode(link.getTarget());
 		if(source == target) {
 			return LineSort.Loop;
 		}
-		if(isSourceUp(source)) {
-			if(isTargetUp(target)) {
+		if(isSourceUp(source) || isTargetUp(target)) {
 				return LineSort.Both;
-			}else {
-				return LineSort.Source;
-			}
-		}else if(isTargetUp(target)) {
-				return LineSort.Target;
 		}
 		return LineSort.Origin;
 	}
@@ -414,7 +355,7 @@ abstract public class Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isSourceUp(INodePresentation node) {
+	protected boolean isSourceUp(Node node) {
 		return false; 
 	}
 
@@ -423,7 +364,7 @@ abstract public class Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isTargetUp(INodePresentation node) {
+	protected boolean isTargetUp(Node node) {
 		return false; 
 	}
 
@@ -447,37 +388,6 @@ abstract public class Diagram {
 	 * @param リンク記述(true)か矢印記述(false)か
 	 * @return リンク記述あるいは矢印記述
 	 */
-//	protected String draw(ILinkPresentation link, List<Point3D> linePoints, boolean isShape) {
-//		int length = linePoints.size();
-//		boolean isCurve = link.getProperty("line.shape").equals("curve");
-//		String description = "    sphere_sweep { ";
-//		if(length == 2 || (!isCurve && link.getAllPoints().length == length)) {
-//			description += "linear_spline, ";
-//		}else {
-//			description += "cubic_spline, ";
-//		}
-//		description +=  length + ", ";
-//		if(isShape) {
-//			for(Point3D point: linePoints) {
-//				description += point + ", LRd ";
-//			}
-//		}else {
-//			int count = 0;
-//			for(Point3D point: linePoints) {
-//				description += point;
-//				if(count == 0) {
-//					description += ", LRd ";
-//				}else if(count < length - 1) {
-//					description += ", LRd/" + (Math.pow(2.0, (double)(count-1))) + " ";
-//				}else {
-//					description += ", 0.0 ";
-//				}
-//				count++;
-//			}
-//		}
-//		return description;
-//	}
-
 	protected String draw(ILinkPresentation link, List<String> vertexes, boolean isShape) {
 		int length = vertexes.size();
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
@@ -508,7 +418,12 @@ abstract public class Diagram {
 		}
 		return description;
 	}
-	
+
+	protected String type(IPresentation presence) {
+		return Node.reviseType(presence);
+	}
+
+
 	/**
 	 * リンクか矢印のmaterial句と視認性(影なし,影のみ)記述を返す
 	 * @param link
@@ -525,10 +440,5 @@ abstract public class Diagram {
 	 */
 	protected String material(IPresentation presence, boolean isShape) {
 		return "material { " + (isShape?"":"Shadow") + type(presence) + "Material } ";
-	}
-
-	protected Point2D center(INodePresentation node) {
-		Rectangle2D bound = node.getRectangle();
-		return new Point2D.Double(bound.getCenterX(), -bound.getCenterY());
 	}
 }

@@ -51,8 +51,8 @@ public class ClassDiagram extends Diagram {
 	 *描画ノードを抽出し、対象の有無を返す
 	 * @return 対象の有無
 	 */
-	protected boolean existsScene(int hierarchy){
-		boolean exists = super.existsScene(hierarchy);
+	protected boolean existsScene(){
+		boolean exists = super.existsScene();
 		if(exists) {
 			orderClassHierachy();
 			correctZofNodes();
@@ -119,7 +119,7 @@ public class ClassDiagram extends Diagram {
 		}
 	}
 	
-	/*
+	/**
 	 * クラス階層の深さの変更をルートクラスまで波及させる
 	 */
 	protected void spreadRoot(IGeneralization[] generals, int depth) {
@@ -135,7 +135,7 @@ public class ClassDiagram extends Diagram {
 	}
 
 	/**
-	 * ノードのz座標値を設定する
+	 * 継承階層に応じたノードのz座標値を設定する
 	 */
 	protected void correctZofNodes() {
 		for(Node node: nodes) {
@@ -200,7 +200,7 @@ public class ClassDiagram extends Diagram {
 	 * @param targetz ターゲットの高さ
 	 * @throws IOException
 	 */
-	protected void draw(ILinkPresentation link, Node source, Node target) throws IOException {
+	protected void draw(ILinkPresentation link, Node source, Node target) throws Exception {
 		String type = link.getType();
 		scene.write("// " + type + CR);
 		if(type.equals("Link")) {
@@ -223,9 +223,7 @@ public class ClassDiagram extends Diagram {
 
 	/**
 	 * 継承(Generalization)を描く
-	 * 
 	 * ※Generalizationのlinkは、sourceがサブクラスでtargetがスーパークラスであるが、points[]はtargetからsoruceへの点列となっている。
-	 * 
 	 * @param link
 	 * @param sourcez ソースの高さ
 	 * @param targetz ターゲットの高さ
@@ -262,10 +260,8 @@ public class ClassDiagram extends Diagram {
 	/**
 	 * 型名を返す
 	 * 原則としてastah*要素型名とPOVRayオブジェクト宣言名は同じである
-	 * 
 	 * [ロバストネス図対応]
-	 * ただし、特定のステレオタイプについてはそのステレオタイプに対するPOVRayオブジェクト型をマッピングする。
-	 * 
+	 * 特定のステレオタイプについてはそのステレオタイプに対するPOVRayオブジェクト型をマッピングする。
 	 * @param presence
 	 * @return オブジェクト宣言名
 	 */

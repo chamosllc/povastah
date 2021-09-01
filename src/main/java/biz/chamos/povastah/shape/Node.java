@@ -9,6 +9,7 @@ import com.change_vision.jude.api.inf.model.IElement;
 import com.change_vision.jude.api.inf.model.IMessage;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
+import com.change_vision.jude.api.inf.presentation.IPresentation;
 
 /**
  * ノード
@@ -23,11 +24,12 @@ public class Node {
 	 * オブジェクトのz値のオフセット
 	 */
 	static final public double TEXT_OFFSET_Z = 30.0;
+	static final public double RAIZE_Z = -48;
 	/*
 	 * オブジェクト関連フォーマット
 	 */
 	static final public String OBJECT_UNIT = " rotate -x*90 scale 24.0";
-	static final public String CIRCLE_TEXT = "    object { Circle_Text(LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s }" + CR;
+	static final public String CIRCLE_TEXT = "    object { Circle_Text(LabelFont, \"%s\",  %.3f, 0, 2, %.3f, 1, Align_Center, -90) scale TextScale %s no_shadow }" + CR;
 	static final public String TEXT16 = "    text { ttf LabelFont, \"%s\", 1, 0 scale TextScale texture { LabelTecture }%s no_shadow }" + CR;
 
 	/**
@@ -51,22 +53,24 @@ public class Node {
 	 * ノード中心座標
 	 */
 	protected Point3D location;
-
-	public Node(INodePresentation entity) {
-		this.entity = entity;
-		setLocation();
-	}
-	public Node(String type, INodePresentation entity, String label) {
-		this(entity);
-		this.type = type;
-		this.label = label;
+	
+	/**
+	 * astah*描画要素のタイプをシンボル整形する
+	 * @param presence
+	 * @return
+	 */
+	static public String reviseType(IPresentation presence) {
+		return presence.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
 	}
 	
-	public Node(int id, int hierarchy, String type, INodePresentation entity, String label) {
-		this(type, entity, label);
-		setName(id, hierarchy);
+	public Node(int number, int id, String type, INodePresentation entity, String label) {
+		this.entity = entity;
+		this.label = label;
+		this.type = type;
+		setLocation();
+		setName(number, id);
 	}
-
+	
 	protected void setLocation() {
 		Rectangle2D bound = entity.getRectangle();
 		location = new Point3D(bound.getCenterX(), -bound.getCenterY(), 0.0);
@@ -78,12 +82,16 @@ public class Node {
 	 * @param id
 	 * @param hierarchy
 	 */
-	protected void setName(int id, int hierarchy) {
-		name = type + hierarchy + "_" + id;
+	protected void setName(int number, int id) {
+		name = type + id + "_" + number;
 	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getType() {
+		return type;
 	}
 	
 	public String getLabel() {
@@ -94,7 +102,12 @@ public class Node {
 		return entity == presence;
 	}
 	
-	public boolean isType(String type) {
+	/**
+	 * astah*描画要素のタイプと同じである
+	 * @param type astah*要素タイプ
+	 * @return
+	 */
+	public boolean isLiterallyType(String type) {
 		return entity.getType().equals(type);
 	}
 	
@@ -113,14 +126,19 @@ public class Node {
 	public Rectangle2D getBound() {
 		return entity.getRectangle();
 	}
+
+	public void raiseUp() {
+		location.setZ(location.getZ() + RAIZE_Z);
+	}
+	public boolean isSource(ILinkPresentation link) {
+		return link.getSource() == entity;
+	}
+
 	
 	public String declare() {
 		return String.format("#local %s = <%.3f, %.3f, %.1f>;" + CR, name, location.getX(), location.getY(), location.getZ());
 	}
 	
-	public boolean isSource(ILinkPresentation link) {
-		return link.getSource() == entity;
-	}
 	/**
 	 * vertex句を返す
 	 * @return
@@ -143,7 +161,7 @@ public class Node {
 	 * @return " vertex(name, point-location)"
 	 */
 	public String vertex(Point3D point) {
-		return String.format(" vert(vertex(%s, %s), %.1f)", name, point.minus(location));
+		return String.format(" vertex(%s, %s)", name, point.minus(location));
 	}
 	/** 
 	 * ノード中心座標からの相対座標とZ値分移動する
