@@ -133,7 +133,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 		- Linux版:  /usr/local/share/povray-3.7
 	- ini/povray.iniを編集して、インクルードファイルディレクトリを追加する。
 		- Windows版 ```Top Menu[Tools]->[Edit master POVRAY.INI]```で開いて編集する。
-			-- 例)```Library_Path="Y:\povray\include"```
+			- 例)```Library_Path="Y:\povray\include"```
 
 プラグインツール
 - [ツール]→[画像出力]→[POVRayスクリプト]で、出力ディレクトリを指定する。
