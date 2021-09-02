@@ -12,9 +12,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 簡易例題 astah*プロジェクト([examples/povastah.asta](https://github.com/chamosllc/povastah/tree/master/examples/povastah.asta))
 
-:::note info
-[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
-:::
+※[UML要素とPOVRayオブジェクトの対応](https://github.com/chamosllc/povastah/wiki/Elements-of-UML-Diagram)
 
 <details>
 <summary>クラス図</summary> 
@@ -147,15 +145,23 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 3. POVRayツールで、POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
 4. POVRayスクリプトファイルを編集する。
     * カメラの配置を変更する。
-       * ```#declare EYE = <x,y,z>;```
+       * ```POV-Ray SDL
+       #declare EYE = <x,y,z>;
+       ```
        - ｘは水平軸で右手が正である。yは垂直軸で上手が正である。ｚはxy平面の直交軸で奥向きが正である。
        - ステージ平面は、<0,0,32>に配置している。したがって、z>32には何も配置していない。
     * カメラの焦点を変更する。
-       * ```#declare FOCUS = <x,y,z>;```
+       * ```POV-Ray SDL
+       #declare FOCUS = <x,y,z>;
+       ```
     * リンク影のマテリアルを切り替える。
-       * ```#declare ShadowType=1;```
+       * ```POV-Ray SDL
+       #declare ShadowType=1;
+       ```
     * ノードオブジェクトの位置を動かす。
-       * ```#local Action0_1 = <188.540, -147.320, 0.0>;```
+       * ```POV-Ray SDL
+       #local Action0_1 = <188.540, -147.320, 0.0>;
+       ```
 
 
 ※UTF-8で日本語文字を含めて出力する。POVRayエディタはUTF-8に対応していないため、出力されたPOVRayスクリプトファイルを編集する際は、別途、UTF-8を扱えるテキストエディタを推奨する。
