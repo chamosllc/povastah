@@ -16,6 +16,13 @@
  base + add
 #end
 
+#macro vertexCenter(src, dest)
+  vertex(src, (dest - src)/2)
+#end
+
+#macro vertCenter(src, dest, OZ)
+  vertexCenter(src, vert(dest, OZ))
+#end
 /***************************************************/
 
 #declare LabelFont = "msgothic.ttc"

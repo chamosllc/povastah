@@ -163,6 +163,23 @@ public class Node {
 	public String vertex(Point3D point) {
 		return String.format(" vertex(%s, %s)", name, point.minus(location));
 	}
+	
+	/** 
+	 * ノード中心座標kから相対座標分移動する
+	 * @param point
+	 * @return " vertex(name, point-location)"
+	 */
+	public String center(Node target) {
+		return String.format(" vertexCenter(%s, %s)", name, target.getName());
+	}
+	/** 
+	 * ノード中心座標kから相対座標分移動する
+	 * @param point
+	 * @return " vertex(name, point-location)"
+	 */
+	public String center(Node target, double zposition) {
+		return String.format(" vertCenter(%s, %s, %.1f)", name, target.getName(), zposition);
+	}
 	/** 
 	 * ノード中心座標からの相対座標とZ値分移動する
 	 * @param zposition
@@ -182,6 +199,10 @@ public class Node {
 	
 	public String draw() {
 		return String.format("  object { %s translate %s }" + CR + text(), type + OBJECT_UNIT, name);
+	}
+
+	public String drawWithStage() {
+		return String.format("  object { %s translate %s }" + CR + textOfStage(), type + OBJECT_UNIT, name);
 	}
 	
 	public String draw(double zposition) {
@@ -204,8 +225,8 @@ public class Node {
 	
 	public String drawWithStage(String diagram, Rectangle2D subBound, double delta) {
 		String description = drawSubDiagram(diagram, subBound, delta);
-		description += draw();
-		return description + textOfStage();
+		description += drawWithStage();
+		return description;
 	}
 	
 	public String drawSubDiagram(String diagram, Rectangle2D subBound, double delta) {

@@ -109,14 +109,12 @@ public enum LineSort {
 			vertexes.add(source.vertLink()); // 曲線 2点目 始点と同じ点
 			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 				
 				if(this.equals(Both)) {
-					vertexes.add(source.vertex(center, topZ));
+					vertexes.add(source.center(target, topZ));
 				}else {
 					if(this.equals(Source)) {
-						vertexes.add(source.vertex(start.center(center), topZ));	
-					}				
-					vertexes.add(source.vertex(center));
-					if(this.equals(Target)) {
-						vertexes.add(target.vertex(center.center(end), topZ));			
+						vertexes.add(target.center(source, topZ));	
+					}else if(this.equals(Target)) {
+						vertexes.add(source.center(target, topZ));
 					}				
 				}
 			}else {
@@ -128,7 +126,7 @@ public enum LineSort {
 					if(this.equals(Source)) {
 						addPoint = new Point3D(inversion(points[1]), start.getZ());
 						vertexes.add(source.vertex(start.center(addPoint), topZ));
-						vertexes.add(source.vertex(addPoint));
+						vertexes.add(target.vertex(addPoint));
 					}else if(this.equals(Target)) {
 						addPoint = new Point3D(inversion(points[1]), start.getZ());
 						vertexes.add(source.vertex(addPoint));
@@ -141,14 +139,14 @@ public enum LineSort {
 							vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
 						}
 						for(int i=turn + 1; i < length - 1; i++) {
-							vertexes.add(source.vertex(new Point3D(inversion(points[i]), end.getZ())));
+							vertexes.add(target.vertex(new Point3D(inversion(points[i]), end.getZ())));
 						}
 					}else if(this.equals(Target)) {
 						for(int i=1; i <= turn; i++) {
 							vertexes.add(source.vertex(new Point3D(inversion(points[i]),  start.getZ())));
 						}
 						for(int i=turn + 1; i < length - 1; i++) {
-							vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
+							vertexes.add(target.vertex(new Point3D(inversion(points[i]), topZ)));
 						}
 					}
 				}
