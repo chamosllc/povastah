@@ -145,21 +145,21 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 3. POVRayツールで、POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
 4. POVRayスクリプトファイルを編集する。
     * カメラの配置を変更する。
-       * ```POV-Ray SDL
+       ```POV-Ray SDL
        #declare EYE = <x,y,z>;
        ```
        - ｘは水平軸で右手が正である。yは垂直軸で上手が正である。ｚはxy平面の直交軸で奥向きが正である。
        - ステージ平面は、<0,0,32>に配置している。したがって、z>32には何も配置していない。
     * カメラの焦点を変更する。
-       * ```POV-Ray SDL
+       ```POV-Ray SDL
        #declare FOCUS = <x,y,z>;
        ```
     * リンク影のマテリアルを切り替える。
-       * ```POV-Ray SDL
+       ```POV-Ray SDL
        #declare ShadowType=1;
        ```
     * ノードオブジェクトの位置を動かす。
-       * ```POV-Ray SDL
+       ```POV-Ray SDL
        #local Action0_1 = <188.540, -147.320, 0.0>;
        ```
 
