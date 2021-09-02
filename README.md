@@ -156,7 +156,9 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
        ```
     * リンク影のマテリアルを切り替える。
        ```POV-Ray SDL
-       #declare ShadowType=1;
+       #declare ShadowType= union{
+        object { cylinder }
+        };
        ```
     * ノードオブジェクトの位置を動かす。
        ```POV-Ray SDL
