@@ -144,7 +144,7 @@ public class Node {
 	 * @return
 	 */
 	public String vertLink() {
-		return String.format(" vert(%s, %.1f)", name, location.getZ() + LineSort.OFFSET_Z);
+		return String.format(" vert(%s, %.1f)", name, LineSort.OFFSET_Z);
 	}
 
 	/**

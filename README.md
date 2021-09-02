@@ -125,7 +125,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 	    3. 環境変数PATHに、"%JAVA_HOME%\bin"を設定する。
 
 ## Install
-- [target/povastah-X.X-SNAPSHOT.jar](https://github.com/chamosllc/povastah/tree/master/target/povastah-1.1-SNAPSHOT.jar) をastahツールのインストールディレクトリ配下のpluginsディレクトリに配置する。
+- [target/povastah-X.X-SNAPSHOT.jar](https://github.com/chamosllc/povastah/tree/master/target/povastah-1.1-SNAPSHOT.jar) をastah*ツールのインストールディレクトリ配下のpluginsディレクトリに配置する。
 - [includes](https://github.com/chamosllc/povastah/tree/master/includes)配下のインクルードファイル"povastah.inc", "umlTexture.inc", "povastahParts.inc"をPOVRayのインクルードファイルディレクトリに配置する。
 	- POVRay v3.7 デフォルト環境ディレクトリ(インストール時に指定可能)
 		- 配下に、include(インクルードファイルディレクトリ), ini(デフォルオ設定ファイルディレクトリ)等がある。

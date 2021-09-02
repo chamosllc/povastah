@@ -140,7 +140,7 @@ public class ClassDiagram extends Diagram {
 	protected void correctZofNodes() {
 		for(Node node: nodes) {
 			if(classHierachyOrder.containsKey(node.getModel())) {
-				node.getLocation().setZ(classHierachyOrder.get(node.getModel()) * DEPTH_OFFSET);
+				node.getLocation().setZ((classHierachyOrder.get(node.getModel()) - 1) * DEPTH_OFFSET);
 			}
 		}
 	}
