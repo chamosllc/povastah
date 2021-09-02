@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ユースケース図/ユースケース
- * created at 2021/09/01
+ * created at 2021/09/02
  * presented by povastah
  **/
 
@@ -39,3 +39,4 @@ object { UseCaseDiagram_3rj6174cfd7c659288bc9badb700978b1e1 }
 camera { location EYE direction 1.5*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { UseCaseDiagramTexture }}
+

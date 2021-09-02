@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * コミュニケーション図/MVCコミュニケーション
- * created at 2021/09/01
+ * created at 2021/09/02
  * presented by povastah
  **/
 

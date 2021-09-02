@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス図/ロバストネス図_インスタンス
- * created at 2021/09/01
+ * created at 2021/09/02
  * presented by povastah
  **/
 
@@ -52,6 +52,7 @@
     object { Circle_Text(LabelFont, ":Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(EntityInstance0_5, 30.0)  no_shadow }
 }
 object { ClassDiagram_bj3d6ceec00a507a2b70caaa0df577508a }
+#declare EYE = <186, -554, -412>;
 #declare EYE = <200, -450, -320>;
 #declare FOCUS = <200, -340, 0>;
 camera { location EYE direction 1*z look_at FOCUS }

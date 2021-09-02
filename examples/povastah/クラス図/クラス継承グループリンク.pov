@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス図/クラス継承グループリンク
- * created at 2021/09/01
+ * created at 2021/09/02
  * presented by povastah
  **/
 
@@ -16,7 +16,7 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
-// hierachy depth: {StateMachineDiagram=1, ActivityDiagram=1, Diagram=2, ClassDiagram=1}
+// hierachy depth: {ActivityDiagram=1, ClassDiagram=1, Diagram=2, StateMachineDiagram=1}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_az488dd3ba7186d4a0d516cbeb00eb6449 = union {

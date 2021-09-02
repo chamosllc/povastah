@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ライフ
- * created at 2021/09/01
+ * created at 2021/09/02
  * presented by povastah
  **/
 
@@ -144,7 +144,6 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_2 }
   object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628  translate vertex(CallBehaviorAction0_3, <-32.793, 22.909, -4.113>) }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_3 }
-    object { Circle_Text(LabelFont, "物を取り扱う",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(CallBehaviorAction0_3, 30.0)  no_shadow }
     text { ttf LabelFont, "物を取り扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_3, <-40.540, -46.820, 30.000>) no_shadow }
 
     union{
@@ -153,7 +152,6 @@
     }
   object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f scale 0.11381701995012469  translate vertex(CallBehaviorAction0_4, <-53.499, 12.501, -3.528>) }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_4 }
-    object { Circle_Text(LabelFont, "物を扱う",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(CallBehaviorAction0_4, 30.0)  no_shadow }
     text { ttf LabelFont, "物を扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_4, <-22.360, -46.820, 30.000>) no_shadow }
 
     union{

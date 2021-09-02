@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図/トップページ
- * created at 2021/09/01
+ * created at 2021/09/02
  * presented by povastah
  **/
 
@@ -90,10 +90,10 @@
     sphere_sweep { linear_spline, 2,  vert(State2_8, 4.0), LRd  vert(FinalState2_10, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   difference {
-    sphere_sweep { cubic_spline, 6,  vert(State2_8, 4.0), LRd  vert(State2_8, 4.0), LRd  vert(vertex(State2_8, <-51.618, -33.090, 4.000>), -28.0), LRd  vertex(State2_8, <-103.235, -66.180, 4.000>), LRd  vert(State2_3, 4.0), LRd  vert(State2_3, 4.0), LRd material { TransitionMaterial }  }
+    sphere_sweep { cubic_spline, 6,  vert(State2_8, 4.0), LRd  vert(State2_8, 4.0), LRd  vert(vertex(State2_8, <-51.618, -33.090, 4.000>), -28.0), LRd  vertex(State2_3, <193.000, 21.667, 4.000>), LRd  vert(State2_3, 4.0), LRd  vert(State2_3, 4.0), LRd material { TransitionMaterial }  }
     object { StateInternal scale<220.513, 156.443, 20.00> translate vert(State2_3, -4.0) }
     no_shadow }
-  difference {    sphere_sweep { cubic_spline, 6,  vert(State2_8, 4.0), LRd  vert(State2_8, 4.0), LRd/1.0  vert(vertex(State2_8, <-51.618, -33.090, 4.000>), -28.0), LRd/2.0  vertex(State2_8, <-103.235, -66.180, 4.000>), LRd/4.0  vert(State2_3, 4.0), LRd/8.0  vert(State2_3, 4.0), 0.0 material { ShadowTransitionMaterial }  }
+  difference {    sphere_sweep { cubic_spline, 6,  vert(State2_8, 4.0), LRd  vert(State2_8, 4.0), LRd/1.0  vert(vertex(State2_8, <-51.618, -33.090, 4.000>), -28.0), LRd/2.0  vertex(State2_3, <193.000, 21.667, 4.000>), LRd/4.0  vert(State2_3, 4.0), LRd/8.0  vert(State2_3, 4.0), 0.0 material { ShadowTransitionMaterial }  }
     object { StateInternal scale<220.513, 156.443, 20.00> translate vert(State2_3, -4.0) }
     no_image }
   object { FinalState rotate -x*90 scale 24.0 translate FinalState2_9 }
@@ -101,19 +101,19 @@
   object { State rotate -x*90 scale 24.0 translate State2_11 }
     object { Circle_Text(LabelFont, "do",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State2_11, 30.0)  no_shadow }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(State2_11, 4.0), LRd  vert(State2_11, 4.0), LRd  vert(vertex(State2_11, <-35.451, -23.007, 4.000>), -28.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(State2_11, 4.0), LRd  vert(State2_11, 4.0), LRd/1.0  vert(vertex(State2_11, <-35.451, -23.007, 4.000>), -28.0), LRd/2.0  vert(JoinPseudostate2_15, 4.0), LRd/4.0  vert(JoinPseudostate2_15, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(State2_11, 4.0), LRd  vert(State2_11, 4.0), LRd  vertCenter(State2_11, JoinPseudostate2_15, -28.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(State2_11, 4.0), LRd  vert(State2_11, 4.0), LRd/1.0  vertCenter(State2_11, JoinPseudostate2_15, -28.0), LRd/2.0  vert(JoinPseudostate2_15, 4.0), LRd/4.0  vert(JoinPseudostate2_15, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   object { State rotate -x*90 scale 24.0 translate State2_12 }
     object { Circle_Text(LabelFont, "check",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State2_12, 30.0)  no_shadow }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(State2_12, 4.0), LRd  vert(State2_12, 4.0), LRd  vert(vertex(State2_12, <35.882, -23.007, 4.000>), -28.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(State2_12, 4.0), LRd  vert(State2_12, 4.0), LRd/1.0  vert(vertex(State2_12, <35.882, -23.007, 4.000>), -28.0), LRd/2.0  vert(JoinPseudostate2_15, 4.0), LRd/4.0  vert(JoinPseudostate2_15, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(State2_12, 4.0), LRd  vert(State2_12, 4.0), LRd  vertCenter(State2_12, JoinPseudostate2_15, -28.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(State2_12, 4.0), LRd  vert(State2_12, 4.0), LRd/1.0  vertCenter(State2_12, JoinPseudostate2_15, -28.0), LRd/2.0  vert(JoinPseudostate2_15, 4.0), LRd/4.0  vert(JoinPseudostate2_15, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   object { ChoicePseudostate rotate -x*90 scale 24.0 translate ChoicePseudostate2_13 }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(ChoicePseudostate2_13, 4.0), LRd  vert(ChoicePseudostate2_13, 4.0), LRd  vert(vertex(ChoicePseudostate2_13, <-37.500, -52.917, 4.000>), -28.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(ChoicePseudostate2_13, 4.0), LRd  vert(ChoicePseudostate2_13, 4.0), LRd/1.0  vert(vertex(ChoicePseudostate2_13, <-37.500, -52.917, 4.000>), -28.0), LRd/2.0  vert(ForkPseudostate2_14, 4.0), LRd/4.0  vert(ForkPseudostate2_14, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(ChoicePseudostate2_13, 4.0), LRd  vert(ChoicePseudostate2_13, 4.0), LRd  vertCenter(ChoicePseudostate2_13, ForkPseudostate2_14, -28.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(ChoicePseudostate2_13, 4.0), LRd  vert(ChoicePseudostate2_13, 4.0), LRd/1.0  vertCenter(ChoicePseudostate2_13, ForkPseudostate2_14, -28.0), LRd/2.0  vert(ForkPseudostate2_14, 4.0), LRd/4.0  vert(ForkPseudostate2_14, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   difference {
     sphere_sweep { linear_spline, 2,  vert(ChoicePseudostate2_13, 4.0), LRd  vert(State2_2, 4.0), LRd material { TransitionMaterial }  }
@@ -124,17 +124,17 @@
     no_image }
   object { ForkPseudostate rotate -x*90 scale 24.0 translate ForkPseudostate2_14 }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd  vert(vertex(ForkPseudostate2_14, <-33.882, -18.660, 4.000>), -28.0), LRd  vert(State2_12, 4.0), LRd  vert(State2_12, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd/1.0  vert(vertex(ForkPseudostate2_14, <-33.882, -18.660, 4.000>), -28.0), LRd/2.0  vert(State2_12, 4.0), LRd/4.0  vert(State2_12, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd  vertCenter(ForkPseudostate2_14, State2_12, -28.0), LRd  vert(State2_12, 4.0), LRd  vert(State2_12, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd/1.0  vertCenter(ForkPseudostate2_14, State2_12, -28.0), LRd/2.0  vert(State2_12, 4.0), LRd/4.0  vert(State2_12, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd  vert(vertex(ForkPseudostate2_14, <37.451, -18.660, 4.000>), -28.0), LRd  vert(State2_11, 4.0), LRd  vert(State2_11, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd/1.0  vert(vertex(ForkPseudostate2_14, <37.451, -18.660, 4.000>), -28.0), LRd/2.0  vert(State2_11, 4.0), LRd/4.0  vert(State2_11, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd  vertCenter(ForkPseudostate2_14, State2_11, -28.0), LRd  vert(State2_11, 4.0), LRd  vert(State2_11, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(ForkPseudostate2_14, 4.0), LRd  vert(ForkPseudostate2_14, 4.0), LRd/1.0  vertCenter(ForkPseudostate2_14, State2_11, -28.0), LRd/2.0  vert(State2_11, 4.0), LRd/4.0  vert(State2_11, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   object { JoinPseudostate rotate -x*90 scale 24.0 translate JoinPseudostate2_15 }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd  vert(vertex(JoinPseudostate2_15, <109.167, -7.083, 4.000>), -28.0), LRd  vert(FinalState2_4, 4.0), LRd  vert(FinalState2_4, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd/1.0  vert(vertex(JoinPseudostate2_15, <109.167, -7.083, 4.000>), -28.0), LRd/2.0  vert(FinalState2_4, 4.0), LRd/4.0  vert(FinalState2_4, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd  vertCenter(JoinPseudostate2_15, FinalState2_4, -28.0), LRd  vert(FinalState2_4, 4.0), LRd  vert(FinalState2_4, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(JoinPseudostate2_15, 4.0), LRd  vert(JoinPseudostate2_15, 4.0), LRd/1.0  vertCenter(JoinPseudostate2_15, FinalState2_4, -28.0), LRd/2.0  vert(FinalState2_4, 4.0), LRd/4.0  vert(FinalState2_4, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
 }
 #declare StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 = union {
@@ -203,8 +203,8 @@
   object { State rotate -x*90 scale 24.0 translate State1_7 }
     object { Circle_Text(LabelFont, "change",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State1_7, 30.0)  no_shadow }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(State1_7, 4.0), LRd  vert(State1_7, 4.0), LRd  vert(vertex(State1_7, <-208.284, -29.243, 4.000>), -28.0), LRd  vert(ChoicePseudostate1_3, 4.0), LRd  vert(ChoicePseudostate1_3, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(State1_7, 4.0), LRd  vert(State1_7, 4.0), LRd/1.0  vert(vertex(State1_7, <-208.284, -29.243, 4.000>), -28.0), LRd/2.0  vert(ChoicePseudostate1_3, 4.0), LRd/4.0  vert(ChoicePseudostate1_3, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(State1_7, 4.0), LRd  vert(State1_7, 4.0), LRd  vertCenter(State1_7, ChoicePseudostate1_3, -28.0), LRd  vert(ChoicePseudostate1_3, 4.0), LRd  vert(ChoicePseudostate1_3, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(State1_7, 4.0), LRd  vert(State1_7, 4.0), LRd/1.0  vertCenter(State1_7, ChoicePseudostate1_3, -28.0), LRd/2.0  vert(ChoicePseudostate1_3, 4.0), LRd/4.0  vert(ChoicePseudostate1_3, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
     union{
     sphere_sweep { cubic_spline, 5,  vert(State1_7, 4.0), LRd  vert(State1_7, 4.0), LRd  vertex(State1_7, <-90.569, 8.487, 4.000>), LRd  vert(State1_6, 4.0), LRd  vert(State1_6, 4.0), LRd material { TransitionMaterial } no_shadow }
