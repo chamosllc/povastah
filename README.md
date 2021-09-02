@@ -144,7 +144,9 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 
 1. astah*ツールを起動して、3DCG視覚化するダイアグラムを含むプロジェクトを開く。
 2. プラグインツールで、POVRayスクリプトファイル(.pov)を作成する。
-    - POVRayスクリプトファイルはastah*プロジェクト構造と同型のファイルツリー構造に展開される。
+	- Top Menu[ツール]->[画像出力]->[POVRayスクリプト]を選択する。
+	- [POVRay出力]ファイルダイアログで出力ディレクトリを選択する。
+    	- POVRayスクリプトファイルはastah*プロジェクト構造と同型のファイルツリー構造に展開される。
 3. POVRayツールで、POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
 4. POVRayスクリプトファイルを編集する。
     * カメラの配置を変更する。
