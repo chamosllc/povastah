@@ -131,7 +131,8 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 		- 配下に、include(インクルードファイルディレクトリ), ini(デフォルオ設定ファイルディレクトリ)等がある。
 		- Windows版: My Documents\POV-Ray\v3.7
 		- Linux版:  /usr/local/share/povray-3.7
-	- ini配下のpovray.iniを編集して、インクルードファイルディレクトリを追加する。
+	- ini/povray.iniを編集して、インクルードファイルディレクトリを追加する。
+		- Windows版 Top Menu[Tools]->[Edit master POVRAY.INI]で開いて編集する。
 		- 例)```Library_Path="Y:\povray\include"```
 
 プラグインツール
@@ -156,13 +157,11 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
        ```
     * リンク影のマテリアルを切り替える。
        ```POV-Ray SDL
-       #declare ShadowType= union{
-        object { cylinder }
-        };
+       #declare ShadowType=1;
        ```
     * ノードオブジェクトの位置を動かす。
        ```POV-Ray SDL
-       #local Action0_1 = <188.540, -147.320, 0.0>;
+       #local Action0_1 = <x, y, z>;
        ```
 
 
