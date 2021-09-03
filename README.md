@@ -106,6 +106,16 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 </table>
 </details>
 
+<details>
+<summary>Plactice</summary>
+<table>
+<thead><tr><th>astah</th><th>POVRay</th>th>Customize</th></tr></thead>
+<tbody>
+
+</tbody>
+</table>
+</details>
+
 ## Requirement
 実行環境
 - [astah\* professinal, astah\* UML](https://astah.change-vision.com/ja/)

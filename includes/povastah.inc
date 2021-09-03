@@ -40,7 +40,7 @@
 /*
  * Use Case Diagram
  */
-#declare BoundaryInstance = object { Child rotate y*180 translate <0, 4, 0> scale 1/6 }
+#declare BoundaryInstance = object { Child rotate y*180 translate <0, 4, 0> scale 1/8 }
 
 #declare Actor = object { BoundaryInstance }
 
