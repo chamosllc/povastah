@@ -109,7 +109,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <details>
 <summary>Plactice</summary>
 <table>
-<thead><tr><th>astah</th><th>POVRay</th>th>Customize</th></tr></thead>
+<thead><tr><th>astah</th><th>POVRay</th><th>Customize</th></tr></thead>
 <tbody>
 
 </tbody>
