@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ライフ
- * created at 2021/09/02
+ * created at 2021/09/08
  * presented by povastah
  **/
 
@@ -17,11 +17,11 @@
 #local TextScale = <16, 16, 2>;
 
 #declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
-#local InitialNode1_0 = <188.540, -61.333, 0.0>;
-#local Action1_1 = <188.540, -147.320, 0.0>;
-#local Action1_2 = <426.540, -147.320, 0.0>;
-#local Action1_3 = <188.540, -246.654, 0.0>;
-#local ActivityFinal1_4 = <188.540, -324.667, 0.0>;
+#local InitialNode1_0 = <-46.127, -46.667, 0.0>;
+#local Action1_1 = <-46.127, -132.654, 0.0>;
+#local Action1_2 = <191.873, -132.654, 0.0>;
+#local Action1_3 = <-46.127, -231.987, 0.0>;
+#local ActivityFinal1_4 = <-46.127, -310.000, 0.0>;
 
   object { InitialNode rotate -x*90 scale 24.0 translate InitialNode1_0 }
     union{
@@ -38,7 +38,7 @@
     sphere_sweep { linear_spline, 2,  vert(Action1_1, 4.0), LRd  vert(Action1_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { linear_spline, 2,  vert(Action1_1, 4.0), LRd  vert(Action1_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-    torus { LOOPRd, LRd translate vert(<188.540, -147.320, 0.000>, - LOOPRd) material { ControlFlowObjectFlowMaterial } no_shadow }
+    torus { LOOPRd, LRd translate vert(Action1_1, -LOOPRd) material { ControlFlowObjectFlowMaterial } no_shadow }
   object { Action rotate -x*90 scale 24.0 translate Action1_2 }
     object { Circle_Text(LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action1_2, 30.0)  no_shadow }
     union{
@@ -54,19 +54,23 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal1_4 }
 }
 #declare ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f = union {
-#local InitialNode2_0 = <194.667, 34.667, 0.0>;
-#local Process2_1 = <194.540, -77.320, 0.0>;
-#local Action2_2 = <372.783, -99.987, 0.0>;
-#local Process2_3 = <569.873, -111.320, 0.0>;
-#local Action2_4 = <717.450, -189.320, 0.0>;
-#local ActivityFinal2_5 = <717.450, -283.333, 0.0>;
-#local ObjectNode2_6 = <381.000, -283.654, 0.0>;
-#local DecisionNodeMergeNode2_7 = <562.333, -10.667, 0.0>;
+#local DecisionNodeMergeNode2_0 = <489.268, -20.593, 0.0>;
+#local Process2_1 = <121.475, -87.246, 0.0>;
+#local Action2_2 = <299.718, -109.913, 0.0>;
+#local ObjectNode2_3 = <307.935, -293.580, 0.0>;
+#local InitialNode2_4 = <121.602, 24.741, 0.0>;
+#local Action2_5 = <644.385, -199.246, 0.0>;
+#local Process2_6 = <496.808, -121.246, 0.0>;
+#local ActivityFinal2_7 = <644.385, -293.259, 0.0>;
 
-  object { InitialNode rotate -x*90 scale 24.0 translate InitialNode2_0 }
+  object { DecisionNodeMergeNode rotate -x*90 scale 24.0 translate DecisionNodeMergeNode2_0 }
     union{
-    sphere_sweep { linear_spline, 2,  vert(InitialNode2_0, 4.0), LRd  vert(Process2_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(InitialNode2_0, 4.0), LRd  vert(Process2_1, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(DecisionNodeMergeNode2_0, 4.0), LRd  vert(DecisionNodeMergeNode2_0, 4.0), LRd  vertex(DecisionNodeMergeNode2_0, <141.000, -28.000, 4.000>), LRd  vert(Action2_5, 4.0), LRd  vert(Action2_5, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(DecisionNodeMergeNode2_0, 4.0), LRd  vert(DecisionNodeMergeNode2_0, 4.0), LRd/1.0  vertex(DecisionNodeMergeNode2_0, <141.000, -28.000, 4.000>), LRd/2.0  vert(Action2_5, 4.0), LRd/4.0  vert(Action2_5, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    }
+    union{
+    sphere_sweep { linear_spline, 2,  vert(DecisionNodeMergeNode2_0, 4.0), LRd  vert(Process2_6, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(DecisionNodeMergeNode2_0, 4.0), LRd  vert(Process2_6, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
   object { Process rotate -x*90 scale 24.0 translate Process2_1 }
     object { Circle_Text(LabelFont, "物を作る",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Process2_1, 30.0)  no_shadow }
@@ -75,51 +79,47 @@
     sphere_sweep { cubic_spline, 5,  vert(Process2_1, 4.0), LRd  vert(Process2_1, 4.0), LRd/1.0  vertex(Process2_1, <94.127, 69.320, 4.000>), LRd/2.0  vert(Action2_2, 4.0), LRd/4.0  vert(Action2_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(Process2_1, 4.0), LRd  vert(Process2_1, 4.0), LRd  vertex(Process2_1, <37.460, -140.680, 4.000>), LRd  vert(ObjectNode2_6, 4.0), LRd  vert(ObjectNode2_6, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(Process2_1, 4.0), LRd  vert(Process2_1, 4.0), LRd/1.0  vertex(Process2_1, <37.460, -140.680, 4.000>), LRd/2.0  vert(ObjectNode2_6, 4.0), LRd/4.0  vert(ObjectNode2_6, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(Process2_1, 4.0), LRd  vert(Process2_1, 4.0), LRd  vertex(Process2_1, <37.460, -140.680, 4.000>), LRd  vert(ObjectNode2_3, 4.0), LRd  vert(ObjectNode2_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(Process2_1, 4.0), LRd  vert(Process2_1, 4.0), LRd/1.0  vertex(Process2_1, <37.460, -140.680, 4.000>), LRd/2.0  vert(ObjectNode2_3, 4.0), LRd/4.0  vert(ObjectNode2_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
   object { Action rotate -x*90 scale 24.0 translate Action2_2 }
     object { Circle_Text(LabelFont, "物を見る",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action2_2, 30.0)  no_shadow }
     union{
-    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(ObjectNode2_6, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(ObjectNode2_6, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(ObjectNode2_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(ObjectNode2_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
     union{
-    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(DecisionNodeMergeNode2_7, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(DecisionNodeMergeNode2_7, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(DecisionNodeMergeNode2_0, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Action2_2, 4.0), LRd  vert(DecisionNodeMergeNode2_0, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-  object { Process rotate -x*90 scale 24.0 translate Process2_3 }
-    object { Circle_Text(LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Process2_3, 30.0)  no_shadow }
+  object { ObjectNode rotate -x*90 scale 24.0 translate ObjectNode2_3 }
+    object { Circle_Text(LabelFont, ":物",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ObjectNode2_3, 30.0)  no_shadow }
+  object { InitialNode rotate -x*90 scale 24.0 translate InitialNode2_4 }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(Process2_3, 4.0), LRd  vert(Process2_3, 4.0), LRd  vertex(Process2_3, <-104.540, -27.346, 4.000>), LRd  vert(Action2_2, 4.0), LRd  vert(Action2_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(Process2_3, 4.0), LRd  vert(Process2_3, 4.0), LRd/1.0  vertex(Process2_3, <-104.540, -27.346, 4.000>), LRd/2.0  vert(Action2_2, 4.0), LRd/4.0  vert(Action2_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(InitialNode2_4, 4.0), LRd  vert(Process2_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(InitialNode2_4, 4.0), LRd  vert(Process2_1, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
+  object { Action rotate -x*90 scale 24.0 translate Action2_5 }
+    object { Circle_Text(LabelFont, "物を消す",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action2_5, 30.0)  no_shadow }
     union{
-    sphere_sweep { linear_spline, 2,  vert(Process2_3, 4.0), LRd  vert(ObjectNode2_6, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(Process2_3, 4.0), LRd  vert(ObjectNode2_6, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
-    }
-  object { Action rotate -x*90 scale 24.0 translate Action2_4 }
-    object { Circle_Text(LabelFont, "物を消す",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action2_4, 30.0)  no_shadow }
-    union{
-    sphere_sweep { linear_spline, 2,  vert(Action2_4, 4.0), LRd  vert(ActivityFinal2_5, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(Action2_4, 4.0), LRd  vert(ActivityFinal2_5, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(Action2_5, 4.0), LRd  vert(ActivityFinal2_7, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Action2_5, 4.0), LRd  vert(ActivityFinal2_7, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(Action2_4, 4.0), LRd  vert(Action2_4, 4.0), LRd  vertex(Action2_4, <-184.117, -78.013, 4.000>), LRd  vert(ObjectNode2_6, 4.0), LRd  vert(ObjectNode2_6, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(Action2_4, 4.0), LRd  vert(Action2_4, 4.0), LRd/1.0  vertex(Action2_4, <-184.117, -78.013, 4.000>), LRd/2.0  vert(ObjectNode2_6, 4.0), LRd/4.0  vert(ObjectNode2_6, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(Action2_5, 4.0), LRd  vert(Action2_5, 4.0), LRd  vertex(Action2_5, <-184.117, -78.013, 4.000>), LRd  vert(ObjectNode2_3, 4.0), LRd  vert(ObjectNode2_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(Action2_5, 4.0), LRd  vert(Action2_5, 4.0), LRd/1.0  vertex(Action2_5, <-184.117, -78.013, 4.000>), LRd/2.0  vert(ObjectNode2_3, 4.0), LRd/4.0  vert(ObjectNode2_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-  object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal2_5 }
-  object { ObjectNode rotate -x*90 scale 24.0 translate ObjectNode2_6 }
-    object { Circle_Text(LabelFont, ":物",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ObjectNode2_6, 30.0)  no_shadow }
-  object { DecisionNodeMergeNode rotate -x*90 scale 24.0 translate DecisionNodeMergeNode2_7 }
+  object { Process rotate -x*90 scale 24.0 translate Process2_6 }
+    object { Circle_Text(LabelFont, "物を変える",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Process2_6, 30.0)  no_shadow }
     union{
-    sphere_sweep { cubic_spline, 5,  vert(DecisionNodeMergeNode2_7, 4.0), LRd  vert(DecisionNodeMergeNode2_7, 4.0), LRd  vertex(DecisionNodeMergeNode2_7, <141.000, -28.000, 4.000>), LRd  vert(Action2_4, 4.0), LRd  vert(Action2_4, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { cubic_spline, 5,  vert(DecisionNodeMergeNode2_7, 4.0), LRd  vert(DecisionNodeMergeNode2_7, 4.0), LRd/1.0  vertex(DecisionNodeMergeNode2_7, <141.000, -28.000, 4.000>), LRd/2.0  vert(Action2_4, 4.0), LRd/4.0  vert(Action2_4, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(Process2_6, 4.0), LRd  vert(Process2_6, 4.0), LRd  vertex(Process2_6, <-104.540, -27.346, 4.000>), LRd  vert(Action2_2, 4.0), LRd  vert(Action2_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(Process2_6, 4.0), LRd  vert(Process2_6, 4.0), LRd/1.0  vertex(Process2_6, <-104.540, -27.346, 4.000>), LRd/2.0  vert(Action2_2, 4.0), LRd/4.0  vert(Action2_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
     union{
-    sphere_sweep { linear_spline, 2,  vert(DecisionNodeMergeNode2_7, 4.0), LRd  vert(Process2_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(DecisionNodeMergeNode2_7, 4.0), LRd  vert(Process2_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(Process2_6, 4.0), LRd  vert(ObjectNode2_3, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Process2_6, 4.0), LRd  vert(ObjectNode2_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
+  object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal2_7 }
 }
 #declare ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f = union {
 #local InitialNode0_0 = <213.603, -70.000, 0.0>;
@@ -142,22 +142,27 @@
     sphere_sweep { linear_spline, 2,  vert(Action0_1, 4.0), LRd  vert(CallBehaviorAction0_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_2 }
-  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale 0.13267623546511628  translate vertex(CallBehaviorAction0_3, <-32.793, 22.909, -4.113>) }
+// 72.0 java.awt.geom.Rectangle2D$Double[x=266.0000000000001,y=261.99999999999994,w=72.0,h=72.0] java.awt.geom.Rectangle2D$Double[x=-130.66666666666666,y=26.66666666666665,w=407.0,h=303.0]
+  #local CallBehaviorAction0_3_SCALE = 0.1769041769041769;
+  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale CallBehaviorAction0_3_SCALE translate vertex(CallBehaviorAction0_3*(1-CallBehaviorAction0_3_SCALE), <257.7066666666667*CallBehaviorAction0_3_SCALE, -106.65364583333329*CallBehaviorAction0_3_SCALE, -6*(1+CallBehaviorAction0_3_SCALE)>) }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_3 }
-    text { ttf LabelFont, "物を取り扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_3, <-40.540, -46.820, 30.000>) no_shadow }
+    text { ttf LabelFont, "物を取り扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_3, <-40.540, -48.000, 30.000>) no_shadow }
 
     union{
     sphere_sweep { cubic_spline, 5,  vert(CallBehaviorAction0_3, 4.0), LRd  vert(CallBehaviorAction0_3, 4.0), LRd  vertex(CallBehaviorAction0_3, <-18.540, -41.180, 4.000>), LRd  vert(ActivityFinal0_2, 4.0), LRd  vert(ActivityFinal0_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { cubic_spline, 5,  vert(CallBehaviorAction0_3, 4.0), LRd  vert(CallBehaviorAction0_3, 4.0), LRd/1.0  vertex(CallBehaviorAction0_3, <-18.540, -41.180, 4.000>), LRd/2.0  vert(ActivityFinal0_2, 4.0), LRd/4.0  vert(ActivityFinal0_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-  object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f scale 0.11381701995012469  translate vertex(CallBehaviorAction0_4, <-53.499, 12.501, -3.528>) }
+// 72.0 java.awt.geom.Rectangle2D$Double[x=78.86542480468754,y=215.33333333333331,w=72.0,h=72.0] java.awt.geom.Rectangle2D$Double[x=37.975000000000136,y=-44.74072916666674,w=682.0,h=365.0]
+  #local CallBehaviorAction0_4_SCALE = 0.10557184750733138;
+  object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f scale CallBehaviorAction0_4_SCALE translate vertex(CallBehaviorAction0_4*(1-CallBehaviorAction0_4_SCALE), <-253.74957519531262*CallBehaviorAction0_4_SCALE, -100.39437500000005*CallBehaviorAction0_4_SCALE, -6*(1+CallBehaviorAction0_4_SCALE)>) }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_4 }
-    text { ttf LabelFont, "物を扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_4, <-22.360, -46.820, 30.000>) no_shadow }
+    text { ttf LabelFont, "物を扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_4, <-22.360, -48.000, 30.000>) no_shadow }
 
     union{
     sphere_sweep { linear_spline, 2,  vert(CallBehaviorAction0_4, 4.0), LRd  vert(ActivityFinal0_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { linear_spline, 2,  vert(CallBehaviorAction0_4, 4.0), LRd  vert(ActivityFinal0_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
+    torus { LOOPRd, LRd rotate -z*45 translate vertex(CallBehaviorAction0_4, <54.360 - LOOPRd, 22.820, 16 - LOOPRd>) material { ControlFlowObjectFlowMaterial } no_shadow }
   object { DecisionNodeMergeNode rotate -x*90 scale 24.0 translate DecisionNodeMergeNode0_5 }
     union{
     sphere_sweep { linear_spline, 2,  vert(DecisionNodeMergeNode0_5, 4.0), LRd  vert(Action0_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
@@ -169,8 +174,8 @@
     }
 }
 object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <241, -300, -300>;
-#declare FOCUS = <241, -220, 0>;
+#declare EYE = <239, -300, -350>;
+#declare FOCUS = <239, -220, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}

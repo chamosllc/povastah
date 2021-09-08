@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス図/クラス継承階層
- * created at 2021/09/03
+ * created at 2021/09/08
  * presented by povastah
  **/
 
@@ -16,7 +16,7 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
-// hierachy depth: {EntityRepository=1, Repository=5, JpaRepository=2, CrudRepository=3, PagingAndSortingRepository=4}
+// hierachy depth: {JpaRepository=2, CrudRepository=3, EntityRepository=1, Repository=5, PagingAndSortingRepository=4}
 // #declare Depth = -32.0;
 
 #declare ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 = union {
@@ -56,6 +56,6 @@
 object { ClassDiagram_1muq6174cfd7c659288bc9badb700978b1e1 }
 #declare EYE = <298, -330, -300>;
 #declare FOCUS = <298, -90, 0>;
-camera { location EYE direction 0.7*z look_at FOCUS }
+camera { location EYE direction 0.75*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

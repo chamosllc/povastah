@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図/リスト画面
- * created at 2021/09/02
+ * created at 2021/09/08
  * presented by povastah
  **/
 
@@ -41,7 +41,7 @@
     }
   object { State rotate -x*90 scale 24.0 translate State0_1 }
     object { Circle_Text(LabelFont, "find",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_1, 30.0)  no_shadow }
-    torus { LOOPRd, LRd translate vert(<232.569, -89.154, 0.000>, - LOOPRd) material { TransitionMaterial } no_shadow }
+    torus { LOOPRd, LRd translate vert(State0_1, -LOOPRd) material { TransitionMaterial } no_shadow }
     union{
     sphere_sweep { linear_spline, 2,  vert(State0_1, 4.0), LRd  vert(ChoicePseudostate0_13, 4.0), LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2,  vert(State0_1, 4.0), LRd  vert(ChoicePseudostate0_13, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
@@ -51,7 +51,7 @@
     object { StateInternal scale<244.440, 100.183, 20.00> translate vertex(State0_2, <0.000, 38.513, -4.500>) }
     object { StateInternal scale<244.440, 74.715, 20.00> translate vertex(State0_2, <0.000, -51.641, -4.500>) }
   }
-    text { ttf LabelFont, "show", 1, 0 scale TextScale texture { LabelTecture } translate vertex(State0_2, <-102.000, 66.154, 0.000>) no_shadow }
+    text { ttf LabelFont, "show", 1, 0 scale TextScale texture { LabelTecture } translate vertex(State0_2, <-114.000, 74.154, 20.000>) no_shadow }
 
   difference {
     sphere_sweep { cubic_spline, 5,  vert(State0_2, 4.0), LRd  vert(State0_2, 4.0), LRd  vertex(State0_2, <-224.667, 74.513, 4.000>), LRd  vert(State0_1, 4.0), LRd  vert(State0_1, 4.0), LRd material { TransitionMaterial }  }
@@ -64,7 +64,7 @@
     object { StateInternal scale<227.333, 161.281, 20.00> translate vert(State0_3, -4.0)  }
     object { StateInternal scale<220.513, 156.443, 20.00> translate vertex(State0_3, <0.000, 0.000, -4.500>) }
   }
-    text { ttf LabelFont, "select", 1, 0 scale TextScale texture { LabelTecture } translate vertex(State0_3, <-89.667, 56.641, 0.000>) no_shadow }
+    text { ttf LabelFont, "select", 1, 0 scale TextScale texture { LabelTecture } translate vertex(State0_3, <-101.667, 64.641, 20.000>) no_shadow }
 
   object { FinalState rotate -x*90 scale 24.0 translate FinalState0_4 }
   object { InitialPseudostate rotate -x*90 scale 24.0 translate InitialPseudostate0_5 }
@@ -138,8 +138,8 @@
     }
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <380, -380, -380>;
-#declare FOCUS = <380, -180, 0>;
-camera { location EYE direction 0.95*z look_at FOCUS }
+#declare EYE = <393, -360, -400>;
+#declare FOCUS = <393, -200, 0>;
+camera { location EYE direction 0.96*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

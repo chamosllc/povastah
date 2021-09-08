@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * コミュニケーション図/MVCコミュニケーション
- * created at 2021/09/02
+ * created at 2021/09/08
  * presented by povastah
  **/
 
@@ -35,8 +35,8 @@
     object { Circle_Text(LabelFont, "1: setAttribute(attribute)",  0.800, 0, 2, 1.800, 1, Align_Center, -90) scale TextScale texture { MessageLabelTecture } translate vert(Message0_3, 30.0)  no_shadow }
 }
 object { CommunicationDiagram_aye91724ef1f5857cbf37de84b739c5e16 }
-#declare EYE = <353, -400, -460>;
-#declare FOCUS = <353, -200, 0>;
-camera { location EYE direction 1.5*z look_at FOCUS }
-light_source { <-1000, -1000, -3000>   color White }
+#declare EYE = <340, -435, -460>;
+#declare FOCUS = <340, -195, 0>;
+camera { location EYE direction 1.95*z look_at FOCUS }
+light_source { <-1000, -1100, -3000>   color White }
 plane { z, 32 texture { CommunicationDiagramTexture }}
