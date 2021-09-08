@@ -139,8 +139,8 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		IStateMachineDiagram subDiagram = subDiagram(node);
 		if(subDiagram != null) {
 			Rectangle2D bound = node.getBound();
-			double deltaZ= 48.0;
-			scene.write(node.drawWithStage(id(subDiagram), new Point3D(bound.getWidth(), bound.getHeight(), VERTEX_H), subDiagram.getBoundRect(), deltaZ));
+			Point3D textAlign = new Point3D(10.0, -8.0, 0.0);
+			scene.write(node.drawWithState(id(subDiagram), new Point3D(bound.getWidth(), bound.getHeight(), VERTEX_H), subDiagram.getBoundRect(), textAlign));
 			return true;
 		}
 		return false;
@@ -170,7 +170,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 			} catch (InvalidUsingException e) {}
 		}
 		scene.write("  }" + CR);
-		scene.write(machine.textOnStage(24.0));
+		scene.write(machine.textOnStage(new Point3D(12.0, -16.0, VERTEX_H)));
 	}
 
 	/**
@@ -287,18 +287,5 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	 */
 	protected boolean isInternal(Node node) {
 		return node.getModel().getContainer() instanceof IState;
-	}
-
-	/**
-	 * リンクを円環で描く
-	 * @param link
-	 * @param source
-	 */
-	protected String drawLoop(ILinkPresentation link, Node source) {
-		if(hasHierarchy(source)){
-			return source.drawLoop() + materialClause(link.getSource(), true) + CR;		
-		}else {
-			return super.drawLoop(link, source);
-		}
 	}
 }

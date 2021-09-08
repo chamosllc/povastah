@@ -148,4 +148,17 @@ abstract public class HierarchyDiagram extends Diagram {
 		}
 		return super.lineSort(link);
 	}
+	
+	/**
+	 * リンクを円環で描く
+	 * @param link
+	 * @param source
+	 */
+	protected String drawLoop(ILinkPresentation link, Node source) {
+		if(hasHierarchy(source)){
+			return source.drawLoopOnStage() + materialClause(link, true) + CR;		
+		}else {
+			return super.drawLoop(link, source);
+		}
+	}
 }

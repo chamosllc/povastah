@@ -126,6 +126,10 @@ public class Node {
 	public Rectangle2D getBound() {
 		return entity.getRectangle();
 	}
+	
+	protected String scaleName() {
+		return name+"_SCALE";
+	}
 
 	public void raiseUp() {
 		location.setZ(location.getZ() + RAIZE_Z);
@@ -163,6 +167,10 @@ public class Node {
 	public String vertex(Point3D point) {
 		return String.format(" vertex(%s, %s)", name, point.minus(location));
 	}
+
+	public String vertexPoint(Point3D point) {
+		return String.format(" vertex(%s, %s)", name, point);
+	}
 	
 	/** 
 	 * ノード中心座標kから相対座標分移動する
@@ -197,16 +205,25 @@ public class Node {
 		return String.format(" translate%s", vertex(point));
 	}
 	
+	public String translatePoint(Point3D point) {
+		return String.format(" translate%s", vertexPoint(point));
+	}
+	
 	public String draw() {
 		return String.format("  object { %s translate %s }" + CR + text(), type + OBJECT_UNIT, name);
 	}
 
 	public String drawWithStage() {
-		return String.format("  object { %s translate %s }" + CR + textOfStage(), type + OBJECT_UNIT, name);
+		return String.format("  object { %s translate %s }" + CR, type + OBJECT_UNIT, name);
 	}
 	
 	public String draw(double zposition) {
 		return String.format("  object { %s translate vert(%s, %.1f) }" + CR, type + OBJECT_UNIT, name, zposition);
+	}
+	
+	public String declareScale(Rectangle2D bound, Rectangle2D subBound) {
+		double scale = Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight());
+		return String.format("  #local %s = %s;" + CR, scaleName(), scale);
 	}
 	
 	public String drawScale(Point3D scale) {
@@ -214,25 +231,34 @@ public class Node {
 	}
 	
 	public String drawLoop() {
-		return String.format("    torus { LOOPRd, LRd translate<%.3f - LOOPRd, %.3f, %.1f - LOOPRd> ", getBound().getMaxX(), -getBound().getMinY(), location.getZ());
+		return String.format("    torus { LOOPRd, LRd translate vert(%s, -LOOPRd) ", name);
 	}
 
-	public String drawWithStage(String diagram, Point3D stage, Rectangle2D subBound, double delta) {
-		String description = drawSubDiagram(diagram, subBound, delta);
-		description += drawScale(stage);
-		return description + textOnStage(10.0);
+	public String drawLoopOnStage() {
+		Rectangle2D bound = getBound();
+		return String.format("    torus { LOOPRd, LRd rotate -z*45 translate vertex(%s, <%.3f - LOOPRd, %.3f, 16 - LOOPRd>) ", name, bound.getMaxX() - bound.getCenterX() + 8.0, bound.getCenterY()-bound.getMinY());
 	}
 	
-	public String drawWithStage(String diagram, Rectangle2D subBound, double delta) {
-		String description = drawSubDiagram(diagram, subBound, delta);
+	public String drawWithState(String diagram, Point3D stageScale, Rectangle2D subBound, Point3D textAlign) {
+		Rectangle2D bound = getBound();
+		Point3D correction = new Point3D(bound.getCenterX() - subBound.getCenterX(), - (bound.getCenterY() - subBound.getCenterY()), 0.0);
+		String description = drawSubDiagram(diagram, getBound(), subBound, correction);
+		description += drawScale(stageScale);
+		return description + textOnStage(textAlign);
+	}
+	
+	public String drawWithAction(String diagram, Rectangle2D subBound) {
+		Rectangle2D bound = getBound();
+		double wide = 72.0;
+		Rectangle2D nodeBound = new Rectangle2D.Double(bound.getX(), bound.getY(), wide, wide);
+		Point3D correction = new Point3D(bound.getCenterX() - subBound.getCenterX(), - (bound.getCenterY() - subBound.getCenterY()), 0.0);
+		String description = "// " + wide + " " + nodeBound + " " + subBound + CR + drawSubDiagram(diagram, nodeBound, subBound, correction);
 		description += drawWithStage();
-		return description;
+		return description + textOfStage();
 	}
 	
-	public String drawSubDiagram(String diagram, Rectangle2D subBound, double delta) {
-		double scale = Math.min(entity.getWidth()/(subBound.getWidth() + delta), entity.getHeight()/(subBound.getHeight() + delta));
-		Point3D point = new Point3D((subBound.getCenterX() + (delta/2))*scale, -(subBound.getCenterY() - (delta/2))*scale, (TEXT_OFFSET_Z+1.0)*scale);
-		return String.format("  object { %s scale %s %s }" + CR, diagram, scale,  translate(location.minus(point)));
+	public String drawSubDiagram(String diagram, Rectangle2D bound, Rectangle2D subBound, Point3D correction) {
+		return declareScale(bound, subBound) + String.format("  object { %s scale %s translate vertex(%s*(1-%2$s), <%s*%2$s, %s*%2$s, -6*(1+%2$s)>) }" + CR, diagram, scaleName(), name, correction.getX(), correction.getY());
 	}
 	
 	/**
@@ -265,8 +291,8 @@ public class Node {
 	protected String textOfStage() {
 		if(!label.isEmpty()) {
 			Rectangle2D bound = getBound();
-			Point3D point = new Point3D((bound.getWidth())/2.0 - 24.0, bound.getHeight()/2.0 + 24.0, -TEXT_OFFSET_Z);
-			return String.format(TEXT16, label, translate(location.minus(point))) + CR;
+			Point3D point = new Point3D(bound.getX() + 24.0, -bound.getCenterY()-48.0, TEXT_OFFSET_Z);
+			return String.format(TEXT16, label, translate(point)) + CR;
 		}
 		return "";
 	}
@@ -277,11 +303,11 @@ public class Node {
 	 * @param bound
 	 * @throws IOException
 	 */
-	public String textOnStage(double correction) {
+	public String textOnStage(Point3D correction) {
 		if(!label.isEmpty()) {
 			Rectangle2D bound = getBound();
-			Point3D point = new Point3D(bound.getMinX() + correction, -bound.getMinY() - correction, 0.0);
-			return String.format(TEXT16, label, translate(point)) + CR;
+			Point3D point = new Point3D((-bound.getWidth())/2.0, bound.getHeight()/2.0, 0.0).plus(correction);
+			return String.format(TEXT16, label, translatePoint(point)) + CR;
 		}
 		return "";
 	}

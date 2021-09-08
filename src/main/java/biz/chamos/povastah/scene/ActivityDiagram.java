@@ -33,6 +33,7 @@ public class ActivityDiagram extends HierarchyDiagram {
 		super(diagram, scene);
 		this.children = child;
 	}
+
 	/**
 	 * ノードが描画対象でない
 	 * @param ノード
@@ -104,8 +105,7 @@ public class ActivityDiagram extends HierarchyDiagram {
 	protected boolean drawSubDiagram(Node node) throws IOException {
 		IActivityDiagram subDiagram = subDiagram(node);
 		if(subDiagram != null) {
-			double delta = 36.0;
-			scene.write(node.drawWithStage(id(subDiagram), subDiagram.getBoundRect(), delta));
+			scene.write(node.drawWithAction(id(subDiagram), subDiagram.getBoundRect()));
 			return true;
 		}
 		return false;

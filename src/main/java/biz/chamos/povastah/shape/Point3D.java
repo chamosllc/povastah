@@ -48,6 +48,9 @@ public class Point3D {
 		return new Point3D(new Point2D.Double(point.getX() - other.getX(), point.getY() - other.getY()), z - other.getZ());
 	}
 	
+	public Point3D plus(Point3D other) {
+		return new Point3D(new Point2D.Double(point.getX() + other.getX(), point.getY() + other.getY()), z + other.getZ());
+	}
 	/**
 	 * 与えられた点との中間点を返す
 	 * @param 他の点

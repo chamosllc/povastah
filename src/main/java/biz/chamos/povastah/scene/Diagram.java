@@ -71,11 +71,6 @@ abstract public class Diagram {
 		this.diagram = diagram;
 		this.scene = scene;
 	}
-	
-	/**
-	 * ダイアグラムの矩形領域
-	 */
-	protected Rectangle2D stageBounds;
 
 	/**
 	 * ダイアグラムをシーンとして記述する
@@ -144,9 +139,6 @@ abstract public class Diagram {
 		String type = presentation.getType();
 		for(String exclude: excludes) {
 			if(type.equals(exclude)) {
-				if(exclude.equals("Frame")) { // フレームの矩形を保持する
-					 stageBounds = presentation.getDiagram().getBoundRect();
-				}
 				return true;
 			}
 		}	 
@@ -172,8 +164,9 @@ abstract public class Diagram {
 	protected void stage() throws IOException {
 		final String DEFVAR = "#declare %s = <%d, %d, %d>;" + CR;
 		// フレームの矩形の中心をカメラ焦点にする
-		int stageX = (int)stageBounds.getCenterX();
-		int stageY = (int)-stageBounds.getCenterY();
+		Rectangle2D bounds = diagram.getBoundRect();
+		int stageX = (int)bounds.getCenterX();
+		int stageY = (int)-bounds.getCenterY();
 		int stageZ = stageY - Math.abs(stageX) - 32;
 		scene.write(String.format(DEFVAR, "EYE", stageX, stageY - 240, stageZ + 120));
 		scene.write(String.format(DEFVAR, "FOCUS", stageX, stageY, 0));
@@ -375,7 +368,7 @@ abstract public class Diagram {
 	 * @param sourcez
 	 */
 	protected String drawLoop(ILinkPresentation link, Node source) {
-		return "    torus { LOOPRd, LRd translate vert(" + source.getLocation() + ", - LOOPRd) " + materialClause(link, true) + CR;
+		return source.drawLoop() + materialClause(link, true) + CR;
 	}
 
 	/**
