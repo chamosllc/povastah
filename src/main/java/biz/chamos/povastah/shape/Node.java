@@ -211,6 +211,9 @@ public class Node {
 		return String.format(" translate%s", vertexPoint(point));
 	}
 
+	protected String vertexScale(double x, double y) {
+		return String.format(" vertexScale(%s, %s, <%.3f*%2$s, %.3f*%2$s, -32*%2$s>) ", name, scaleName(), x, y);
+	}
 	/**
 	 * ノードを描く
 	 * @return 記述
@@ -252,8 +255,7 @@ public class Node {
 	 * @return 記述
 	 */
 	public String declareScale(Rectangle2D bound, Rectangle2D subBound) {
-		double scale = Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight());
-		return String.format("  #local %s = %s;" + CR, scaleName(), scale);
+		return String.format("  #local %s = %.5f;" + CR, scaleName(), Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight()));
 	}
 
 	/**
@@ -304,7 +306,7 @@ public class Node {
 	 * @return 記述
 	 */
 	public String drawSubDiagram(String diagram, Rectangle2D bound, Rectangle2D subBound, Point3D correction) {
-		return declareScale(bound, subBound) + String.format("  object { %s scale %s translate vertex(%s*(1-%2$s), <%s*%2$s, %s*%2$s, -6*(1+%2$s)>) }" + CR, diagram, scaleName(), name, correction.getX(), correction.getY());
+		return declareScale(bound, subBound) + String.format("  object { %s scale %s translate %s }" + CR, diagram, scaleName(), vertexScale(correction.getX(), correction.getY()));
 	}
 	
 	/**

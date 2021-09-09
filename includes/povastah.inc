@@ -23,6 +23,10 @@
 #macro vertCenter(src, dest, OZ)
   vertexCenter(src, vert(dest, OZ))
 #end
+
+#macro vertexScale(base, scaling, child)
+  vertex(base*<1-scaling, 1-scaling, 1>, child)
+#end
 /***************************************************/
 
 #declare LabelFont = "msgothic.ttc"
