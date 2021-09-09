@@ -139,7 +139,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		IStateMachineDiagram subDiagram = subDiagram(node);
 		if(subDiagram != null) {
 			Rectangle2D bound = node.getBound();
-			Point3D textAlign = new Point3D(10.0, -8.0, 0.0);
+			final Point3D textAlign = new Point3D(10.0, -8.0, 0.0);
 			scene.write(node.drawWithState(id(subDiagram), new Point3D(bound.getWidth(), bound.getHeight(), VERTEX_H), subDiagram.getBoundRect(), textAlign));
 			return true;
 		}
