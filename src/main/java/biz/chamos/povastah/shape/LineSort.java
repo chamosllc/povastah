@@ -87,11 +87,11 @@ public enum LineSort {
 		int length = points.length;
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
 		
-		vertexes.add(source.vertLink()); // 始点
+		vertexes.add(vertLink(source)); // 始点
 		if(this.equals(Origin)) {
 			if(length > 2) {
 				if(isCurve) {
-					vertexes.add(source.vertLink()); // 曲線 2点目 始点と同じ点
+					vertexes.add(vertLink(source)); // 曲線 2点目 始点と同じ点
 				}
 				double deltaz = (end.getZ() - start.getZ())/(length - 1);
 				for(int i=1; i < length - 1; i++) {
@@ -99,14 +99,14 @@ public enum LineSort {
 					deltaz += deltaz;
 				}
 				if(isCurve) {
-					vertexes.add(target.vertLink()); // 曲線 終点の一つ前の点 終点と同じ点
+					vertexes.add(vertLink(target)); // 曲線 終点の一つ前の点 終点と同じ点
 				}
 			}
 		}else { // 山なりな線にする
 			Point3D addPoint;
 			Point3D center = start.center(end); // 始点と終点の間に種別の距離率を加味して点を作る
 			double topZ = center.getZ() + TOP;
-			vertexes.add(source.vertLink()); // 曲線 2点目 始点と同じ点
+			vertexes.add(vertLink(source)); // 曲線 2点目 始点と同じ点
 			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 				
 				if(this.equals(Both)) {
 					vertexes.add(source.center(target, topZ));
@@ -151,12 +151,20 @@ public enum LineSort {
 					}
 				}
 			}
-			vertexes.add(target.vertLink()); // 曲線 終点の一つ前の点 終点と同じ点
+			vertexes.add(vertLink(target)); // 曲線 終点の一つ前の点 終点と同じ点
 		}
-		vertexes.add(target.vertLink()); // 終点
+		vertexes.add(vertLink(target)); // 終点
 		return vertexes;
 	}
 
+	
+	/**
+	 * リンク座標vertex句を返す
+	 * @return
+	 */
+	public String vertLink(Node node) {
+		return String.format(" vert(%s, %.1f)", node.getName(), OFFSET_Z);
+	}
 	/**
 	 * astah*座標系のY座標反転し、POVRay座標系のY座標に写像する。
 	 * @param point

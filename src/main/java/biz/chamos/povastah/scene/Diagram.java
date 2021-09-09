@@ -230,7 +230,7 @@ abstract public class Diagram {
 	 * @throws IOException
 	 */
 	protected void draw(Node node) throws Exception {
-		scene.write(node.draw());
+		scene.write(node.drawWithName());
 		drawLinkSource(node);
 	}
 

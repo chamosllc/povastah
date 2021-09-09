@@ -24,7 +24,7 @@ public class Node {
 	 * オブジェクトのz値のオフセット
 	 */
 	static final public double TEXT_OFFSET_Z = 30.0;
-	static final public double RAIZE_Z = -48;
+
 	/*
 	 * オブジェクト関連フォーマット
 	 */
@@ -55,14 +55,13 @@ public class Node {
 	protected Point3D location;
 	
 	/**
-	 * astah*描画要素のタイプをシンボル整形する
-	 * @param presence
-	 * @return
+	 * コンストラクタ
+	 * @param number
+	 * @param id
+	 * @param type
+	 * @param entity
+	 * @param label
 	 */
-	static public String reviseType(IPresentation presence) {
-		return presence.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
-	}
-	
 	public Node(int number, int id, String type, INodePresentation entity, String label) {
 		this.entity = entity;
 		this.label = label;
@@ -97,7 +96,21 @@ public class Node {
 	public String getLabel() {
 		return label;
 	}
-	
+
+	/**
+	 * astah*描画要素のタイプをシンボル整形する
+	 * @param presence
+	 * @return
+	 */
+	static public String reviseType(IPresentation presence) {
+		return presence.getType().replaceAll("[^\\w\\s]","").replaceAll("[\\h]", "");
+	}
+
+	/**
+	 * 引数がラッピングしているINodePresentationである
+	 * @param presence
+	 * @return
+	 */
 	public boolean sameEntity(INodePresentation presence) {
 		return entity == presence;
 	}
@@ -131,24 +144,12 @@ public class Node {
 		return name+"_SCALE";
 	}
 
-	public void raiseUp() {
-		location.setZ(location.getZ() + RAIZE_Z);
-	}
 	public boolean isSource(ILinkPresentation link) {
 		return link.getSource() == entity;
 	}
-
 	
 	public String declare() {
 		return String.format("#local %s = <%.3f, %.3f, %.1f>;" + CR, name, location.getX(), location.getY(), location.getZ());
-	}
-	
-	/**
-	 * vertex句を返す
-	 * @return
-	 */
-	public String vertLink() {
-		return String.format(" vert(%s, %.1f)", name, LineSort.OFFSET_Z);
 	}
 
 	/**
@@ -168,6 +169,15 @@ public class Node {
 		return String.format(" vertex(%s, %s)", name, point.minus(location));
 	}
 
+	/** 
+	 * ノード中心座標からの相対座標とZ値分移動する
+	 * @param zposition
+	 * @return " vert(vertex(name, point-location), zposition)"
+	 */
+	public String vertex(Point3D point, double zposition) {
+		return String.format(" vert(vertex(%s, %s), %.1f)", name, point.minus(location), zposition);
+	}
+	
 	public String vertexPoint(Point3D point) {
 		return String.format(" vertex(%s, %s)", name, point);
 	}
@@ -188,14 +198,6 @@ public class Node {
 	public String center(Node target, double zposition) {
 		return String.format(" vertCenter(%s, %s, %.1f)", name, target.getName(), zposition);
 	}
-	/** 
-	 * ノード中心座標からの相対座標とZ値分移動する
-	 * @param zposition
-	 * @return " vert(vertex(name, point-location), zposition)"
-	 */
-	public String vertex(Point3D point, double zposition) {
-		return String.format(" vert(vertex(%s, %s), %.1f)", name, point.minus(location), zposition);
-	}
 	
 	public String translate(double zposition) {
 		return String.format(" translate%s ", vert(zposition));
@@ -208,55 +210,99 @@ public class Node {
 	public String translatePoint(Point3D point) {
 		return String.format(" translate%s", vertexPoint(point));
 	}
-	
-	public String draw() {
-		return String.format("  object { %s translate %s }" + CR + text(), type + OBJECT_UNIT, name);
-	}
 
-	public String drawWithStage() {
+	/**
+	 * ノードを描く
+	 * @return 記述
+	 */
+	public String draw() {
 		return String.format("  object { %s translate %s }" + CR, type + OBJECT_UNIT, name);
 	}
-	
+
+	/**
+	 * Z値を加えてノードを描く
+	 * @param zposition Z値
+	 * @return 記述
+	 */
 	public String draw(double zposition) {
 		return String.format("  object { %s translate vert(%s, %.1f) }" + CR, type + OBJECT_UNIT, name, zposition);
 	}
+
+	/**
+	 * ノードを拡大縮小して描く
+	 * @param scale 縮小率
+	 * @return 記述
+	 */
+	public String drawWithScale(Point3D scale) {
+		return String.format("  object { %s scale %s translate %s }" + CR, type, scale, name);
+	}
 	
+	/**
+	 * ノードとノード名を描く
+	 * @return 記述
+	 */
+	public String drawWithName() {
+		return draw() + text();
+	}
+
+	/**
+	 * 親ノードに子ダイアグラムを乗せる際の縮小率
+	 * @param bound 親ノードの矩形領域
+	 * @param subBound 子ダイアグラムの矩形領域
+	 * @return 記述
+	 */
 	public String declareScale(Rectangle2D bound, Rectangle2D subBound) {
 		double scale = Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight());
 		return String.format("  #local %s = %s;" + CR, scaleName(), scale);
 	}
-	
-	public String drawScale(Point3D scale) {
-		return String.format("  object { %s scale %s translate %s }" + CR, type, scale, name);
-	}
-	
+
+	/**
+	 * ノード自己再帰リンクを描く
+	 * @return 記述
+	 */
 	public String drawLoop() {
 		return String.format("    torus { LOOPRd, LRd translate vert(%s, -LOOPRd) ", name);
 	}
 
+	/**
+	 * ステージノード自己再帰リンクを描く
+	 * @return 記述
+	 */
 	public String drawLoopOnStage() {
 		Rectangle2D bound = getBound();
 		return String.format("    torus { LOOPRd, LRd rotate -z*45 translate vertex(%s, <%.3f - LOOPRd, %.3f, 16 - LOOPRd>) ", name, bound.getMaxX() - bound.getCenterX() + 8.0, bound.getCenterY()-bound.getMinY());
 	}
-	
+
+	/**
+	 * 状態親ノードと子ダイアグラムを描く
+	 * @return 記述
+	 */
 	public String drawWithState(String diagram, Point3D stageScale, Rectangle2D subBound, Point3D textAlign) {
 		Rectangle2D bound = getBound();
 		Point3D correction = new Point3D(bound.getCenterX() - subBound.getCenterX(), - (bound.getCenterY() - subBound.getCenterY()), 0.0);
 		String description = drawSubDiagram(diagram, getBound(), subBound, correction);
-		description += drawScale(stageScale);
+		description += drawWithScale(stageScale);
 		return description + textOnStage(textAlign);
 	}
-	
+
+	/**
+	 * 振る舞い呼び出しアクションとサブダイアグラムを描く
+	 * @return 記述
+	 */
 	public String drawWithAction(String diagram, Rectangle2D subBound) {
 		Rectangle2D bound = getBound();
 		double wide = 72.0;
 		Rectangle2D nodeBound = new Rectangle2D.Double(bound.getX(), bound.getY(), wide, wide);
 		Point3D correction = new Point3D(bound.getCenterX() - subBound.getCenterX(), - (bound.getCenterY() - subBound.getCenterY()), 0.0);
-		String description = "// " + wide + " " + nodeBound + " " + subBound + CR + drawSubDiagram(diagram, nodeBound, subBound, correction);
-		description += drawWithStage();
+		String description = drawSubDiagram(diagram, nodeBound, subBound, correction);
+		description += draw();
 		return description + textOfStage();
 	}
-	
+
+	/**
+	 * サブダイアグラムを描く
+	 * @return 記述
+	 */
 	public String drawSubDiagram(String diagram, Rectangle2D bound, Rectangle2D subBound, Point3D correction) {
 		return declareScale(bound, subBound) + String.format("  object { %s scale %s translate vertex(%s*(1-%2$s), <%s*%2$s, %s*%2$s, -6*(1+%2$s)>) }" + CR, diagram, scaleName(), name, correction.getX(), correction.getY());
 	}
