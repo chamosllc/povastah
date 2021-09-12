@@ -40,8 +40,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	}
 
 	public StateMachineDiagram(IDiagram diagram, List<IDiagram> child, OutputStreamWriter scene){
-		this(diagram, scene);
-		this.children = child;
+		super(diagram, child, scene);
 	}
 
 	/**
@@ -50,15 +49,18 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	protected void declareDiagram(Node parent, Point3D point){
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
+			if(!children.contains(subDiagram)) {
+				children.add(subDiagram);
+			}
 			try {
 				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, children, scene);
 				if(hierarchyDiagram.existsScene()) {
 					hierarchyDiagram.drawDiagram(point);
 				}
-			} catch (Exception e) {}
+			}catch(Exception e) {}
 		}
 	}
-
+	
 	/**
 	 * サブダイアグラムを返す
 	 * @param parent
@@ -68,11 +70,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		if(hasSubDiagram(parent)) {
 			IStateMachine machine = ((IState) parent.getModel()).getSubmachine(); // nullの場合がある
 			if(machine != null) {
-				IStateMachineDiagram diagram = machine.getStateMachineDiagram();
-				if(!children.contains(diagram)) {
-					children.add(diagram);
-				}
-				return diagram; 
+				return machine.getStateMachineDiagram();
 			}
 		}
 		return null;
@@ -238,13 +236,13 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		Node source = findNode(link.getSource());
 		Node target = findNode(link.getTarget());
 		if(isOtherParent(source, target)) {
-			if(isInternal(source) || isSourceUp(source)) {
-				if(isInternal(target) || isTargetUp(target) || !hasHierarchy(target)) {
+			if(isInternal(source) || isFork(source)) {
+				if(isInternal(target) || isJoin(target) || !hasHierarchy(target)) {
 					return LineSort.Both;
 				}else {
 					return LineSort.Source;
 				}
-			}else if(isInternal(target) || isTargetUp(target)) {
+			}else if(isInternal(target) || isJoin(target)) {
 				return LineSort.Both;
 			}
 		}
@@ -256,7 +254,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isSourceUp(Node node) {
+	protected boolean isFork(Node node) {
 		return node.isLiterallyType("ForkPseudostate");
 	}
 	
@@ -265,7 +263,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isTargetUp(Node node) {
+	protected boolean isJoin(Node node) {
 		return node.isLiterallyType("JoinPseudostate");
 	}
 	
@@ -276,8 +274,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	 * @return 山なり
 	 */
 	public boolean isOtherParent(Node source, Node target) {
-		return source != target // 念押し
-				&& source.getModel().getContainer() != target.getModel().getContainer();
+		return source.getModel().getContainer() != target.getModel().getContainer();
 	}
 
 	/**
@@ -287,5 +284,9 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	 */
 	protected boolean isInternal(Node node) {
 		return node.getModel().getContainer() instanceof IState;
+	}
+
+	protected boolean isForkJoinLinkType(ILinkPresentation link) {
+		return link.getType().equals("Transition");
 	}
 }

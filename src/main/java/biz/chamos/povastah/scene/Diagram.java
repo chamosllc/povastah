@@ -7,7 +7,9 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.change_vision.jude.api.inf.exception.InvalidUsingException;
 import com.change_vision.jude.api.inf.model.IDiagram;
@@ -43,7 +45,7 @@ abstract public class Diagram {
 	static final protected String GLOBAL_SETTINGS = "#version 3.7" + CR + "#global_settings { assumed_gamma 2.2 }" + CR
 			+ "#global_settings { charset utf8 }" + CR + CR
 			+ "#declare ShadowType = 0;" + CR
-			+ "#include \"povastah.inc\"" + CR + CR
+			+ "#include \"povastah.inc\"" + CR + CR					// 
 			+ "#local LRd = 3.2;" + CR							// リンクsphere_sweepオブジェクトの半径
 			+ "#local LOOPRd = 36.0;" + CR					// 自己遷移リンクtorusオブジェクトの半径
 			+ "#local TextScale = <16, 16, 2>;" + CR  + CR;	// Circle_Text, textオブジェクトのスケーリング
@@ -102,9 +104,152 @@ abstract public class Diagram {
 					}
 				}
 			}
+			if(hasForkJoinControl()) {
+				raiseCount();
+			}
 		} catch (InvalidUsingException e) {} // astah* communityでエラーになるとのこと
 		return !nodes.isEmpty();
 	}
+
+	protected void raiseCount() {
+		Map<Node, List<Node>> forkGroups = new HashMap<>();
+		Map<Node, List<Node>> joinGroups = new HashMap<>();
+		List<Node> covered = findForks();
+		for(Node fork: covered) {
+			forkGroups.put(fork, new ArrayList<>());
+		}
+		for(Node join: findJoins()) {
+			covered.add(join);
+			joinGroups.put(join, new ArrayList<>());
+		}
+		try {
+			for(Node fork: forkGroups.keySet()) {
+				for(ILinkPresentation link: forkJoinLinks(fork)) {				
+					raising(fork, findNode(link.getTarget()), covered, forkGroups.get(fork));
+				}
+			}
+			for(Node join: joinGroups.keySet()) {
+				for(ILinkPresentation link: forkJoinLinks(join)) {				
+					raising(join, findNode(link.getTarget()), covered, joinGroups.get(join));
+				}
+			}
+		} catch (Exception e) {}
+		assignRaise(forkGroups, joinGroups);
+		lowerCorrect(covered);
+	}
+
+	protected void raising(Node key, Node node, List<Node> covered, List<Node> group) throws Exception {
+		if(key != node && !group.contains(node)) {
+			group.add(node);
+		}
+		if(!covered.contains(node)) {
+			covered.add(node);
+			for(ILinkPresentation link: forkJoinLinks(node)) {
+					raising(key, findNode(link.getTarget()), covered, group);
+			}
+		}
+	}
+
+	protected List<Node> findForks() {
+		List<Node> forks = new ArrayList<Node>();
+		for(Node node: nodes) {
+			if(isFork(node)) {
+				forks.add(node);
+			}
+		}
+		return forks;
+	};
+	
+	protected List<Node> findJoins() {
+		List<Node> join = new ArrayList<Node>();
+		for(Node node: nodes) {
+			if(isJoin(node)) {
+				join.add(node);
+			}
+		}
+		return join;
+	};
+
+	protected void assignRaise(Map<Node, List<Node>> forkGroups, Map<Node, List<Node>> joinGroups) {
+		for(Node fork: forkGroups.keySet()) {
+			int raise = fork.getRaise() + 1;
+			for(Node content: forkGroups.get(fork)) {
+				if(!isJoin(content) && raise > content.getRaise()) {
+					content.setRaise(raise);
+				}
+			}
+		}
+		for(Node join: joinGroups.keySet()) {
+			int raise = join.getRaise() - 1;
+			for(Node content: joinGroups.get(join)) {
+				if(isJoin(content) && raise < content.getRaise()) {
+					content.setRaise(raise);
+				}
+			}
+		}
+		for(Node join: joinGroups.keySet()) {
+			int raise = join.getRaise();
+			for(Node content: joinGroups.get(join)) {
+				if(!isJoin(content) && raise < content.getRaise()) {
+					content.setRaise(raise);
+				}
+			}
+		}
+		try {
+			for(Node fork: forkGroups.keySet()) {
+				scene.write("// fork = " + fork.getName() + "(" + fork.getRaise() + ") [");
+				for(Node content: forkGroups.get(fork)) {
+					scene.write(content.getName()+ "(" + content.getRaise() + "):");
+				}
+				scene.write("]" + CR);
+			}
+			for(Node join: joinGroups.keySet()) {
+				scene.write("// fork = " + join.getName() + "(" + join.getRaise() + ") [");
+				for(Node content: joinGroups.get(join)) {
+					scene.write(content.getName()+ "(" + content.getRaise() + "):");
+				}
+				scene.write("]" + CR);
+			}
+			scene.flush();
+		} catch (IOException e) {}
+	}
+	
+	protected void lowerCorrect(List<Node> covered) {
+		int min = minRaise(covered);
+		if(min < 0) {
+			for(Node node: covered) {
+				if(!isFork(node)) {
+				node.upRaise(min);
+				}
+			}
+		}
+	}
+	
+	protected int minRaise(List<Node> covered) {
+		int min = 0;
+		for(Node node: covered) {
+			min = node.minRaise(min);
+		}
+		return min;
+	}
+	
+	protected List<ILinkPresentation> forkJoinLinks(Node node){
+		List<ILinkPresentation> links = new ArrayList<>();
+		for(ILinkPresentation link: node.getLinks()) {
+			if(isForkJoinLinkType(link)) {
+				links.add(link);
+			}
+		}
+		return links;
+	}
+
+	protected boolean isForkJoinLinkType(ILinkPresentation link) {
+		return false;
+	}
+
+	protected boolean hasForkJoinControl() {
+		return false;
+	};
 
 	/**
 	 * ダイアグラム番号
@@ -154,6 +299,9 @@ abstract public class Diagram {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		scene.write(String.format(HEADER_COMMENT, diagram.getFullName("/"), sdf.format(cl.getTime())));
 		scene.write(GLOBAL_SETTINGS);
+		if(hasForkJoinControl()){
+			scene.write("#local RAISE = -32;" + CR + CR);	
+		}
 		scene.flush();
 	}
 	
@@ -337,7 +485,7 @@ abstract public class Diagram {
 		if(source == target) {
 			return LineSort.Loop;
 		}
-		if(isSourceUp(source) || isTargetUp(target)) {
+		if(isFork(source) || isJoin(target)) {
 				return LineSort.Both;
 		}
 		return LineSort.Origin;
@@ -348,7 +496,7 @@ abstract public class Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isSourceUp(Node node) {
+	protected boolean isFork(Node node) {
 		return false; 
 	}
 
@@ -357,7 +505,7 @@ abstract public class Diagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isTargetUp(Node node) {
+	protected boolean isJoin(Node node) {
 		return false; 
 	}
 

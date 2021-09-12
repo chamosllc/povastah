@@ -9,6 +9,7 @@ import com.change_vision.jude.api.inf.model.IActivity;
 import com.change_vision.jude.api.inf.model.IActivityDiagram;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.model.IObjectNode;
+import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 import com.change_vision.jude.api.inf.presentation.INodePresentation;
 import com.change_vision.jude.api.inf.presentation.IPresentation;
 
@@ -30,8 +31,7 @@ public class ActivityDiagram extends HierarchyDiagram {
 	}
 
 	public ActivityDiagram(IDiagram diagram, List<IDiagram> child, OutputStreamWriter scene){
-		super(diagram, scene);
-		this.children = child;
+		super(diagram, child, scene);
 	}
 
 	/**
@@ -52,22 +52,25 @@ public class ActivityDiagram extends HierarchyDiagram {
 		}
 		return super.isExcludes(presentation);
 	}
-	
+
 	/**
 	 * サブダイアグラムを宣言をする
 	 */
 	protected void declareDiagram(Node parent, Point3D point){
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
-			try {
-				ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, children, scene);
-				if(hierarchyDiagram.existsScene()) {
-					hierarchyDiagram.drawDiagram(point);
-				}
-			} catch (Exception e) {}
+			if(!children.contains(subDiagram)) {
+				children.add(subDiagram);
+				try {
+					ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, children, scene);
+					if(hierarchyDiagram.existsScene()) {
+						hierarchyDiagram.drawDiagram(point);
+					}
+				}catch(Exception e) {}
+			}
 		}
 	}
-
+	
 	/**
 	 * サブダイアグラムを返す
 	 * @param parent
@@ -77,11 +80,7 @@ public class ActivityDiagram extends HierarchyDiagram {
 		if(hasSubDiagram(parent)) {
 			IActivity activity = ((IAction) parent.getModel()).getCallingActivity(); // nullの場合がある
 			if(activity != null) {
-				IActivityDiagram diagram = activity.getActivityDiagram();
-				if(!children.contains(diagram)) {
-					children.add(diagram);
-				}
-				return diagram; 
+				return activity.getActivityDiagram();
 			}
 		}
 		return null;
@@ -129,7 +128,7 @@ public class ActivityDiagram extends HierarchyDiagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isSourceUp(Node node) {
+	protected boolean isFork(Node node) {
 		return node.isLiterallyType("ForkNode");
 	}
 	
@@ -138,7 +137,11 @@ public class ActivityDiagram extends HierarchyDiagram {
 	 * @param node
 	 * @return 山なり
 	 */
-	protected boolean isTargetUp(Node node) {
+	protected boolean isJoin(Node node) {
 		return node.isLiterallyType("JoinNode");
+	}
+
+	protected boolean isForkJoinLinkType(ILinkPresentation link) {
+		return link.getType().equals("ControlFlow/ObjectFlow");
 	}
 }

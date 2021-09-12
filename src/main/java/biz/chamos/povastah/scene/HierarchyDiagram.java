@@ -71,6 +71,7 @@ abstract public class HierarchyDiagram extends Diagram {
 		for (Node parent : nodes) {
 			declareDiagram(parent, point);
 		}
+
 	}
 
 	/**
@@ -135,13 +136,13 @@ abstract public class HierarchyDiagram extends Diagram {
 	protected LineSort lineSort(ILinkPresentation link) throws Exception {
 		Node source = findNode(link.getSource());
 		Node target = findNode(link.getTarget());
-		if(isSourceUp(source)) {
+		if(isFork(source)) {
 			if(hasHierarchy(target)) {
 				return LineSort.Source;
 			}else {
 				return LineSort.Both;
 			}
-		}else if(isTargetUp(target)) {
+		}else if(isJoin(target)) {
 			if(hasHierarchy(source)) {
 				return LineSort.Target;
 			}
@@ -160,5 +161,9 @@ abstract public class HierarchyDiagram extends Diagram {
 		}else {
 			return super.drawLoop(link, source);
 		}
+	}
+	
+	protected boolean hasForkJoinControl() {
+		return true;
 	}
 }

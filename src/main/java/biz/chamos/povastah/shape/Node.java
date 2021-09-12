@@ -53,6 +53,10 @@ public class Node {
 	 * ノード中心座標
 	 */
 	protected Point3D location;
+	/**
+	 * 並列度
+	 */
+	protected int raise = 0;
 	
 	/**
 	 * コンストラクタ
@@ -139,6 +143,32 @@ public class Node {
 	public Rectangle2D getBound() {
 		return entity.getRectangle();
 	}
+
+	public void raise() {
+		raise++;
+	}
+	
+	public void lower() {
+		raise--;
+	}
+
+	public void assignRaise(Node node) {
+		raise = node.raise;
+	}
+
+	public void down(Node node) {
+		if(raise >= node.raise) {
+			raise = node.raise - 1;
+		}
+	}
+	
+	public void upRaise(int up) {
+		raise -= up;
+	}
+	
+	public int minRaise(int min) {
+		return Math.min(raise, min);
+	}
 	
 	protected String scaleName() {
 		return name+"_SCALE";
@@ -149,7 +179,15 @@ public class Node {
 	}
 	
 	public String declare() {
-		return String.format("#local %s = <%.3f, %.3f, %.1f>;" + CR, name, location.getX(), location.getY(), location.getZ());
+		String zpara;
+		if(raise == 0) {
+			zpara = String.format("%.1f",  location.getZ());
+		}else if (raise == 1) {
+			zpara = String.format("%.1f + RAISE",  location.getZ());
+		}else {
+			zpara = String.format("%.1f + RAISE*%d",  location.getZ(), raise);
+		}
+		return String.format("#local %s = <%.3f, %.3f, %s>;" + CR, name, location.getX(), location.getY(), zpara);
 	}
 
 	/**
@@ -370,5 +408,13 @@ public class Node {
 			return "texture { MessageLabelTecture }";
 		}
 		return "texture { LabelTecture }";
+	}
+
+	public int getRaise() {
+		return raise;
+	}
+
+	public void setRaise(int raise) {
+		this.raise = raise;
 	}
 }
