@@ -7,6 +7,8 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 -- サブマシン状態をそのステートマシン図によって入れ子構造表現する
 - アクティビティ図
 -- 振る舞い呼び出しアクションをそのアクティビティ図によって入れ子構造表現する
+- Fork-Join構造表現
+-- アクティビティ図、ステートマシン図のFork-Join構造を高低差で表現する。
 
 ## Demo
 
