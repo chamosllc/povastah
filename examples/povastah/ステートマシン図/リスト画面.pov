@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図/リスト画面
- * created at 2021/09/08
+ * created at 2021/09/13
  * presented by povastah
  **/
 
@@ -16,6 +16,8 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
+#local RAISE = -48;
+
 #declare StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 = union {
 #local InitialPseudostate0_0 = <130.000, -89.333, 0.0>;
 #local State0_1 = <232.569, -89.154, 0.0>;
@@ -28,8 +30,8 @@
 #local State0_8 = <539.902, -165.820, 0.0>;
 #local FinalState0_9 = <630.667, -97.154, 0.0>;
 #local FinalState0_10 = <628.667, -165.820, 0.0>;
-#local State0_11 = <318.569, -263.820, 0.0>;
-#local State0_12 = <175.902, -263.820, 0.0>;
+#local State0_11 = <318.569, -263.820, 0.0 + RAISE>;
+#local State0_12 = <175.902, -263.820, 0.0 + RAISE>;
 #local ChoicePseudostate0_13 = <318.667, -120.667, 0.0>;
 #local ForkPseudostate0_14 = <243.667, -226.500, 0.0>;
 #local JoinPseudostate0_15 = <247.667, -309.833, 0.0>;
@@ -138,8 +140,8 @@
     }
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <393, -360, -400>;
-#declare FOCUS = <393, -200, 0>;
-camera { location EYE direction 0.96*z look_at FOCUS }
+#declare EYE = <393, -300, -450>;
+#declare FOCUS = <393, -180, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

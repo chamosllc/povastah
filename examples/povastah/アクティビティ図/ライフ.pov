@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ライフ
- * created at 2021/09/08
+ * created at 2021/09/13
  * presented by povastah
  **/
 
@@ -15,6 +15,8 @@
 #local LRd = 3.2;
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
+
+#local RAISE = -48;
 
 #declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
 #local InitialNode1_0 = <-46.127, -46.667, 0.0>;
@@ -142,9 +144,8 @@
     sphere_sweep { linear_spline, 2,  vert(Action0_1, 4.0), LRd  vert(CallBehaviorAction0_3, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_2 }
-// 72.0 java.awt.geom.Rectangle2D$Double[x=266.0000000000001,y=261.99999999999994,w=72.0,h=72.0] java.awt.geom.Rectangle2D$Double[x=-130.66666666666666,y=26.66666666666665,w=407.0,h=303.0]
-  #local CallBehaviorAction0_3_SCALE = 0.1769041769041769;
-  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale CallBehaviorAction0_3_SCALE translate vertex(CallBehaviorAction0_3*(1-CallBehaviorAction0_3_SCALE), <257.7066666666667*CallBehaviorAction0_3_SCALE, -106.65364583333329*CallBehaviorAction0_3_SCALE, -6*(1+CallBehaviorAction0_3_SCALE)>) }
+  #local CallBehaviorAction0_3_SCALE = 0.17690;
+  object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e scale CallBehaviorAction0_3_SCALE translate  vertexScale(CallBehaviorAction0_3, CallBehaviorAction0_3_SCALE, <257.707*CallBehaviorAction0_3_SCALE, -106.654*CallBehaviorAction0_3_SCALE, -32*CallBehaviorAction0_3_SCALE>)  }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_3 }
     text { ttf LabelFont, "物を取り扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_3, <-40.540, -48.000, 30.000>) no_shadow }
 
@@ -152,9 +153,8 @@
     sphere_sweep { cubic_spline, 5,  vert(CallBehaviorAction0_3, 4.0), LRd  vert(CallBehaviorAction0_3, 4.0), LRd  vertex(CallBehaviorAction0_3, <-18.540, -41.180, 4.000>), LRd  vert(ActivityFinal0_2, 4.0), LRd  vert(ActivityFinal0_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
     sphere_sweep { cubic_spline, 5,  vert(CallBehaviorAction0_3, 4.0), LRd  vert(CallBehaviorAction0_3, 4.0), LRd/1.0  vertex(CallBehaviorAction0_3, <-18.540, -41.180, 4.000>), LRd/2.0  vert(ActivityFinal0_2, 4.0), LRd/4.0  vert(ActivityFinal0_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
     }
-// 72.0 java.awt.geom.Rectangle2D$Double[x=78.86542480468754,y=215.33333333333331,w=72.0,h=72.0] java.awt.geom.Rectangle2D$Double[x=37.975000000000136,y=-44.74072916666674,w=682.0,h=365.0]
-  #local CallBehaviorAction0_4_SCALE = 0.10557184750733138;
-  object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f scale CallBehaviorAction0_4_SCALE translate vertex(CallBehaviorAction0_4*(1-CallBehaviorAction0_4_SCALE), <-253.74957519531262*CallBehaviorAction0_4_SCALE, -100.39437500000005*CallBehaviorAction0_4_SCALE, -6*(1+CallBehaviorAction0_4_SCALE)>) }
+  #local CallBehaviorAction0_4_SCALE = 0.10557;
+  object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f scale CallBehaviorAction0_4_SCALE translate  vertexScale(CallBehaviorAction0_4, CallBehaviorAction0_4_SCALE, <-253.750*CallBehaviorAction0_4_SCALE, -100.394*CallBehaviorAction0_4_SCALE, -32*CallBehaviorAction0_4_SCALE>)  }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_4 }
     text { ttf LabelFont, "物を扱う", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_4, <-22.360, -48.000, 30.000>) no_shadow }
 
@@ -174,8 +174,8 @@
     }
 }
 object { ActivityDiagram_hbue76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <239, -300, -350>;
-#declare FOCUS = <239, -220, 0>;
+#declare EYE = <239, -320, -280>;
+#declare FOCUS = <239, -230, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ムーブメント
- * created at 2021/09/08
+ * created at 2021/09/13
  * presented by povastah
  **/
 
@@ -15,6 +15,8 @@
 #local LRd = 3.2;
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
+
+#local RAISE = -48;
 
 #declare ActivityDiagram_ei16c82e3456575d0ee46bca982933226e = union {
 #local InitialNode0_0 = <-46.127, -46.667, 0.0>;
@@ -54,8 +56,8 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_4 }
 }
 object { ActivityDiagram_ei16c82e3456575d0ee46bca982933226e }
-#declare EYE = <40, -300, -280>;
-#declare FOCUS = <40, -200, 0>;
+#declare EYE = <72, -418, -162>;
+#declare FOCUS = <72, -178, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}

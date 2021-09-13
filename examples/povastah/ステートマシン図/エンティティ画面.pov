@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図/エンティティ画面
- * created at 2021/09/08
+ * created at 2021/09/13
  * presented by povastah
  **/
 
@@ -16,6 +16,8 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
+#local RAISE = -48;
+
 #declare StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 = union {
 #local InitialPseudostate1_0 = <130.000, -89.333, 0.0>;
 #local State1_1 = <232.569, -89.154, 0.0>;
@@ -28,8 +30,8 @@
 #local State1_8 = <539.902, -165.820, 0.0>;
 #local FinalState1_9 = <630.667, -97.154, 0.0>;
 #local FinalState1_10 = <628.667, -165.820, 0.0>;
-#local State1_11 = <318.569, -263.820, 0.0>;
-#local State1_12 = <175.902, -263.820, 0.0>;
+#local State1_11 = <318.569, -263.820, 0.0 + RAISE>;
+#local State1_12 = <175.902, -263.820, 0.0 + RAISE>;
 #local ChoicePseudostate1_13 = <318.667, -120.667, 0.0>;
 #local ForkPseudostate1_14 = <243.667, -226.500, 0.0>;
 #local JoinPseudostate1_15 = <247.667, -309.833, 0.0>;
@@ -182,8 +184,8 @@
     sphere_sweep { cubic_spline, 5,  vert(ChoicePseudostate0_3, 4.0), LRd  vert(ChoicePseudostate0_3, 4.0), LRd  vertex(ChoicePseudostate0_3, <49.333, -57.026, 4.000>), LRd  vert(SubmachineState0_4, 4.0), LRd  vert(SubmachineState0_4, 4.0), LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { cubic_spline, 5,  vert(ChoicePseudostate0_3, 4.0), LRd  vert(ChoicePseudostate0_3, 4.0), LRd/1.0  vertex(ChoicePseudostate0_3, <49.333, -57.026, 4.000>), LRd/2.0  vert(SubmachineState0_4, 4.0), LRd/4.0  vert(SubmachineState0_4, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
-  #local SubmachineState0_4_SCALE = 0.21976701183431951;
-  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale SubmachineState0_4_SCALE translate vertex(SubmachineState0_4*(1-SubmachineState0_4_SCALE), <19.01875813802087*SubmachineState0_4_SCALE, -13.486979166666714*SubmachineState0_4_SCALE, -6*(1+SubmachineState0_4_SCALE)>) }
+  #local SubmachineState0_4_SCALE = 0.21977;
+  object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 scale SubmachineState0_4_SCALE translate  vertexScale(SubmachineState0_4, SubmachineState0_4_SCALE, <19.019*SubmachineState0_4_SCALE, -13.487*SubmachineState0_4_SCALE, -32*SubmachineState0_4_SCALE>)  }
   object { SubmachineState scale <183.664, 74.281, 20.000> translate SubmachineState0_4 }
     text { ttf LabelFont, "entity list", 1, 0 scale TextScale texture { LabelTecture } translate vertex(SubmachineState0_4, <-81.832, 29.141, 0.000>) no_shadow }
 
@@ -215,8 +217,8 @@
     }
 }
 object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 }
-#declare EYE = <360, -300, -420>;
-#declare FOCUS = <360, -100, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <370, -280, -360>;
+#declare FOCUS = <370, -100, 0>;
+camera { location EYE direction 0.8*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

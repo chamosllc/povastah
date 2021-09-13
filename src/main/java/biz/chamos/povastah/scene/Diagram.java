@@ -112,24 +112,6 @@ abstract public class Diagram {
 	/**
 	 * Fork-Join構造を追跡して、高低差をつける。
 	 */
-//	protected void raiseTrack() {
-//		Map<Node, List<Node>> forkGroups = new HashMap<>();
-//		List<Node> covered = findForks();
-//		try {
-//			for(Node fork: findForks()) {
-//				List<Node> group = new ArrayList<>();
-//				forkGroups.put(fork, group);
-//				for(ILinkPresentation link: forkJoinLinks(fork)) {
-//					Node target = findNode(link.getTarget());
-//					if(!isJoin(target)) {
-//						target.setRaise(fork.getRaise() + 1);
-//					}
-//					raise(fork, target, covered, group);
-//				}
-//			}
-//		}catch(Exception e) {}
-//	}
-	
 	protected void raiseTrack() {
 		List<Node> covered = findForks();
 		try {
@@ -152,29 +134,8 @@ abstract public class Diagram {
 	 * @param key
 	 * @param node
 	 * @param covered
-	 * @param group
 	 * @throws Exception
 	 */
-//	protected void raise(Node key, Node node, List<Node> covered, List<Node> group) throws Exception {
-//		if(key != node && !group.contains(node)) {
-//			group.add(node);
-//		}
-//		if(!covered.contains(node)) {
-//			covered.add(node);
-//			if(!isJoin(node)) {
-//				for(ILinkPresentation link: forkJoinLinks(node)) {
-//					Node target = findNode(link.getTarget());
-//					if(isJoin(target)) {
-//						target.setRaise(Math.max(0, node.getRaise() - 1));
-//					}else {
-//						target.setRaise(node.getRaise());
-//					}
-//					raise(key, target, covered, group);
-//				}
-//			}
-//		}
-//	}
-
 	protected void raise(Node key, Node node, List<Node> covered) throws Exception {
 		if(!covered.contains(node)) {
 			covered.add(node);
@@ -198,13 +159,14 @@ abstract public class Diagram {
 	 * @return
 	 */
 	protected List<ILinkPresentation> forkJoinLinks(Node node){
-		ILinkPresentation[] allLinks = node.getLinks();
 		List<ILinkPresentation> links = new ArrayList<>();
-		if(allLinks != null) {
-			for(ILinkPresentation link: allLinks) {
-				if(node.isSource(link) && isForkJoinLinkType(link)) {
-					links.add(link);
-				}
+		for(ILinkPresentation link: node.getLinks()) {
+			/*
+			 * リンクを一つも持たないForkノードのとき、getLinks()がnullを返すのかと試してみたが空配列が返された。
+			 * astah-apiのjavadocがメンテされていないのだろうか。
+			 */
+			if(node.isSource(link) && isForkJoinLinkType(link)) {
+				links.add(link);
 			}
 		}
 		return links;
