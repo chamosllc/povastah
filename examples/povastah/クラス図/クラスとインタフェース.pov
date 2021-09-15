@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス図/クラスとインタフェース
- * created at 2021/09/13
+ * created at 2021/09/15
  * presented by povastah
  **/
 

@@ -34,12 +34,30 @@
  * Class Diagram
  */
 #declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
+#declare AbstractClass = object { Class texture {
+   pigment{ agate color_map{[0.0 Red][0.8 color rgbf<1,1,1,0.9>]} scale 0.4 }
+   finish{diffuse 0.6 }
+}}
+
+#declare ConflictClass = union {
+    object { Class }
+    object { Cross translate y*1 }
+}
 
 #declare Interface = object{ Ring_Sphere (1.05, 1.05, 0.06, 0.06 , 5, 5) material{ InterfaceMaterial } }
 
 #declare InstanceSpecification = object { Class texture { T_Wood23 }}
+#declare NoInstanceSpecification = union {
+    object { InstanceSpecification }
+    object { Cross translate y*1 }
+}
 
 #declare Lifeline = object { InstanceSpecification }
+
+
+// illegal Object
+#declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
+
 
 /*
  * Use Case Diagram

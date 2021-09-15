@@ -32,6 +32,12 @@
 	cone {<0, 0, 0>, 0.4, <1, 0, 0>, 0}
 }
 
+#declare Cross = union {
+    box {<-1.5, -0.1, -0.1>, <1.5, 0.1, 0.1>}
+    box {<-0.1, -0.1, -1.5>, <0.1, 0.1, 1.5>}
+    material{M_Glass}
+    rotate y*45  
+}  
 
 #declare SpiralUnit = sphere{ <0,0,0>,0.05 texture{ RobustnessTexture }}
 
