@@ -35,8 +35,8 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%83%AD%E3%83%90%E3%82%B9%E3%83%88%E3%83%8D%E3%82%B9%E5%9B%B3_%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9.png" width="320"></td></tr>
 
 <tr><td>インタフェース継承階層</td>
-<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E7%B6%99%E6%89%BF%E9%9A%8E%E5%B1%A4.jpg" width="240"></td>
-<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E7%B6%99%E6%89%BF%E9%9A%8E%E5%B1%A4.png" width="320"></td></tr>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9%E7%B6%99%E6%89%BF%E9%9A%8E%E5%B1%A4.jpg" width="240"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%95%E3%82%A7%E3%83%BC%E3%82%B9%E7%B6%99%E6%89%BF%E9%9A%8E%E5%B1%A4.png" width="320"></td></tr>
 
 <tr><td>クラス継承リンクグループ</td>
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3/%E3%82%AF%E3%83%A9%E3%82%B9%E7%B6%99%E6%89%BF%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%83%AA%E3%83%B3%E3%82%AF.jpg" width="240"></td>
