@@ -115,7 +115,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
 <tbody>
 <tr><td>Fork-Join構造</td>
-<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E6%A7%8B%E9%80%A0%E8%A1%A8%E7%8F%BE/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3ForkJoin.jpg" width="320"></td>
+<td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E5%90%84%E7%A8%AE%E8%A1%A8%E7%8F%BE/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3ForkJoin.jpg" width="320"></td>
 <td><img src="https://raw.githubusercontent.com/chamosllc/povastah/master/examples/povastah/%E5%90%84%E7%A8%AE%E8%A1%A8%E7%8F%BE/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3ForkJoin.png" width="320"></td>
 </tbody>
 </table>
