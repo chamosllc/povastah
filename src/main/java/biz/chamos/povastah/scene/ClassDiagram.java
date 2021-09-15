@@ -268,34 +268,57 @@ public class ClassDiagram extends Diagram {
 	protected String type(IPresentation presence) {
 		IElement model = presence.getModel();
 		if(model != null) {
-			List<String> types = Arrays.asList(model.getStereotypes());
-			if(!types.isEmpty()) {
-				 if(types.contains("actor")) {
-					return "Actor";
-				}else if(types.contains("boundary")) {
-					return "Boundary";
-				}else if(types.contains("control")) {
-					return "Control";
-				}else if(types.contains("entity")) {
-					return "Entity";
-				}else if(types.contains("interface")) {
-					return "Interface";
+			List<String> stereotypes = Arrays.asList(model.getStereotypes());
+			if(presence.getType().equals("Class")) {
+				String abs = ((IClass)model).isAbstract()?"Abstract":"";
+				if(!stereotypes.isEmpty()) {
+					if(stereotypes.contains("interface")) {
+						if(abs.isEmpty()) {
+							return "Interface";
+						}else {
+							/*
+							 * astah*では、abstract interfaceを定義できてしまう。
+							 * エラータイプを返す
+							 */
+							return "ConflictClass";
+						}
+					}
+					if(stereotypes.contains("actor")) {
+						return abs + "Actor";
+					}else if(stereotypes.contains("boundary")) {
+						return abs + "Boundary";
+					}else if(stereotypes.contains("control")) {
+						return abs + "Control";
+					}else if(stereotypes.contains("entity")) {
+						return abs + "Entity";
+					}
+					if(!abs.isEmpty()) {
+						return abs + "Class";
+					}
 				}
 			}else if(presence.getType().equals("InstanceSpecification")){
-				IClass objectNodeClass = ((IInstanceSpecification)(presence.getModel())).getClassifier();
+				IClass objectNodeClass = ((IInstanceSpecification)model).getClassifier();
+				/*
+				 * インタフェースのインスタンスはなく、アブストラクトのインスタンスもないのだが、astah*では描けてしまう。
+				 * エラータイプを返す。
+				 */
 				if(objectNodeClass != null) {
-					types = Arrays.asList(objectNodeClass.getStereotypes());
-					if(!types.isEmpty()) {
-						 if(types.contains("actor")) {
+					stereotypes = Arrays.asList(objectNodeClass.getStereotypes());
+					if(((IClass)objectNodeClass).isAbstract()){
+						return "NoInstanceSpecification";
+					}
+					if(!stereotypes.isEmpty()) {
+						if(stereotypes.contains("interface")) {
+							return "NoInstanceSpecification";
+						}
+						if(stereotypes.contains("actor")) {
 							return "Actor";
-						}else if(types.contains("boundary")) {
+						}else if(stereotypes.contains("boundary")) {
 							return "BoundaryInstance";
-						}else if(types.contains("control")) {
+						}else if(stereotypes.contains("control")) {
 							return "ControlInstance";
-						}else if(types.contains("entity")) {
+						}else if(stereotypes.contains("entity")) {
 							return "EntityInstance";
-						}else if(types.contains("interface")) {
-							return "Interface";
 						}
 					}
 					return "InstanceSpecification";
@@ -304,4 +327,5 @@ public class ClassDiagram extends Diagram {
 		}
 		return super.type(presence);
 	}
+
 }
