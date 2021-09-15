@@ -109,7 +109,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 </details>
 
 <details>
-<summary>Fork-Join構造表現</summary> 
+<summary>各種表現</summary> 
 
 <table>
 <thead><tr><th></th><th>astah</th><th>POVRay</th></tr></thead>
