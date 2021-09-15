@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図
- * created at 2021/08/30
+ * created at 2021/09/16
  * presented by povastah
  **/
 
@@ -16,7 +16,27 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
-// ActivityDiagram_o9o48e854451c4ee75ae849d72474c5eb8f
+#local RAISE = -48;
+
+#declare ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f = union {
+#local InitialNode1_0 = <87.004, -44.667, 0.0>;
+#local Action1_1 = <87.004, -131.547, 0.0>;
+#local ActivityFinal1_2 = <87.004, -220.000, 0.0>;
+
+  object { InitialNode rotate -x*90 scale 24.0 translate InitialNode1_0 }
+    union{
+    sphere_sweep { linear_spline, 2,  vert(InitialNode1_0, 4.0), LRd  vert(Action1_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(InitialNode1_0, 4.0), LRd  vert(Action1_1, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    }
+  object { Action rotate -x*90 scale 24.0 translate Action1_1 }
+    object { Circle_Text(LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action1_1, 30.0)  no_shadow }
+    union{
+    sphere_sweep { linear_spline, 2,  vert(Action1_1, 4.0), LRd  vert(ActivityFinal1_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(Action1_1, 4.0), LRd  vert(ActivityFinal1_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
+    }
+  object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal1_2 }
+}
+#declare ActivityDiagram_o9o48e854451c4ee75ae849d72474c5eb8f = union {
 #local InitialNode0_0 = <120.667, -87.448, 0.0>;
 #local Action0_1 = <233.004, -87.448, 0.0>;
 #local CallBehaviorAction0_2 = <187.500, -303.255, 0.0>;
@@ -32,56 +52,36 @@
 #local FlowFinalNode0_12 = <558.000, -310.802, 0.0>;
 #local Connector0_13 = <450.781, -94.995, 0.0>;
 
-// ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f
-#local InitialNode1_0 = <87.004, -44.667, 0.0>;
-#local Action1_1 = <87.004, -131.547, 0.0>;
-#local ActivityFinal1_2 = <87.004, -220.000, 0.0>;
-
-#declare ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f = union {
-  object { InitialNode rotate -x*90 scale 24.0 translate InitialNode1_0 }
-    union{
-    sphere_sweep { linear_spline, 2,  vert(InitialNode1_0, 4.0), LRd  vert(Action1_1, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(InitialNode1_0, 4.0), LRd  vert(Action1_1, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
-    }
-  object { Action rotate -x*90 scale 24.0 translate Action1_1 }
-    object { Circle_Text(LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action1_1, 30.0)  }
-    union{
-    sphere_sweep { linear_spline, 2,  vert(Action1_1, 4.0), LRd  vert(ActivityFinal1_2, 4.0), LRd material { ControlFlowObjectFlowMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(Action1_1, 4.0), LRd  vert(ActivityFinal1_2, 4.0), 0.0 material { ShadowControlFlowObjectFlowMaterial } no_image }
-    }
-  object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal1_2 }
-}
-#declare ActivityDiagram_o9o48e854451c4ee75ae849d72474c5eb8f = union {
   object { InitialNode rotate -x*90 scale 24.0 translate InitialNode0_0 }
-    object { Circle_Text(LabelFont, "InitialNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(InitialNode0_0, 30.0)  }
+    object { Circle_Text(LabelFont, "InitialNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(InitialNode0_0, 30.0)  no_shadow }
   object { Action rotate -x*90 scale 24.0 translate Action0_1 }
-    object { Circle_Text(LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action0_1, 30.0)  }
-  object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale 0.1517679282868526  translate vertex(CallBehaviorAction0_2, <-15.960, 17.327, -4.705>) }
+    object { Circle_Text(LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action0_1, 30.0)  no_shadow }
+  #local CallBehaviorAction0_2_SCALE = 0.33488;
+  object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale CallBehaviorAction0_2_SCALE translate  vertexScale(CallBehaviorAction0_2, CallBehaviorAction0_2_SCALE, <100.339*CallBehaviorAction0_2_SCALE, -171.089*CallBehaviorAction0_2_SCALE, -32*CallBehaviorAction0_2_SCALE>)  }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_2 }
-    object { Circle_Text(LabelFont, "CallBehaviorAction",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(CallBehaviorAction0_2, 30.0)  }
-    text { ttf LabelFont, "CallBehaviorAction", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_2, <-37.500, -43.047, 30.000>) no_shadow }
+    text { ttf LabelFont, "CallBehaviorAction", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_2, <-37.500, -48.000, 30.000>) no_shadow }
 
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_3 }
-    object { Circle_Text(LabelFont, "ActivityFinal",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ActivityFinal0_3, 30.0)  }
+    object { Circle_Text(LabelFont, "ActivityFinal",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ActivityFinal0_3, 30.0)  no_shadow }
   object { SendSignalAction rotate -x*90 scale 24.0 translate SendSignalAction0_4 }
-    object { Circle_Text(LabelFont, "SendSignalAction",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(SendSignalAction0_4, 30.0)  }
+    object { Circle_Text(LabelFont, "SendSignalAction",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(SendSignalAction0_4, 30.0)  no_shadow }
   object { AcceptEventAction rotate -x*90 scale 24.0 translate AcceptEventAction0_5 }
-    object { Circle_Text(LabelFont, "AcceptEventAction",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(AcceptEventAction0_5, 30.0)  }
+    object { Circle_Text(LabelFont, "AcceptEventAction",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(AcceptEventAction0_5, 30.0)  no_shadow }
   object { ObjectNode rotate -x*90 scale 24.0 translate ObjectNode0_6 }
-    object { Circle_Text(LabelFont, "ObjectNode:Class",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ObjectNode0_6, 30.0)  }
+    object { Circle_Text(LabelFont, "ObjectNode:Class",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ObjectNode0_6, 30.0)  no_shadow }
   object { AcceptTimeEventAction rotate -x*90 scale 24.0 translate AcceptTimeEventAction0_7 }
-    object { Circle_Text(LabelFont, "AcceptTimeEventAction",  0.967, 0, 2, 1.633, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(AcceptTimeEventAction0_7, 30.0)  }
+    object { Circle_Text(LabelFont, "AcceptTimeEventAction",  0.967, 0, 2, 1.633, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(AcceptTimeEventAction0_7, 30.0)  no_shadow }
   object { Process rotate -x*90 scale 24.0 translate Process0_8 }
-    object { Circle_Text(LabelFont, "Process",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Process0_8, 30.0)  }
+    object { Circle_Text(LabelFont, "Process",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Process0_8, 30.0)  no_shadow }
   object { DecisionNodeMergeNode rotate -x*90 scale 24.0 translate DecisionNodeMergeNode0_9 }
-    object { Circle_Text(LabelFont, "DecisionNodeMergeNode",  0.967, 0, 2, 1.633, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(DecisionNodeMergeNode0_9, 30.0)  }
+    object { Circle_Text(LabelFont, "DecisionNodeMergeNode",  0.967, 0, 2, 1.633, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(DecisionNodeMergeNode0_9, 30.0)  no_shadow }
   object { ForkNode rotate -x*90 scale 24.0 translate ForkNode0_10 }
-    object { Circle_Text(LabelFont, "ForkNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ForkNode0_10, 30.0)  }
+    object { Circle_Text(LabelFont, "ForkNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(ForkNode0_10, 30.0)  no_shadow }
   object { JoinNode rotate -x*90 scale 24.0 translate JoinNode0_11 }
-    object { Circle_Text(LabelFont, "JoinNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(JoinNode0_11, 30.0)  }
+    object { Circle_Text(LabelFont, "JoinNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(JoinNode0_11, 30.0)  no_shadow }
   object { FlowFinalNode rotate -x*90 scale 24.0 translate FlowFinalNode0_12 }
   object { Connector rotate -x*90 scale 24.0 translate Connector0_13 }
-    object { Circle_Text(LabelFont, "Connector",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Connector0_13, 30.0)  }
+    object { Circle_Text(LabelFont, "Connector",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Connector0_13, 30.0)  no_shadow }
 }
 object { ActivityDiagram_o9o48e854451c4ee75ae849d72474c5eb8f }
 #declare EYE = <418, -435, -525>;

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ユースケース図
- * created at 2021/08/30
+ * created at 2021/09/16
  * presented by povastah
  **/
 
@@ -16,15 +16,14 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
-// UseCaseDiagram_77u48e854451c4ee75ae849d72474c5eb8f
+#declare UseCaseDiagram_77u48e854451c4ee75ae849d72474c5eb8f = union {
 #local Actor0_0 = <91.333, -109.714, 0.0>;
 #local UseCase0_1 = <274.000, -110.000, 0.0>;
 #local UseCase0_2 = <326.667, -193.988, 0.0>;
 #local UseCase0_3 = <311.000, -308.167, 0.0>;
 
-#declare UseCaseDiagram_77u48e854451c4ee75ae849d72474c5eb8f = union {
   object { Actor rotate -x*90 scale 24.0 translate Actor0_0 }
-    object { Circle_Text(LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Actor0_0, 30.0)  }
+    object { Circle_Text(LabelFont, "アクター",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Actor0_0, 30.0)  no_shadow }
   cylinder {-z, z 1 texture { UseCaseTexture } scale <1.4000000000000001, 0.6000000000000001, 0.05> texture { pigment { object { union { 
     text { ttf LabelFont, "ユースケース", 1, 0 texture { LabelTecture } translate<-0.7999999999999996, -0, 0> }
      scale <0.5, 0.5, 1> translate <-0.5, 1, -0.5> } color<1,1,1,1> color<0,0,0,1> }}

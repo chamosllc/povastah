@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * サブステートマシン図
- * created at 2021/08/30
+ * created at 2021/09/16
  * presented by povastah
  **/
 
@@ -16,14 +16,15 @@
 #local LOOPRd = 36.0;
 #local TextScale = <16, 16, 2>;
 
-// StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f
+#local RAISE = -48;
+
+#declare StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f = union {
 #local State0_0 = <180.833, -68.714, 0.0>;
 #local InitialPseudostate0_1 = <107.333, -68.714, 0.0>;
 #local FinalState0_2 = <254.000, -68.714, 0.0>;
 
-#declare StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f = union {
   object { State rotate -x*90 scale 24.0 translate State0_0 }
-    object { Circle_Text(LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_0, 30.0)  }
+    object { Circle_Text(LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_0, 30.0)  no_shadow }
     union{
     sphere_sweep { linear_spline, 2,  vert(State0_0, 4.0), LRd  vert(FinalState0_2, 4.0), LRd material { TransitionMaterial } no_shadow }
     sphere_sweep { linear_spline, 2,  vert(State0_0, 4.0), LRd  vert(FinalState0_2, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
