@@ -35,8 +35,8 @@
  */
 #declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
 #declare AbstractClass = object { Class texture {
-   pigment{ agate color_map{[0.0 Red][0.8 color rgbf<1,1,1,0.9>]} scale 0.4 }
-   finish{diffuse 0.6 }
+   pigment{ agate color_map{[0.0  color rgb<1, 0.02, 0.02>][0.8 color rgbf<1, 1, 1, 0.9>]} scale 0.4 }
+   finish{diffuse 0.7 }
 }}
 
 #declare ConflictClass = union {
