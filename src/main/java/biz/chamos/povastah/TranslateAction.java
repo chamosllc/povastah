@@ -43,10 +43,10 @@ public class TranslateAction implements IPluginActionDelegate {
 
 
 	/**
-	 * 
+	 * POVRayシーン記述ファイルを出力するディレクトリを指定する
 	 * @param window
 	 * @param project
-	 * @return
+	 * @return 出力先ディレクトリパス
 	 * @throws ProjectNotFoundException
 	 */
 	protected File selectScriptOutputDirectory(IWindow window, String projectPath) throws ProjectNotFoundException {
