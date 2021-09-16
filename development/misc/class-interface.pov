@@ -17,8 +17,8 @@
 #local TextScale = <16, 16, 2>;
 
 #declare ClassDiagram_zm36174cfd7c659288bc9badb700978b1e1 = union {
-#local Interface0_0 = <140.087, -152.974, 0.0>;
-#local Entity0_1 = <139.552, -250.115, 0.0>;
+#local Interface0_0 = <120.087, -152.974, 0.0>;
+#local Entity0_1 = <120.087, -250.115, 0.0>;
 
   object { Interface rotate -x*90 scale 24.0 translate Interface0_0 }
     object { Circle_Text(LabelFont, "Serializable",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Interface0_0, 30.0)  no_shadow }
@@ -31,9 +31,9 @@
     object { Circle_Text(LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Entity0_1, 30.0)  no_shadow }
 }
 
-#declare ClassDiagram_ideal = union {
-#local Interface0_0 = <230, -250.115, 0.0>;
-#local Entity0_1 = <230, -250.115, 0.0>;
+#declare ClassDiagram_ideal1 = union {
+#local Interface0_0 = <230, -200.115, 0.0>;
+#local Entity0_1 = <230, -200.115, 0.0>;
 
   object { Interface rotate -x*90 scale 24.0 translate Interface0_0 }
     object { Circle_Text(LabelFont, "Serializable",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Interface0_0, 0.0)  no_shadow }
@@ -41,10 +41,21 @@
     object { Circle_Text(LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Entity0_1, 30.0)  no_shadow }
 }
 
+#declare ClassDiagram_ideal2 = union {
+#local Interface0_0 = <320, -200.115, 0.0>;
+#local Entity0_1 = <320, -200.115, 0.0>;
+
+  object { Interface rotate -x*90 scale 24.0 translate Interface0_0 }
+    object { Circle_Text(LabelFont, "Serializable",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Interface0_0, 0.0)  no_shadow }
+  object { EntityInstance rotate -x*90 scale 24.0 translate Entity0_1 }
+    object { Circle_Text(LabelFont, ":Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Entity0_1, 30.0)  no_shadow }
+}
+
 object { ClassDiagram_zm36174cfd7c659288bc9badb700978b1e1 }
-object {ClassDiagram_ideal}
-#declare EYE = <180, -340, -200>;
-#declare FOCUS = <180, -220, 0>;
-camera { location EYE direction 1.4*z look_at FOCUS }
+object {ClassDiagram_ideal1} 
+object {ClassDiagram_ideal2}
+#declare EYE = <210, -340, -200>;
+#declare FOCUS = <210, -220, 0>;
+camera { location EYE direction 1.0*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}
