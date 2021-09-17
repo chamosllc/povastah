@@ -5,7 +5,7 @@
 		<bundle.symbolicName>biz.chamos.povastah</bundle.symbolicName>
 		<bundle.namespace>biz.chamos.povastah</bundle.namespace>
 		<plugin.install>true</plugin.install>
-		<astah.version>6.7</astah.version>
+		<astah.version>1.1</astah.version>
 		<astah.edition>all</astah.edition>
 		<!-- add from SDK setting.xml properties -->
 		<astahPath>C:/Program Files/astah-professional</astahPath>
