@@ -184,7 +184,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
     	<details>
        <summary>カメラの配置を変更する</summary>
 
-	       ```POV-Ray SDL
+			```POC-Ray SDL
 	       #declare EYE = <x,y,z>;
 	       ```
            - ｘは水平軸で右手が正である。yは垂直軸で上手が正である。ｚはxy平面の直交軸で奥向きが正である。
