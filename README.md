@@ -180,9 +180,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
     	- POVRayスクリプトファイルはastah*プロジェクト構造と同型のファイルツリー構造に展開される。
 3. POVRayツールで、POVRayスクリプトファイル(.pov)を開いて、レンダリングする。
 4. POVRayスクリプトファイルを編集する。
-    <details>
-    <summary>カメラを操作する</summary>
-       
+    * カメラを操作する。
     	<details>
        <summary>カメラの配置を変更する</summary>
 
@@ -208,9 +206,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
        camera { location EYE direction 倍率*z look_at FOCUS }
        ```
 	  </details>
-
-	</details>
-	
+	    
     * リンク影のマテリアルを切り替える。
        ```POV-Ray SDL
        #declare ShadowType=1;
