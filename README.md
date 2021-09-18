@@ -214,7 +214,6 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 	#local Action0_1 = <x, y, z>;
 	```
    </details>
-       ```
 
 
 ※UTF-8で日本語文字を含めて出力する。POVRayエディタはUTF-8に対応していないため、出力されたPOVRayスクリプトファイルで日本語文字を編集する際は、別途、UTF-8を扱えるテキストエディタを推奨する。
