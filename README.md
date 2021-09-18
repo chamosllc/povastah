@@ -205,7 +205,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
        ```POV-Ray SDL
        camera { location EYE direction 倍率*z look_at FOCUS }
        ```
-	   </details>
+	  </details>
 	    
     * リンク影のマテリアルを切り替える。
        ```POV-Ray SDL
