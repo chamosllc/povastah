@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * クラス図/クラスとインタフェース
- * created at 2021/09/15
+ * created at 2021/09/18
  * presented by povastah
  **/
 
@@ -31,8 +31,8 @@
     object { Circle_Text(LabelFont, "Entity",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Entity0_1, 30.0)  no_shadow }
 }
 object { ClassDiagram_zm36174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <139, -340, -200>;
+#declare EYE = <139, -460, -271>;
 #declare FOCUS = <139, -220, 0>;
-camera { location EYE direction 1.4*z look_at FOCUS }
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

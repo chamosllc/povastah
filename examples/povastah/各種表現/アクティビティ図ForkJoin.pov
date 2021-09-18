@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
- * 構造表現/アクティビティ図ForkJoin
- * created at 2021/09/13
+ * 各種表現/アクティビティ図ForkJoin
+ * created at 2021/09/18
  * presented by povastah
  **/
 
@@ -264,7 +264,7 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_10 }
 }
 object { ActivityDiagram_ky0ce4b1c12b0b0b3b2860874e0282606b }
-#declare EYE = <435, -600, -440>;
+#declare EYE = <435, -400, -507>;
 #declare FOCUS = <435, -160, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * 各種表現/不正オブジェクト
- * created at 2021/09/15
+ * created at 2021/09/18
  * presented by povastah
  **/
 
@@ -26,8 +26,8 @@
     object { Circle_Text(LabelFont, "nonsence:Diagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(NoInstanceSpecification0_1, 30.0)  no_shadow }
 }
 object { ClassDiagram_5vga0290fd175e96d71338b24081029707b }
-#declare EYE = <340, -500, -200>;
-#declare FOCUS = <340, -280, 0>;
+#declare EYE = <329, -533, -534>;
+#declare FOCUS = <329, -293, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図/ライフサイクル
- * created at 2021/09/13
+ * created at 2021/09/18
  * presented by povastah
  **/
 
@@ -87,8 +87,8 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_7 }
 }
 object { ActivityDiagram_iewe76362ca895e31cbb57906ea3ad6f99f }
-#declare EYE = <400, -377, -427>;
-#declare FOCUS = <400, -137, 0>;
+#declare EYE = <378, -377, -427>;
+#declare FOCUS = <378, -137, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}
