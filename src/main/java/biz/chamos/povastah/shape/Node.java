@@ -93,10 +93,6 @@ public class Node {
 		return name;
 	}
 	
-	public String getType() {
-		return type;
-	}
-	
 	public String getLabel() {
 		return label;
 	}
@@ -144,26 +140,12 @@ public class Node {
 		return entity.getRectangle();
 	}
 
-	public void raise() {
-		raise++;
-	}
-	
-	public void lower() {
-		raise--;
+	public int getRaise() {
+		return raise;
 	}
 
-	public void assignRaise(Node node) {
-		raise = node.raise;
-	}
-
-	public void down(Node node) {
-		if(raise >= node.raise) {
-			raise = node.raise - 1;
-		}
-	}
-	
-	public void upRaise(int up) {
-		raise -= up;
+	public void setRaise(int raise) {
+		this.raise = raise;
 	}
 	
 	public int minRaise(int min) {
@@ -228,6 +210,7 @@ public class Node {
 	public String center(Node target) {
 		return String.format(" vertexCenter(%s, %s)", name, target.getName());
 	}
+	
 	/** 
 	 * ノード中心座標kから相対座標分移動する
 	 * @param point
@@ -408,13 +391,5 @@ public class Node {
 			return "texture { MessageLabelTecture }";
 		}
 		return "texture { LabelTecture }";
-	}
-
-	public int getRaise() {
-		return raise;
-	}
-
-	public void setRaise(int raise) {
-		this.raise = raise;
 	}
 }

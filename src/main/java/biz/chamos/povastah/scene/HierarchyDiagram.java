@@ -58,7 +58,8 @@ abstract public class HierarchyDiagram extends Diagram {
 	 * @return ダイアグラムの登録順を返す
 	 */
 	protected int diagramId() {
-		return children.indexOf(diagram);
+		int id = children.indexOf(diagram);
+		return (id < 0)?children.size():id;
 	}
 
 	/**

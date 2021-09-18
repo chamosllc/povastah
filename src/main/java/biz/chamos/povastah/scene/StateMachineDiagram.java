@@ -49,14 +49,12 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	protected void declareDiagram(Node parent, Point3D point){
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
-			if(!children.contains(subDiagram)) {
-				children.add(subDiagram);
+			if(!children.contains(subDiagram)) {		
 				try {
 					StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, children, scene);
 					if(hierarchyDiagram.existsScene()) {
+						children.add(subDiagram);
 						hierarchyDiagram.drawDiagram(point);
-					}else {
-						children.remove(subDiagram);
 					}
 				}catch(Exception e) {}
 			}
@@ -77,20 +75,6 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		}
 		return null;
 	}
-	
-//	/**
-//	 * 宣言されたサブダイアグラムを返す
-//	 * @param parent
-//	 * @return サブダイアグラム
-//	 */
-//	protected IStateMachineDiagram callDiagram(Node parent) {
-//		IStateMachineDiagram diagram = subDiagram(parent);
-//		if(children.contains(diagram)) {
-//			return diagram;
-//		}else {
-//			return null;
-//		}
-//	}
 	
 	/**
 	 * サブダイアグラムを持つノード型である
