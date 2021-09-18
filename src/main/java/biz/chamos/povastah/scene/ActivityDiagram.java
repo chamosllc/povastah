@@ -60,10 +60,10 @@ public class ActivityDiagram extends HierarchyDiagram {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			if(!children.contains(subDiagram)) {
-				children.add(subDiagram);
 				try {
 					ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, children, scene);
 					if(hierarchyDiagram.existsScene()) {
+						children.add(subDiagram);
 						hierarchyDiagram.drawDiagram(point);
 					}
 				}catch(Exception e) {}

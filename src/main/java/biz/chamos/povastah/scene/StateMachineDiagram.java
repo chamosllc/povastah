@@ -50,14 +50,14 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			if(!children.contains(subDiagram)) {
-				children.add(subDiagram);
+				try {
+					StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, children, scene);
+					if(hierarchyDiagram.existsScene()) {
+						children.add(subDiagram);
+						hierarchyDiagram.drawDiagram(point);
+					}
+				}catch(Exception e) {}
 			}
-			try {
-				StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, children, scene);
-				if(hierarchyDiagram.existsScene()) {
-					hierarchyDiagram.drawDiagram(point);
-				}
-			}catch(Exception e) {}
 		}
 	}
 	
