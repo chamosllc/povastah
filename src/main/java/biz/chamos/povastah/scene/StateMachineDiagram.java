@@ -50,11 +50,13 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		IStateMachineDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			if(!children.contains(subDiagram)) {
+				children.add(subDiagram);
 				try {
 					StateMachineDiagram hierarchyDiagram = new StateMachineDiagram(subDiagram, children, scene);
 					if(hierarchyDiagram.existsScene()) {
-						children.add(subDiagram);
 						hierarchyDiagram.drawDiagram(point);
+					}else {
+						children.remove(subDiagram);
 					}
 				}catch(Exception e) {}
 			}
@@ -75,6 +77,20 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		}
 		return null;
 	}
+	
+//	/**
+//	 * 宣言されたサブダイアグラムを返す
+//	 * @param parent
+//	 * @return サブダイアグラム
+//	 */
+//	protected IStateMachineDiagram callDiagram(Node parent) {
+//		IStateMachineDiagram diagram = subDiagram(parent);
+//		if(children.contains(diagram)) {
+//			return diagram;
+//		}else {
+//			return null;
+//		}
+//	}
 	
 	/**
 	 * サブダイアグラムを持つノード型である
@@ -134,7 +150,7 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	 * @throws IOException
 	 */
 	protected boolean drawSubDiagram(Node node) throws IOException {
-		IStateMachineDiagram subDiagram = subDiagram(node);
+		IDiagram subDiagram = callDiagram(node);
 		if(subDiagram != null) {
 			Rectangle2D bound = node.getBound();
 			final Point3D textAlign = new Point3D(10.0, -8.0, 0.0);

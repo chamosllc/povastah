@@ -118,13 +118,34 @@ abstract public class HierarchyDiagram extends Diagram {
 	abstract protected IDiagram subDiagram(Node parent);
 
 	/**
+	 * 宣言されたサブダイアグラムを返す
+	 * @param parent
+	 * @return サブダイアグラム
+	 */
+	protected IDiagram callDiagram(Node parent) {
+		IDiagram diagram = subDiagram(parent);
+		if(children.contains(diagram)) {
+			return diagram;
+		}else {
+			return null;
+		}
+	}
+	
+	/**
 	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
-	 * 
+	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるとき配置する
 	 * @param node
-	 * @return ダイアグラム階層がある
+	 * @return 宣言されているサブアクティビティ
 	 * @throws IOException
 	 */
-	abstract protected boolean drawSubDiagram(Node node)  throws IOException ;
+	protected boolean drawSubDiagram(Node node) throws IOException {
+		IDiagram subDiagram = callDiagram(node);
+		if(subDiagram != null) {
+			scene.write(node.drawWithAction(id(subDiagram), subDiagram.getBoundRect()));
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * リンク種別を返す

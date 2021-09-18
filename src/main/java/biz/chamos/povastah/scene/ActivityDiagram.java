@@ -1,6 +1,5 @@
 package biz.chamos.povastah.scene;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
@@ -60,11 +59,13 @@ public class ActivityDiagram extends HierarchyDiagram {
 		IActivityDiagram subDiagram;
 		if((subDiagram = subDiagram(parent)) != null) {
 			if(!children.contains(subDiagram)) {
+				children.add(subDiagram);
 				try {
 					ActivityDiagram hierarchyDiagram = new ActivityDiagram(subDiagram, children, scene);
 					if(hierarchyDiagram.existsScene()) {
-						children.add(subDiagram);
 						hierarchyDiagram.drawDiagram(point);
+					}else {
+						children.remove(subDiagram);
 					}
 				}catch(Exception e) {}
 			}
@@ -86,6 +87,20 @@ public class ActivityDiagram extends HierarchyDiagram {
 		return null;
 	}
 
+//	/**
+//	 * 宣言されたサブダイアグラムを返す
+//	 * @param parent
+//	 * @return サブダイアグラム
+//	 */
+//	protected IActivityDiagram callDiagram(Node parent) {
+//		IActivityDiagram diagram = subDiagram(parent);
+//		if(children.contains(diagram)) {
+//			return diagram;
+//		}else {
+//			return null;
+//		}
+//	}
+	
 	/**
 	 * サブダイアグラムを持つノード型である
 	 */
@@ -94,21 +109,21 @@ public class ActivityDiagram extends HierarchyDiagram {
 		return parent.isLiterallyType("CallBehaviorAction");
 	}
 	
-	/**
-	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
-	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるとき配置する
-	 * @param node
-	 * @return サブアクティビティがある
-	 * @throws IOException
-	 */
-	protected boolean drawSubDiagram(Node node) throws IOException {
-		IActivityDiagram subDiagram = subDiagram(node);
-		if(subDiagram != null) {
-			scene.write(node.drawWithAction(id(subDiagram), subDiagram.getBoundRect()));
-			return true;
-		}
-		return false;
-	}
+//	/**
+//	 * ノードにダイアグラム階層があるときサブダイアグラムを配置する
+//	 * 振る舞い呼び出しアクション(CallBehaviorAction)にサブアクティビティがあるとき配置する
+//	 * @param node
+//	 * @return 宣言されているサブアクティビティ
+//	 * @throws IOException
+//	 */
+//	protected boolean drawSubDiagram(Node node) throws IOException {
+//		IDiagram subDiagram = callDiagram(node);
+//		if(subDiagram != null) {
+//			scene.write(node.drawWithAction(id(subDiagram), subDiagram.getBoundRect()));
+//			return true;
+//		}
+//		return false;
+//	}
 
 	/**
 	 * ノード、リンクのラベル名を返す
