@@ -183,7 +183,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
     * カメラを操作する。
     	<details>
        <summary>カメラの配置を変更する</summary>
-       
+
 	       ```POV-Ray SDL
 	       #declare EYE = <x,y,z>;
 	       ```

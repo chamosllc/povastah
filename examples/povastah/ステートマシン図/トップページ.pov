@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図/トップページ
- * created at 2021/09/13
+ * created at 2021/09/18
  * presented by povastah
  **/
 
@@ -217,9 +217,9 @@
     }
 }
 #declare StateMachineDiagram_1u2y6174cfd7c659288bc9badb700978b1e1 = union {
-#local InitialPseudostate0_0 = <169.111, -133.807, 0.0>;
-#local State0_1 = <298.873, -133.807, 0.0>;
-#local SubmachineState0_2 = <538.144, -133.807, 0.0>;
+#local InitialPseudostate0_0 = <181.111, -133.807, 0.0>;
+#local State0_1 = <282.873, -133.807, 0.0>;
+#local SubmachineState0_2 = <384.144, -228.474, 0.0>;
 
   object { InitialPseudostate rotate -x*90 scale 24.0 translate InitialPseudostate0_0 }
     union{
@@ -229,18 +229,18 @@
   object { State rotate -x*90 scale 24.0 translate State0_1 }
     object { Circle_Text(LabelFont, "受付",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_1, 30.0)  no_shadow }
     union{
-    sphere_sweep { linear_spline, 2,  vert(State0_1, 4.0), LRd  vert(SubmachineState0_2, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(State0_1, 4.0), LRd  vert(SubmachineState0_2, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { cubic_spline, 5,  vert(State0_1, 4.0), LRd  vert(State0_1, 4.0), LRd  vertex(State0_1, <95.794, -25.526, 4.000>), LRd  vert(SubmachineState0_2, 4.0), LRd  vert(SubmachineState0_2, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { cubic_spline, 5,  vert(State0_1, 4.0), LRd  vert(State0_1, 4.0), LRd/1.0  vertex(State0_1, <95.794, -25.526, 4.000>), LRd/2.0  vert(SubmachineState0_2, 4.0), LRd/4.0  vert(SubmachineState0_2, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   #local SubmachineState0_2_SCALE = 0.21043;
-  object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 scale SubmachineState0_2_SCALE translate  vertexScale(SubmachineState0_2, SubmachineState0_2_SCALE, <177.478*SubmachineState0_2_SCALE, -70.589*SubmachineState0_2_SCALE, -32*SubmachineState0_2_SCALE>)  }
+  object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 scale SubmachineState0_2_SCALE translate  vertexScale(SubmachineState0_2, SubmachineState0_2_SCALE, <23.478*SubmachineState0_2_SCALE, -165.255*SubmachineState0_2_SCALE, -32*SubmachineState0_2_SCALE>)  }
   object { SubmachineState scale <175.622, 74.281, 20.000> translate SubmachineState0_2 }
     text { ttf LabelFont, "Entity", 1, 0 scale TextScale texture { LabelTecture } translate vertex(SubmachineState0_2, <-77.811, 29.141, 0.000>) no_shadow }
 
 }
 object { StateMachineDiagram_1u2y6174cfd7c659288bc9badb700978b1e1 }
-#declare EYE = <392, -200, -300>;
-#declare FOCUS = <392, -133, 0>;
-camera { location EYE direction 0.83*z look_at FOCUS }
+#declare EYE = <330, -280, -230>;
+#declare FOCUS = <330, -200, 0>;
+camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

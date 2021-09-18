@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図/リスト画面
- * created at 2021/09/13
+ * created at 2021/09/18
  * presented by povastah
  **/
 
@@ -140,8 +140,8 @@
     }
 }
 object { StateMachineDiagram_e7881a9fa389742b575ef0aabbe66a5249 }
-#declare EYE = <393, -300, -450>;
-#declare FOCUS = <393, -180, 0>;
+#declare EYE = <393, -418, -483>;
+#declare FOCUS = <393, -178, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}
