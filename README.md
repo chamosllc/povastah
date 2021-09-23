@@ -130,9 +130,11 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <table>
 <thead><tr><th>astah</th><th>POVRay</th><th>Customize</th></tr></thead>
 <tbody>
+<tr>
 <td><img src="./examples/povastah/Practice/robocart.jpg" width="320"></td>
 <td><img src="./examples/povastah/Practice/robocart.png" width="320"></td>
 <td><img src="./examples/povastah/Practice/robocart-custom.png" width="320"></td></tr>
+<tr>
 <td><img src="./examples/povastah/Practice/robocart-system.jpg" width="320"></td>
 <td><img src="./examples/povastah/Practice/robocart-system.png" width="320"></td>
 <td><img src="./examples/povastah/Practice/robocart-system-custom.png" width="320"><br><a href="https://chamos.biz/images/robocart-system-800.mp4">animation</a></td></tr>
