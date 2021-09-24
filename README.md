@@ -82,7 +82,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <tr><td>ムーブメント</td>
 <td><img src="./examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A0%E3%83%BC%E3%83%96%E3%83%A1%E3%83%B3%E3%83%88.jpg" width="320"></td>
 <td><img src="./examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A0%E3%83%BC%E3%83%96%E3%83%A1%E3%83%B3%E3%83%88.png" width="320"></td></tr>
-<tr><td>ライフ<br>「ムーブメント」呼び出し</td>
+<tr><td>ライフ<br>『ライフサイクル』「ムーブメント」呼び出し</td>
 <td><img src="./examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A9%E3%82%A4%E3%83%95.jpg" width="120"></td>
 <td><img src="./examples/povastah/%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%93%E3%83%86%E3%82%A3%E5%9B%B3/%E3%83%A9%E3%82%A4%E3%83%95.png" width="320"></td></tr>
 </tbody>
