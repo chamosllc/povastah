@@ -8,7 +8,6 @@ import java.util.List;
 import com.change_vision.jude.api.inf.model.IDiagram;
 import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
 
-import biz.chamos.povastah.shape.LineSort;
 import biz.chamos.povastah.shape.Node;
 import biz.chamos.povastah.shape.Point3D;
 
@@ -146,30 +145,6 @@ abstract public class HierarchyDiagram extends Diagram {
 			return true;
 		}
 		return false;
-	}
-	
-	/**
-	 * リンク種別を返す
-	 * 
-	 * @param link
-	 * @return リンク種別
-	 * @throws Exception 
-	 */
-	protected LineSort lineSort(ILinkPresentation link) throws Exception {
-		Node source = findNode(link.getSource());
-		Node target = findNode(link.getTarget());
-		if(isFork(source)) {
-			if(hasHierarchy(target)) {
-				return LineSort.Source;
-			}else {
-				return LineSort.Both;
-			}
-		}else if(isJoin(target)) {
-			if(hasHierarchy(source)) {
-				return LineSort.Target;
-			}
-		}
-		return super.lineSort(link);
 	}
 	
 	/**

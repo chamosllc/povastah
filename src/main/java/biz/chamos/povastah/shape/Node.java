@@ -2,6 +2,7 @@ package biz.chamos.povastah.shape;
 
 import static biz.chamos.povastah.scene.Diagram.*;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
@@ -201,6 +202,10 @@ public class Node {
 	public String vertexPoint(Point3D point) {
 		return String.format(" vertex(%s, %s)", name, point);
 	}
+
+	public String vertexRaisePoint(Point2D point) {
+		return String.format(" vert(vertex(%s, %s), RAISE + %s)", name, point, LineSort.OFFSET_Z);
+	}
 	
 	/** 
 	 * ノード中心座標kから相対座標分移動する
@@ -209,6 +214,10 @@ public class Node {
 	 */
 	public String center(Node target) {
 		return String.format(" vertexCenter(%s, %s)", name, target.getName());
+	}
+
+	public String centerRaise(Node target) {
+		return String.format(" vert(vertexCenter(%s, %s), RAISE/4 + %s)", name, target.getName(), LineSort.OFFSET_Z);
 	}
 	
 	/** 

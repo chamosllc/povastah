@@ -15,11 +15,13 @@ import com.change_vision.jude.api.inf.presentation.ILinkPresentation;
  *
  */
 public enum LineSort {
-	Origin(false, false, 1.0), // リンク先も元も昇るタイプではない
-	Loop(false, false, 1.0), // リンク先と元が同じ:円環
-	Source(true, false, 0.3), // リンク先だけ昇るタイプである
-	Target(false, true, 0.7), // リンク元だけ昇るタイプである
-	Both(true, true, 0.5); // リンク先も元も昇るタイプである
+	Origin, // リンク先も元も昇るタイプではない
+	Loop, // リンク先と元が同じ:円環
+	Fork, // リンク元がForkである
+	Join, // リンク先がJoinである
+	JumpIn, // リンク先だけ昇るタイプである for internal Statemachine
+	JumpOut, // リンク元だけ昇るタイプである for internal Statemachine
+	Both; // リンク先も元も昇るタイプである
 
 	/**
 	 * リンクのデフォルトz座標値
@@ -29,24 +31,6 @@ public enum LineSort {
 	 * 上昇分
 	 */
 	static final public double TOP = -32.0;
-	/**
-	 * リンク元が昇るタイプである
-	 */
-	boolean sourceUp;
-	/**
-	 * リンク先が昇るタイプである
-	 */
-	boolean targetUp;
-	/**
-	 * ノード間に配置する軌跡点の距離率
-	 */
-	double ratio;
-	
-	LineSort(boolean sourceUp, boolean targetUp, double ratio) {
-		this.sourceUp = sourceUp;
-		this.targetUp = targetUp;
-		this.ratio = ratio;
-	}
 	
 	/**
 	 * リンク種別に応じて、リンクの描画軌跡点列を作る
@@ -88,7 +72,7 @@ public enum LineSort {
 		boolean isCurve = link.getProperty("line.shape").equals("curve");
 		
 		vertexes.add(vertLink(source)); // 始点
-		if(this.equals(Origin)) {
+		if(equals(Origin)) {
 			if(length > 2) {
 				if(isCurve) {
 					vertexes.add(vertLink(source)); // 曲線 2点目 始点と同じ点
@@ -104,49 +88,51 @@ public enum LineSort {
 			}
 		}else { // 山なりな線にする
 			Point3D addPoint;
-			Point3D center = start.center(end); // 始点と終点の間に種別の距離率を加味して点を作る
-			double topZ = center.getZ() + TOP;
 			vertexes.add(vertLink(source)); // 曲線 2点目 始点と同じ点
 			if(length == 2) { // 元は始点と終点の2点を結ぶ直線 				
-				if(this.equals(Both)) {
-					vertexes.add(source.center(target, topZ));
-				}else {
-					if(this.equals(Source)) {
-						vertexes.add(target.center(source, topZ));	
-					}else if(this.equals(Target)) {
-						vertexes.add(source.center(target, topZ));
-					}				
+				if(equals(Both)) {
+					vertexes.add(source.center(target, TOP));
+				}else if(equals(JumpIn)) {
+					vertexes.add(target.center(source, TOP));	
+				}else if(equals(JumpOut)) {
+					vertexes.add(source.center(target, TOP));
+				}else if(equals(Fork) || equals(Join)) {
+					vertexes.add(source.centerRaise(target));
 				}
 			}else {
-				if(this.equals(Both)) {
+				if(equals(Both)) {
 					for(int i=2; i < length - 2; i++) {
-						vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
+						vertexes.add(source.vertex(new Point3D(inversion(points[i]), TOP)));
 					}
-				}else if(length == 3) {					
-					if(this.equals(Source)) {
+				}else if(equals(Fork) || equals(Join)) {
+					for(int i=2; i < length - 2; i++) {
+						vertexes.add(source.vertexRaisePoint(inversion(points[i])));
+					}		
+				}else if(length == 3) {		
+					if(equals(JumpOut)) {
 						addPoint = new Point3D(inversion(points[1]), start.getZ());
-						vertexes.add(source.vertex(start.center(addPoint), topZ));
+						vertexes.add(source.vertex(start.center(addPoint), TOP));
 						vertexes.add(target.vertex(addPoint));
-					}else if(this.equals(Target)) {
+					}else if(equals(JumpIn)) {
 						addPoint = new Point3D(inversion(points[1]), start.getZ());
 						vertexes.add(source.vertex(addPoint));
-						vertexes.add(target.vertex(addPoint.center(end), topZ));
+						vertexes.add(target.vertex(addPoint.center(end), TOP));
 					}
 				}else {
 					int turn = (int)((length - 2)/2);
-					if(this.equals(Source)) {
+					if(equals(JumpOut)) {
 						for(int i=1; i <= turn; i++) {
-							vertexes.add(source.vertex(new Point3D(inversion(points[i]), topZ)));
+							vertexes.add(source.vertex(new Point3D(inversion(points[i]), TOP)));
 						}
 						for(int i=turn + 1; i < length - 1; i++) {
 							vertexes.add(target.vertex(new Point3D(inversion(points[i]), end.getZ())));
 						}
-					}else if(this.equals(Target)) {
+					}else if(equals(JumpIn)) {
 						for(int i=1; i <= turn; i++) {
 							vertexes.add(source.vertex(new Point3D(inversion(points[i]),  start.getZ())));
 						}
 						for(int i=turn + 1; i < length - 1; i++) {
-							vertexes.add(target.vertex(new Point3D(inversion(points[i]), topZ)));
+							vertexes.add(target.vertex(new Point3D(inversion(points[i]), TOP)));
 						}
 					}
 				}

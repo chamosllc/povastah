@@ -437,8 +437,14 @@ abstract public class Diagram {
 		if(source == target) {
 			return LineSort.Loop;
 		}
-		if(isFork(source) || isJoin(target)) {
+		if(isFork(source)) {
+			if(isJoin(target)) {
 				return LineSort.Both;
+			}else {
+				return LineSort.Fork;
+			}
+		}else if(isJoin(target)) {
+			return LineSort.Join;
 		}
 		return LineSort.Origin;
 	}

@@ -236,14 +236,14 @@ public class StateMachineDiagram extends HierarchyDiagram {
 		Node source = findNode(link.getSource());
 		Node target = findNode(link.getTarget());
 		if(isOtherParent(source, target)) {
-			if(isInternal(source) || isFork(source)) {
-				if(isInternal(target) || isJoin(target) || !hasHierarchy(target)) {
+			if(isInternal(source)) {
+				if(isInternal(target)) {
 					return LineSort.Both;
 				}else {
-					return LineSort.Source;
+					return LineSort.JumpOut;
 				}
-			}else if(isInternal(target) || isJoin(target)) {
-				return LineSort.Both;
+			}else if(isInternal(target)) {
+				return LineSort.JumpIn;
 			}
 		}
 		return super.lineSort(link);
