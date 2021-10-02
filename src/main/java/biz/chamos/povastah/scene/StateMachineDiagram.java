@@ -188,15 +188,15 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	/**
 	 * リンクを描く
 	 * @param link
-	 * @param lineRadius 
-	 * @param source ソースの高さ
-	 * @param target ターゲットの高さ
+	 * @param source リンク元ノード
+	 * @param target リンク先ノード
+	 * @param sort 線種
+	 * @return POV-Ray SDL
 	 */
 	protected String drawArrow(ILinkPresentation link, Node source, Node target, LineSort sort) {
 		String description = super.drawArrow(link, source, target, sort);
 		String difference = getInternalRegion(source);
 		difference += getInternalRegion(target);
-//		List<Point3D> linePoints = sort.vertexes(link, source, target);
 		List<String> linePoints = sort.stringVertexes(link, source, target);
 		if(!difference.isEmpty()) {
 			description = "  difference {" + CR + draw(link, linePoints, true) + material(link, true) + " }" + CR

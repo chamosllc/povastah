@@ -1,5 +1,5 @@
 # povastah
-A Tool of UML Diagram visualization by POVRay Scene Description Laungage
+astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 - クラス図
 -- クラス継承階層を立体表現する
 -- ロバストネス図表現対応(インスタンス仕様も含む)
@@ -100,7 +100,7 @@ A Tool of UML Diagram visualization by POVRay Scene Description Laungage
 <td><img src="./examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%83%AA%E3%82%B9%E3%83%88%E7%94%BB%E9%9D%A2.png" width="320"></td></tr>
 <tr><td>エンティティ画面<br>(「リスト画面」呼び出し)</td>
 <td><img src="./examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3%E7%94%BB%E9%9D%A2.jpg" width="320"></td>
-<td><img src="./examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3%E7%94%BB%E9%9D%A2.png" width="320"></td></tr>
+<td><img src="./examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%83%86%E3%82%A3%E7%94%BB%E9%9D%A2.png" width="320"><br><a href="https://chamos.biz/images/PullUp-640.mp4">animation</a></td></tr>
 <tr><td>トップページ<br>(「エンティティ画面」呼び出し)</td>
 <td><img src="./examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%83%88%E3%83%83%E3%83%97%E3%83%9A%E3%83%BC%E3%82%B8.jpg" width="320"></td>
 <td><img src="./examples/povastah/%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3%E5%9B%B3/%E3%83%88%E3%83%83%E3%83%97%E3%83%9A%E3%83%BC%E3%82%B8.png" width="320"></td></tr>

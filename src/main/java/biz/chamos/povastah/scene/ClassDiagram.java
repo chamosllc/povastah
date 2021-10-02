@@ -196,8 +196,8 @@ public class ClassDiagram extends Diagram {
 	/**
 	 * sphere_sweep{ linear_spline | cubic_spline }を出力する 
 	 * @param link
-	 * @param sourcez ソースの高さ
-	 * @param targetz ターゲットの高さ
+	 * @param source リンク元ノード
+	 * @param target リンク先ノード
 	 * @throws IOException
 	 */
 	protected void draw(ILinkPresentation link, Node source, Node target) throws Exception {
@@ -225,8 +225,8 @@ public class ClassDiagram extends Diagram {
 	 * 継承(Generalization)を描く
 	 * ※Generalizationのlinkは、sourceがサブクラスでtargetがスーパークラスであるが、points[]はtargetからsoruceへの点列となっている。
 	 * @param link
-	 * @param sourcez ソースの高さ
-	 * @param targetz ターゲットの高さ
+	 * @param source リンク元ノード
+	 * @param target リンク先ノード
 	 * @return 継承リンク記述
 	 */
 	protected String drawGeneralization(ILinkPresentation link, Node source, Node target) throws IOException {
