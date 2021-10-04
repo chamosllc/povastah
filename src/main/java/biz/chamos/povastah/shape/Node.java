@@ -241,9 +241,6 @@ public class Node {
 		return String.format(" translate%s", vertexPoint(point));
 	}
 
-	protected String vertexScale(double x, double y) {
-		return String.format(" vertexScale(%s, %s, <%.3f*%2$s, %.3f*%2$s, -32*%2$s>) ", name, scaleName(), x, y);
-	}
 	/**
 	 * ノードを描く
 	 * @return 記述
@@ -280,14 +277,16 @@ public class Node {
 
 	/**
 	 * 親ノードに子ダイアグラムを乗せる際の縮小率
+	 * 子ダイアグラムの座標
 	 * @param bound 親ノードの矩形領域
 	 * @param subBound 子ダイアグラムの矩形領域
 	 * @return 記述
 	 */
 	public String declareScale(Rectangle2D bound, Rectangle2D subBound) {
-		return String.format("  #local %s = %.5f;" + CR, scaleName(), Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight()));
+		String declare = String.format("  #local %s = %.5f;" + CR, scaleName(), Math.min(bound.getWidth()/subBound.getWidth(), bound.getHeight()/subBound.getHeight()));
+		return declare + String.format("  #local %s_sub = %1$s + <%.3f, %.3f, -32>*%s;" + CR, name, -subBound.getCenterX(), subBound.getCenterY(), scaleName());
 	}
-
+	
 	/**
 	 * ノード自己再帰リンクを描く
 	 * @return 記述
@@ -310,11 +309,7 @@ public class Node {
 	 * @return 記述
 	 */
 	public String drawWithState(String diagram, Point3D stageScale, Rectangle2D subBound, Point3D textAlign) {
-		Rectangle2D bound = getBound();
-		Point3D correction = new Point3D(bound.getCenterX() - subBound.getCenterX(), - (bound.getCenterY() - subBound.getCenterY()), 0.0);
-		String description = drawSubDiagram(diagram, getBound(), subBound, correction);
-		description += drawWithScale(stageScale);
-		return description + textOnStage(textAlign);
+		return drawSubDiagram(diagram, subBound) + drawWithScale(stageScale) + textOnStage(textAlign);
 	}
 
 	/**
@@ -322,21 +317,16 @@ public class Node {
 	 * @return 記述
 	 */
 	public String drawWithAction(String diagram, Rectangle2D subBound) {
-		Rectangle2D bound = getBound();
-		double wide = 72.0;
-		Rectangle2D nodeBound = new Rectangle2D.Double(bound.getX(), bound.getY(), wide, wide);
-		Point3D correction = new Point3D(bound.getCenterX() - subBound.getCenterX(), - (bound.getCenterY() - subBound.getCenterY()), 0.0);
-		String description = drawSubDiagram(diagram, nodeBound, subBound, correction);
-		description += draw();
-		return description + textOfStage();
+		return drawSubDiagram(diagram, subBound) + draw() + textOfStage();
 	}
 
 	/**
 	 * サブダイアグラムを描く
 	 * @return 記述
 	 */
-	public String drawSubDiagram(String diagram, Rectangle2D bound, Rectangle2D subBound, Point3D correction) {
-		return declareScale(bound, subBound) + String.format("  object { %s scale %s translate %s }" + CR, diagram, scaleName(), vertexScale(correction.getX(), correction.getY()));
+	public String drawSubDiagram(String diagram, Rectangle2D subBound) {
+		Rectangle2D bound = getBound();
+		return declareScale(bound, subBound) + String.format("  object { %s scale %s translate %s_sub }" + CR, diagram, scaleName(), name);
 	}
 	
 	/**
