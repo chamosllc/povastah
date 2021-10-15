@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * 各種表現/不正オブジェクト
- * created at 2021/09/18
+ * created at 2021/10/06
  * presented by povastah
  **/
 
