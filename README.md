@@ -166,7 +166,6 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
   - [設定(Preferences)]→[Maven]→[警告・エラー]欄→[ライフサイクル構成でカバーされていないプラグインの実行]項目を値を[無視]にする。
 - astah* pluginは、OSGiバンドルに準拠したjarでなければならない。
   - astah-plugin-SDK-1.5のコマンドastah-buildは、target配下に、OSGiバンドルに準拠したjarを生成する。
-  - 本コードをEclipseにインポートするとMavenプロジェクトとなるが、ビルドしてもOSGiバンドルに準拠したjarは生成されない。
 
 ## Install
 - [target/povastah-X.X-SNAPSHOT.jar](./target/povastah-1.1-SNAPSHOT.jar) をastah*ツールのインストールディレクトリ配下のpluginsディレクトリに配置する。
