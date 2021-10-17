@@ -159,7 +159,14 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
 	  - Oracle JDK1.8は、1.8.0_291が最終ですが、astah* 8.4はAdaptOpenJDK jdk-8.0.292以降を要求する。
 	    1. AdaptOpenJDK jdk-8.0.292をインストールする。
 	    2. 環境変数JAVA_HOMEをAdaptOpenJDKのインストールディレクトリに設定する。
-	    3. 環境変数PATHに、"%JAVA_HOME%\bin"を設定する。
+	    3. 環境変数PATHに、"%JAVA_HOME%\bin"を加える。
+
+開発環境(Eclipse)
+- ソースをEclipseプロジェクトで扱う際に、pom.xmlがライフサイクル・マッピングのエラーになる場合の対処方法
+  - [設定(Preferences)]→[Maven]→[警告・エラー]欄→[ライフサイクル構成でカバーされていないプラグインの実行]項目を値を[無視]にする。
+- astah* pluginは、OSGiバンドルに準拠したjarでなければならない。
+  - astah-plugin-SDK-1.5のコマンドastah-buildは、target配下に、OSGiバンドルに準拠したjarを生成する。
+  - 本コードをEclipseにインポートするとMavenプロジェクトとなるが、ビルドしてもOSGiバンドルに準拠したjarは生成されない。
 
 ## Install
 - [target/povastah-X.X-SNAPSHOT.jar](./target/povastah-1.1-SNAPSHOT.jar) をastah*ツールのインストールディレクトリ配下のpluginsディレクトリに配置する。
