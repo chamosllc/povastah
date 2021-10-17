@@ -162,7 +162,7 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
 	    3. 環境変数PATHに、"%JAVA_HOME%\bin"を加える。
 
 開発環境(Eclipse)
-- ソースをEclipseプロジェクトで扱う際に、pom.xmlがライフサイクル・マッピングのエラーになる場合の対処方法
+- ソースをEclipseで扱う際、pom.xmlが「ライフサイクル・マッピングのエラー」になる場合の対処方法
   - [設定(Preferences)]→[Maven]→[警告・エラー]欄→[ライフサイクル構成でカバーされていないプラグインの実行]項目を値を[無視]にする。
 - astah* pluginは、OSGiバンドルに準拠したjarでなければならない。
   - astah-plugin-SDK-1.5のコマンドastah-buildは、target配下に、OSGiバンドルに準拠したjarを生成する。
