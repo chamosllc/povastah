@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * ステートマシン図
- * created at 2021/09/16
+ * created at 2021/10/26
  * presented by povastah
  **/
 
@@ -18,28 +18,28 @@
 
 #local RAISE = -48;
 
-#declare StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f = union {
-#local State1_0 = <180.833, -68.714, 0.0>;
-#local InitialPseudostate1_1 = <107.333, -68.714, 0.0>;
-#local FinalState1_2 = <254.000, -68.714, 0.0>;
+#declare StateMachineDiagram_46566ef5a77024f23ff251e80bb9d0c7efa = union {
+#local InitialPseudostate1_0 = <163.000, -183.000, 0.0>;
+#local State1_1 = <238.500, -183.047, 0.0>;
+#local FinalState1_2 = <303.000, -183.000, 0.0>;
 
-  object { State rotate -x*90 scale 24.0 translate State1_0 }
-    object { Circle_Text(LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State1_0, 30.0)  no_shadow }
+  object { InitialPseudostate rotate -x*90 scale 24.0 translate InitialPseudostate1_0 }
     union{
-    sphere_sweep { linear_spline, 2,  vert(State1_0, 4.0), LRd  vert(FinalState1_2, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(State1_0, 4.0), LRd  vert(FinalState1_2, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(InitialPseudostate1_0, 4.0), LRd  vert(State1_1, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(InitialPseudostate1_0, 4.0), LRd  vert(State1_1, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
-  object { InitialPseudostate rotate -x*90 scale 24.0 translate InitialPseudostate1_1 }
+  object { State rotate -x*90 scale 24.0 translate State1_1 }
+    object { Circle_Text(LabelFont, "state",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State1_1, 30.0)  no_shadow }
     union{
-    sphere_sweep { linear_spline, 2,  vert(InitialPseudostate1_1, 4.0), LRd  vert(State1_0, 4.0), LRd material { TransitionMaterial } no_shadow }
-    sphere_sweep { linear_spline, 2,  vert(InitialPseudostate1_1, 4.0), LRd  vert(State1_0, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
+    sphere_sweep { linear_spline, 2,  vert(State1_1, 4.0), LRd  vert(FinalState1_2, 4.0), LRd material { TransitionMaterial } no_shadow }
+    sphere_sweep { linear_spline, 2,  vert(State1_1, 4.0), LRd  vert(FinalState1_2, 4.0), 0.0 material { ShadowTransitionMaterial } no_image }
     }
   object { FinalState rotate -x*90 scale 24.0 translate FinalState1_2 }
 }
 #declare StateMachineDiagram_98248e854451c4ee75ae849d72474c5eb8f = union {
 #local InitialPseudostate0_0 = <80.667, -105.333, 0.0>;
 #local State0_1 = <180.833, -105.380, 0.0>;
-#local SubmachineState0_2 = <655.124, -232.714, 0.0>;
+#local SubmachineState0_2 = <669.312, -237.060, 0.0>;
 #local State0_3 = <297.833, -256.620, 0.0>;
 #local State0_4 = <205.500, -224.714, 0.0>;
 #local ChoicePseudostate0_5 = <279.333, -107.333, 0.0>;
@@ -59,10 +59,11 @@
     object { Circle_Text(LabelFont, "InitialPseudostate",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(InitialPseudostate0_0, 30.0)  no_shadow }
   object { State rotate -x*90 scale 24.0 translate State0_1 }
     object { Circle_Text(LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_1, 30.0)  no_shadow }
-  #local SubmachineState0_2_SCALE = 0.89305;
-  object { StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f scale SubmachineState0_2_SCALE translate  vertexScale(SubmachineState0_2, SubmachineState0_2_SCALE, <474.290*SubmachineState0_2_SCALE, -164.047*SubmachineState0_2_SCALE, -32*SubmachineState0_2_SCALE>)  }
-  object { SubmachineState scale <167.000, 59.188, 20.000> translate SubmachineState0_2 }
-    text { ttf LabelFont, "SubmachineState", 1, 0 scale TextScale texture { LabelTecture } translate vertex(SubmachineState0_2, <-73.500, 21.594, 0.000>) no_shadow }
+  #local SubmachineState0_2_SCALE = 0.84184;
+  #local SubmachineState0_2_sub = SubmachineState0_2 + <-249.000, 183.000, -32>*SubmachineState0_2_SCALE;
+  object { StateMachineDiagram_46566ef5a77024f23ff251e80bb9d0c7efa scale SubmachineState0_2_SCALE translate SubmachineState0_2_sub }
+  object { SubmachineState scale <165.000, 59.188, 20.000> translate SubmachineState0_2 }
+    text { ttf LabelFont, "SubmachineState", 1, 0 scale TextScale texture { LabelTecture } translate vertex(SubmachineState0_2, <-72.500, 21.594, 0.000>) no_shadow }
 
   difference {
     object { StateInternal scale<413.667, 180.094, 20.00> translate vert(State0_3, -4.0)  }
@@ -121,8 +122,8 @@
     object { Circle_Text(LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_16, 30.0)  no_shadow }
 }
 object { StateMachineDiagram_98248e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <404, -445, -521>;
-#declare FOCUS = <404, -205, 0>;
+#declare EYE = <411, -445, -528>;
+#declare FOCUS = <411, -205, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

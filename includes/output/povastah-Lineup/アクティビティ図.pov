@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * アクティビティ図
- * created at 2021/09/16
+ * created at 2021/10/26
  * presented by povastah
  **/
 
@@ -56,8 +56,9 @@
     object { Circle_Text(LabelFont, "InitialNode",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(InitialNode0_0, 30.0)  no_shadow }
   object { Action rotate -x*90 scale 24.0 translate Action0_1 }
     object { Circle_Text(LabelFont, "Action",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(Action0_1, 30.0)  no_shadow }
-  #local CallBehaviorAction0_2_SCALE = 0.33488;
-  object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale CallBehaviorAction0_2_SCALE translate  vertexScale(CallBehaviorAction0_2, CallBehaviorAction0_2_SCALE, <100.339*CallBehaviorAction0_2_SCALE, -171.089*CallBehaviorAction0_2_SCALE, -32*CallBehaviorAction0_2_SCALE>)  }
+  #local CallBehaviorAction0_2_SCALE = 0.17718;
+  #local CallBehaviorAction0_2_sub = CallBehaviorAction0_2 + <-87.161, 132.167, -32>*CallBehaviorAction0_2_SCALE;
+  object { ActivityDiagram_uky48e854451c4ee75ae849d72474c5eb8f scale CallBehaviorAction0_2_SCALE translate CallBehaviorAction0_2_sub }
   object { CallBehaviorAction rotate -x*90 scale 24.0 translate CallBehaviorAction0_2 }
     text { ttf LabelFont, "CallBehaviorAction", 1, 0 scale TextScale texture { LabelTecture } translate vertex(CallBehaviorAction0_2, <-37.500, -48.000, 30.000>) no_shadow }
 

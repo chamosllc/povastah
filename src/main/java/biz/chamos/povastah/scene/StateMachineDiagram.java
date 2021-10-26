@@ -136,9 +136,12 @@ public class StateMachineDiagram extends HierarchyDiagram {
 	protected boolean drawSubDiagram(Node node) throws IOException {
 		IDiagram subDiagram = callDiagram(node);
 		if(subDiagram != null) {
+			final double MARGIN = 8.0;
 			Rectangle2D bound = node.getBound();
-			final Point3D textAlign = new Point3D(10.0, -8.0, 0.0);
-			scene.write(node.drawWithState(id(subDiagram), new Point3D(bound.getWidth(), bound.getHeight(), VERTEX_H), subDiagram.getBoundRect(), textAlign));
+			Rectangle2D subBound = subDiagram.getBoundRect();
+			subBound.setRect(subBound.getX() + MARGIN, subBound.getY(), subBound.getWidth() + MARGIN*2, subBound.getHeight());
+			final Point3D textAlign = new Point3D(10.0, -MARGIN, 0.0);
+			scene.write(node.drawWithState(id(subDiagram), new Point3D(bound.getWidth(), bound.getHeight(), VERTEX_H), subBound, textAlign));
 			return true;
 		}
 		return false;

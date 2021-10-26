@@ -1,7 +1,7 @@
 /**
  * astah* Diagram 3D Visualization
  * サブステートマシン図
- * created at 2021/09/16
+ * created at 2021/10/26
  * presented by povastah
  **/
 
@@ -19,9 +19,9 @@
 #local RAISE = -48;
 
 #declare StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f = union {
-#local State0_0 = <180.833, -68.714, 0.0>;
-#local InitialPseudostate0_1 = <107.333, -68.714, 0.0>;
-#local FinalState0_2 = <254.000, -68.714, 0.0>;
+#local State0_0 = <371.167, -243.380, 0.0>;
+#local InitialPseudostate0_1 = <291.667, -243.380, 0.0>;
+#local FinalState0_2 = <450.333, -243.380, 0.0>;
 
   object { State rotate -x*90 scale 24.0 translate State0_0 }
     object { Circle_Text(LabelFont, "State",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(State0_0, 30.0)  no_shadow }
@@ -37,8 +37,8 @@
   object { FinalState rotate -x*90 scale 24.0 translate FinalState0_2 }
 }
 object { StateMachineDiagram_k8c48e854451c4ee75ae849d72474c5eb8f }
-#declare EYE = <180, -308, -160>;
-#declare FOCUS = <180, -68, 0>;
+#declare EYE = <371, -483, -526>;
+#declare FOCUS = <371, -243, 0>;
 camera { location EYE direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}

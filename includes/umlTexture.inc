@@ -38,7 +38,6 @@
 #declare TransitionMaterial = material { texture { pigment { Col_Glass_Green } finish{ F_Glass1 } } interior { ior 1.5 } }
 // stateinternal
 #declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Amethyst_04 } }
-//#declare InternalTransitionMaterial = material { texture { pigment { color Clear } finish { F_Glass4 } } interior { I_Glass1 fade_color Col_Aquamarine_06 } } 
 
 #declare StateMaterial = material { InternalTransitionMaterial } 
 #declare SubmachineStateMaterial = material { texture{ T_Silver_1B } interior{ ior 1.5 }}
@@ -62,7 +61,6 @@
 /** Shadow Link Texture **/
 
 #declare ShadowMaterial = material { M_Glass }
-//#declare ShadowMaterial = material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Fluorite_09 } }
 
 #if(ShadowType)
     #declare ShadowLinkMaterial = material { LinkMaterial }

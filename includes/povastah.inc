@@ -30,7 +30,8 @@
 /*
  * Class Diagram
  */
-#declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
+#declare Class = sphere { 0, 1 material{ M_Orange_Glass }}
+
 #declare AbstractClass = object { Class texture {
    pigment{ agate color_map{[0.0  color rgb<1, 0.02, 0.02>][0.8 color rgbf<1, 1, 1, 0.9>]} scale 0.4 }
    finish{diffuse 0.7 }
@@ -50,10 +51,6 @@
 }
 
 #declare Lifeline = object { InstanceSpecification }
-
-
-// illegal Object
-#declare Class = sphere { 0, 1 texture { T_Orange_Glass }}
 
 
 /*
@@ -79,10 +76,10 @@
 
 #declare Action = object { Round_Cylinder(<0, -0.6, 0>, <0, 0.2, 0>, 1.0, 0.15, 0) texture{ ActivityTexture scale 1/2 }}
 
-#declare ForkNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1) rotate x*180 translate -y*0.6
+#declare ForkNode = object { Half_Hollowed_Rounded_Cylinder1(2, 1.1, 0.2, 1, 1) rotate x*180 translate -y*0.6
     material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_07 } }}
                               
-#declare JoinNode = object { Half_Hollowed_Rounded_Cylinder1(1, 1, 0.2, 1, 1)
+#declare JoinNode = object { Half_Hollowed_Rounded_Cylinder1(2, 1.1, 0.2, 1, 1)
     material { texture { pigment { color Clear } finish { F_Glass1 } } interior { I_Glass1 fade_color Col_Amber_08 } }}
 
 #declare Activity=union{
@@ -125,21 +122,10 @@
 #declare State = object { Round_Cylinder (-0.2*y, 0.2*y, 1.0, 0.1, 0)
      texture{ pigment{ spiral1 1 color_map{[0.0 color rgb <0.85, 0.85, 0.10>][0.7 color rgb<1,1,1, 0.98>]}}
               finish{ Metal } scale 0.2 rotate x*90 } }   
-/*   
-#declare StateInternal = difference {
-    box { <-0.5, -0.5, -0.5>, <0.5, 0.5, 1>}
-    box { <-0.51, -0.51, -1>, <0.51, 0.51, 0> }   
- material { InternalTransitionMaterial }}
-*/
+
 #declare StateInternal = superellipsoid { <0.2, 0.2> scale <0.52, 0.52, 0.75> translate z*0.75 material { InternalTransitionMaterial }}
 
 #declare SubmachineState = superellipsoid { <0.2, 0.2>  texture{ T_Silver_1B } scale <0.5, 0.6, 0.36> translate z*0.36 }  
-/*
-#declare SubmachineState = superellipsoid { <0.2, 0.2>
- texture{ pigment{ ripples color_map{[0.0 color rgb <0.75, 1.0, 0.8, 0.3>][0.95 color rgb<1, 1, 1, 0.9>]}}
-  finish{ ambient 0.3 } scale 0.05 } scale <0.5, 0.6, 0.36> translate z*0.36 
-}
-*/
 
 #declare InitialPseudostate = object { InitialNode }
 #declare ChoicePseudostate = object { Wheel }

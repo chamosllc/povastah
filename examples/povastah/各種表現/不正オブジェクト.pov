@@ -26,8 +26,8 @@
     object { Circle_Text(LabelFont, "nonsence:Diagram",  1.000, 0, 2, 1.600, 1, Align_Center, -90) scale TextScale texture { LabelTecture } translate vert(NoInstanceSpecification0_1, 30.0)  no_shadow }
 }
 object { ClassDiagram_5vga0290fd175e96d71338b24081029707b }
-#declare EYE = <329, -533, -534>;
-#declare FOCUS = <329, -293, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <340, -600, -240>;
+#declare FOCUS = <340, -300, 0>;
+camera { location EYE direction 1.5*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ClassDiagramTexture }}

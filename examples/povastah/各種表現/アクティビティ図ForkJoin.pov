@@ -318,8 +318,8 @@
   object { ActivityFinal rotate -x*90 scale 24.0 translate ActivityFinal0_10 }
 }
 object { ActivityDiagram_ky0ce4b1c12b0b0b3b2860874e0282606b }
-#declare EYE = <435, -400, -507>;
-#declare FOCUS = <435, -160, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <435, -500, -320>;
+#declare FOCUS = <435, -180, 0>;
+camera { location EYE right<16/9,0,0> direction 1*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { ActivityDiagramTexture }}
