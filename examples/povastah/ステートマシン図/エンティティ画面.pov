@@ -218,8 +218,8 @@
     }
 }
 object { StateMachineDiagram_bffke8128ac6c1d56428bfcbc5567f70b355 }
-#declare EYE = <360, -303, -335>;
-#declare FOCUS = <360, -63, 0>;
-camera { location EYE direction 1*z look_at FOCUS }
+#declare EYE = <390, -250, -420>;
+#declare FOCUS = <390, -90, 0>;
+camera { location EYE right<16/9,0,0> direction 1.2*z look_at FOCUS }
 light_source { <-1000, -1000, -3000>   color White }
 plane { z, 32 texture { StateMachineDiagramTexture }}
