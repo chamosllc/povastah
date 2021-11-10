@@ -164,6 +164,7 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
 開発環境(Eclipse)
 - ソースをEclipseで扱う際、pom.xmlが「ライフサイクル・マッピングのエラー」になる場合の対処方法
   - [設定(Preferences)]→[Maven]→[警告・エラー]欄→[ライフサイクル構成でカバーされていないプラグインの実行]項目を値を[無視]にする。
+     - [操作動画](https://chamos.biz/github/povastah/eclipseMavenSet.mp4)
 - astah* pluginは、OSGiバンドルに準拠したjarでなければならない。
   - astah-plugin-SDK-1.5のコマンドastah-buildは、target配下に、OSGiバンドルに準拠したjarを生成する。
 
@@ -179,6 +180,7 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
 			```Shell
 			Library_Path="Y:\povray\include"
 			```
+			- [操作動画](https://chamos.biz/github/povastah/povrayIncludeSet.mp4)
 
 プラグインツール
 - [ツール]→[画像出力]→[POVRayスクリプト]で、出力ディレクトリを指定する。
