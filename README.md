@@ -9,7 +9,7 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
   - 振る舞い呼び出しアクションをそのアクティビティ図によって入れ子構造表現する
 - Fork-Join構造表現
   - アクティビティ図、ステートマシン図のFork-Join構造を高低差で表現する。
--[紹介動画](https://youtu.be/dJQ152BEhgU)
+- [紹介動画](https://youtu.be/dJQ152BEhgU)
 
 ## Demo
 
