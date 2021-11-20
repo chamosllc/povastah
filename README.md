@@ -10,6 +10,7 @@ astah* plugin: A Tool of UML Diagram visualization by POVRay Scene Description L
 - Fork-Join構造表現
   - アクティビティ図、ステートマシン図のFork-Join構造を高低差で表現する。
 - [紹介動画](https://youtu.be/Yc1EHwtiDag)
+  - [四国めたん](https://youtu.be/0aQnct79xXM)
 
 ## Demo
 
